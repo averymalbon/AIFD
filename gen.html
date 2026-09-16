@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avery Malbon | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Yuyu&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #8AD4CE;
+      --text: #030001;
+      --accent: #F7608F;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Yuyu', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Loading Screen */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .spinner {
+      position: absolute;
+      right: 32px;
+      bottom: 32px;
+      width: 48px;
+      height: 48px;
+      border: 3px solid transparent;
+      border-top-color: var(--accent);
+      border-right-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Drifting Stars Background */
+    .stars, .stars:before, .stars:after {
+      position: fixed;
+      inset: 0;
+      content: '';
+      background-image: radial-gradient(#fff 1px, transparent 1px);
+      background-size: 120px 120px;
+      opacity: 0.12;
+      animation: drift 80s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
+    }
+
+    /* Layout Container */
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Typography */
+    h1, h2 {
+      font-family: 'Emilys Candy', cursive;
+      letter-spacing: 0.02em;
+      font-weight: normal;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    .section-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    /* Hero Image */
+    .hero {
+      width: 100%;
+      margin-bottom: 64px;
+      cursor: pointer;
+    }
+
+    .hero img {
+      width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 24px;
+      border: 2px solid var(--accent);
+      background: rgba(0, 0, 0, 0.2);
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .hero:hover img {
+      transform: scale(1.01);
+    }
+
+    /* Assignment Nav Buttons */
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 64px;
+    }
+
+    .buttons a {
+      font-family: 'Yuyu', system-ui, sans-serif;
+      text-decoration: none;
+      color: var(--text);
+      border: 2px solid var(--accent);
+      background: transparent;
+      padding: 10px 20px;
+      border-radius: 16px;
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      display: inline-block;
+    }
+
+    .buttons a:hover, .buttons a:focus {
+      transform: translateY(-4px);
+      background: var(--accent);
+      box-shadow: 0 6px 16px rgba(247, 96, 143, 0.25);
+      outline: none;
+    }
+
+    /* Main Grid Structure (2 Columns) */
+    .comparison-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .comparison-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      transition: opacity 0.25s ease;
+      align-items: center;
+    }
+
+    /* Focus behavior: fade non-hovered rows when grid is hovered */
+    .comparison-grid:hover .comparison-row {
+      opacity: 0.4;
+    }
+
+    .comparison-grid .comparison-row:hover {
+      opacity: 1 !important;
+    }
+
+    /* Cards */
+    .card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.02);
+    }
+
+    /* Artwork-title Hover Reveal */
+    .label {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-family: 'Yuyu', system-ui, sans-serif;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .card:hover .label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 0, 1, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 2px solid var(--accent);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      color: #fff;
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+      .wrap {
+        padding: 20px;
+      }
+      .hero {
+        margin-bottom: 40px;
+      }
+      .buttons {
+        margin-bottom: 40px;
+      }
+      .comparison-grid {
+        gap: 16px;
+      }
+      .comparison-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="stars"></div>
+
+  <div class="wrap">
+    <h1>Avery Malbon</h1>
+
+    <div class="hero">
+      <img src="hero.png" alt="Avery Malbon Hero Header">
+    </div>
+
+    <div class="buttons">
+      <a href="#row1">Alien Invasion Generation</a>
+      <a href="#row2">Fairy Town Generation</a>
+      <a href="#row3">Museum City Generation</a>
+      <a href="#row4">Dinosaur Replacement Generation</a>
+    </div>
+
+    <div class="comparison-grid">
+      <!-- Row 1 -->
+      <div class="comparison-row" id="row1">
+        <div class="card">
+          <img src="og images/og.1.jpeg" alt="Original Image 1">
+          <div class="label">Original 1</div>
+        </div>
+        <div class="card">
+          <img src="gen images/gen.1.jpg" alt="Alien Invasion Generation">
+          <div class="label">Alien Invasion Generation</div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="comparison-row" id="row2">
+        <div class="card">
+          <img src="og images/og.2.jpeg" alt="Original Image 2">
+          <div class="label">Original 2</div>
+        </div>
+        <div class="card">
+          <img src="gen images/gen.2.jpg" alt="Fairy Town Generation">
+          <div class="label">Fairy Town Generation</div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="comparison-row" id="row3">
+        <div class="card">
+          <img src="og images/og.3.jpeg" alt="Original Image 3">
+          <div class="label">Original 3</div>
+        </div>
+        <div class="card">
+          <img src="gen images/gen.3.jpg" alt="Museum City Generation">
+          <div class="label">Museum City Generation</div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="comparison-row" id="row4">
+        <div class="card">
+          <img src="og images/og.4.jpeg" alt="Original Image 4">
+          <div class="label">Original 4</div>
+        </div>
+        <div class="card">
+          <img src="gen images/gen.4.jpg" alt="Dinosaur Replacement Generation">
+          <div class="label">Dinosaur Replacement Generation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Overlay -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Enlarged view">
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('fade-out');
+      }, 500);
+    });
+
+    // Lightbox Logic
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    document.querySelectorAll('.hero img, .card img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        lightbox.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
