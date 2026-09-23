@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avery Malbon — Editorial Art & Design</title>
+  <!-- Google Fonts: Editorial Serif and Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #79bfbd;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Fine grain texture overlay mimicking luxury print and digital canvas */
+    .film-grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.28;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Ambient Vignette & Color Balance */
+    .vignette-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 35;
+      background: radial-gradient(circle at 45% 45%, transparent 50%, rgba(20, 60, 65, 0.35) 100%);
+    }
+
+    /* Font styling */
+    .editorial-title {
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: -0.015em;
+      font-weight: 400;
+      color: #0c1c1f;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Twinkle and floating keyframes */
+    @keyframes subtleBreathe {
+      0%, 100% {
+        transform: scale(1) translate3d(0, 0, 0);
+      }
+      50% {
+        transform: scale(1.018) translate3d(-4px, -6px, 0);
+      }
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% {
+        opacity: 0.25;
+        transform: scale(0.85) rotate(0deg);
+      }
+      50% {
+        opacity: 0.95;
+        transform: scale(1.22) rotate(10deg);
+        filter: drop-shadow(0 0 7px rgba(255, 140, 190, 0.95));
+      }
+    }
+
+    @keyframes pinkOrbPulse {
+      0%, 100% {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 0 16px rgba(255, 60, 140, 0.7));
+      }
+      50% {
+        transform: translateY(-8px) scale(1.03);
+        filter: drop-shadow(0 0 24px rgba(255, 90, 160, 0.9));
+      }
+    }
+
+    @keyframes sweepGlow {
+      0%, 100% {
+        opacity: 0.85;
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 14px rgba(255, 145, 190, 0.85));
+      }
+    }
+
+    .breathe-layer {
+      animation: subtleBreathe 18s ease-in-out infinite;
+      transform-origin: 65% 50%;
+    }
+
+    .twinkle-star {
+      animation: starTwinkle 3.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .twinkle-star-delayed-1 {
+      animation: starTwinkle 4.4s ease-in-out infinite 1.2s;
+      transform-origin: center;
+    }
+
+    .twinkle-star-delayed-2 {
+      animation: starTwinkle 3.9s ease-in-out infinite 2.1s;
+      transform-origin: center;
+    }
+
+    .pulsing-sphere {
+      animation: pinkOrbPulse 6s ease-in-out infinite;
+    }
+
+    .ambient-glow-stroke {
+      animation: sweepGlow 5s ease-in-out infinite alternate;
+    }
+
+    /* Glass sheen on pointer interaction */
+    .light-glare {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(255, 180, 220, 0.08) 35%, transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
+      z-index: 25;
+    }
+
+    /* Interactive modal / inspect controls button */
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(10, 45, 45, 0.15);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px 0 rgba(235, 60, 130, 0.25);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+<body class="relative w-screen h-screen overflow-hidden select-none bg-[#74b6b5]">
+
+  <div id="ambientGlare" class="light-glare opacity-0"></div>
+  <div class="film-grain"></div>
+  <div class="vignette-overlay"></div>
+
+  <!-- Parallax Root Container -->
+  <div id="artStage" class="relative w-full h-full flex items-center justify-center transition-transform duration-300 ease-out will-change-transform">
+
+    <svg id="vectorArtwork" 
+         class="absolute inset-0 w-full h-full object-cover breathe-layer pointer-events-none" 
+         viewBox="0 0 1600 1067" 
+         preserveAspectRatio="xMidYMid slice" 
+         xmlns="http://www.w3.org/2000/svg">
+      
+      <defs>
+        <!-- Master Background Color Linear Gradient -->
+        <linearGradient id="canvasBgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#8fd3d2" />
+          <stop offset="35%" stop-color="#7fc1c0" />
+          <stop offset="70%" stop-color="#6ea9a7" />
+          <stop offset="100%" stop-color="#5a9896" />
+        </linearGradient>
+
+        <!-- Upper right ambient cyan/teal light glow -->
+        <radialGradient id="topRightGlow" cx="82%" cy="20%" r="55%">
+          <stop offset="0%" stop-color="#d3fbf7" stop-opacity="0.9" />
+          <stop offset="45%" stop-color="#8ad5d0" stop-opacity="0.4" />
+          <stop offset="100%" stop-color="#74b6b5" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- Large upper glass sphere teal gradient -->
+        <linearGradient id="tealGlassSphereGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+          <stop offset="0%" stop-color="#a6f1eb" stop-opacity="0.85" />
+          <stop offset="30%" stop-color="#70cec9" stop-opacity="0.65" />
+          <stop offset="75%" stop-color="#469b9c" stop-opacity="0.55" />
+          <stop offset="100%" stop-color="#2a7274" stop-opacity="0.75" />
+        </linearGradient>
+
+        <!-- Vivid Magenta/Pink bottom-right orb gradient -->
+        <radialGradient id="vibrantPinkOrbGrad" cx="38%" cy="32%" r="65%">
+          <stop offset="0%" stop-color="#ff7eb6" />
+          <stop offset="40%" stop-color="#f43f8e" />
+          <stop offset="75%" stop-color="#d92071" />
+          <stop offset="100%" stop-color="#9a1150" />
+        </radialGradient>
+
+        <!-- Swirling ribbon under-surface pink illumination -->
+        <linearGradient id="ribbonPinkGlowGrad" x1="0%" y1="90%" x2="100%" y2="20%">
+          <stop offset="0%" stop-color="#f53d8a" stop-opacity="0.95" />
+          <stop offset="35%" stop-color="#ff6aa7" stop-opacity="0.85" />
+          <stop offset="65%" stop-color="#ef76b0" stop-opacity="0.5" />
+          <stop offset="85%" stop-color="#e2c1dc" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="#aae6e1" stop-opacity="0.1" />
+        </linearGradient>
+
+        <!-- Soft glass ribbon frosted surface -->
+        <linearGradient id="glassRibbonBodyGrad" x1="20%" y1="95%" x2="80%" y2="10%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85" />
+          <stop offset="25%" stop-color="#eafafd" stop-opacity="0.7" />
+          <stop offset="55%" stop-color="#b6e9e8" stop-opacity="0.45" />
+          <stop offset="85%" stop-color="#79c5c5" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.65" />
+        </linearGradient>
+
+        <!-- Right vertical glass bar reflection -->
+        <linearGradient id="glassBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05" />
+          <stop offset="40%" stop-color="#cff7f4" stop-opacity="0.35" />
+          <stop offset="70%" stop-color="#99deda" stop-opacity="0.2" />
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1" />
+        </linearGradient>
+
+        <!-- Small pink spherical bead gradient -->
+        <radialGradient id="pinkBeadGrad" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="25%" stop-color="#ff8bbb" />
+          <stop offset="65%" stop-color="#e92d7b" />
+          <stop offset="100%" stop-color="#9b0e4a" />
+        </radialGradient>
+
+        <!-- Glow filter for neon edges -->
+        <filter id="laserGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3.5" result="blur1" />
+          <feGaussianBlur stdDeviation="8" result="blur2" />
+          <feMerge>
+            <feMergeNode in="blur2" />
+            <feMergeNode in="blur1" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        <filter id="softDiffuse" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="24" />
+        </filter>
+      </defs>
+
+      <!-- Background Base -->
+      <rect width="1600" height="1067" fill="url(#canvasBgGradient)" />
+
+      <!-- Deep Ambient Atmospheric Glows -->
+      <circle cx="1350" cy="220" r="500" fill="url(#topRightGlow)" />
+      <circle cx="1200" cy="850" r="450" fill="#e8297b" opacity="0.28" filter="url(#softDiffuse)" />
+      <circle cx="750" cy="880" r="350" fill="#f44591" opacity="0.2" filter="url(#softDiffuse)" />
+
+      <!-- Left Background Sweeping Translucent Cyan Wave -->
+      <path d="M-100 1080 C 150 960, 420 840, 720 740 C 950 660, 1100 500, 1280 340 L 1280 1100 L -100 1100 Z" 
+            fill="#569d9c" opacity="0.4" />
+      <path d="M-50 1000 C 260 880, 520 770, 780 730 C 1040 690, 1280 520, 1420 300 L 1400 1100 L -50 1100 Z" 
+            fill="#69b5b2" opacity="0.32" />
+
+      <!-- Vertical Translucent Monolith Column (Architectural Glass Element) -->
+      <rect x="1240" y="55" width="110" height="960" fill="url(#glassBarGrad)" />
+      <line x1="1240" y1="55" x2="1240" y2="1015" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" />
+      <line x1="1350" y1="55" x2="1350" y2="1015" stroke="rgba(255,255,255,0.25)" stroke-width="0.8" />
+
+      <!-- Large Geometric Glass Circle (Top Right / Center) -->
+      <g id="largeTealCircle">
+        <circle cx="1180" cy="400" r="355" fill="url(#tealGlassSphereGrad)" />
+        <circle cx="1180" cy="400" r="355" stroke="rgba(255,255,255,0.55)" stroke-width="1.5" fill="none" />
+        <!-- Top Rim Sparkle on Circle -->
+        <path d="M 1120 48 A 355 355 0 0 1 1380 120" stroke="#ffffff" stroke-width="3" fill="none" filter="url(#laserGlow)" opacity="0.9" />
+      </g>
+
+      <!-- Bottom Right Vibrant Magenta Spherical Orb -->
+      <g id="pinkVibrantSphere" class="pulsing-sphere">
+        <circle cx="1210" cy="855" r="255" fill="url(#vibrantPinkOrbGrad)" />
+        <circle cx="1210" cy="855" r="255" stroke="rgba(255,210,235,0.7)" stroke-width="2" fill="none" />
+        <!-- Glowing Crescent Edge -->
+        <path d="M 1210 600 A 255 255 0 0 1 1450 940" stroke="#ffb4d6" stroke-width="3" fill="none" filter="url(#laserGlow)" opacity="0.95" />
+      </g>
+
+      <!-- Secondary Diagonal Ray Line -->
+      <line x1="1255" y1="0" x2="1620" y2="380" stroke="rgba(255,160,200,0.7)" stroke-width="1.6" filter="url(#laserGlow)" />
+      
+      <!-- Upper Translucent Glass Wedge -->
+      <path d="M 1250 145 L 895 520 C 1040 370, 1170 240, 1250 145 Z" 
+            fill="rgba(255, 255, 255, 0.45)" opacity="0.75" />
+
+      <!-- Sweeping Ribbon 1: Underside Radiant Pink Section -->
+      <path d="M 380 945 C 570 945, 785 850, 990 710 C 1140 605, 1220 430, 1245 200 C 1220 340, 1140 500, 990 640 C 785 800, 560 885, 380 945 Z" 
+            fill="url(#ribbonPinkGlowGrad)" opacity="0.95" />
+
+      <!-- Sweeping Ribbon 2: Main Dynamic Translucent White/Cyan Blade -->
+      <path d="M 360 948 C 580 950, 785 845, 960 705 C 1130 570, 1220 380, 1245 150 C 1225 310, 1120 495, 950 635 C 750 780, 550 870, 360 948 Z" 
+            fill="url(#glassRibbonBodyGrad)" />
+
+      <!-- Main Neon White/Pink Cutting Edge (The central focal ribbon stroke) -->
+      <path d="M 360 948 C 580 950, 785 845, 960 705 C 1130 570, 1220 380, 1245 150" 
+            stroke="#ffffff" stroke-width="4.5" fill="none" filter="url(#laserGlow)" class="ambient-glow-stroke" />
+
+      <path d="M 360 948 C 580 950, 785 845, 960 705 C 1130 570, 1220 380, 1245 150" 
+            stroke="#ffa8d0" stroke-width="2.2" fill="none" />
+
+      <!-- Floating Pink Trailing Laser Arc -->
+      <path d="M 230 1005 C 470 910, 680 720, 840 645 C 1040 550, 1330 380, 1600 240" 
+            stroke="#ff5e9f" stroke-width="1.8" stroke-dasharray="0" fill="none" opacity="0.85" filter="url(#laserGlow)" />
+
+      <!-- Intersecting Pink Horizon Beam to Floating Satellite Orb -->
+      <line x1="880" y1="580" x2="1600" y2="280" stroke="rgba(255, 95, 160, 0.75)" stroke-width="1.8" filter="url(#laserGlow)" />
+      
+      <!-- Right Floating Satellite Bead -->
+      <g id="floatingBead" class="pulsing-sphere">
+        <circle cx="1476" cy="332" r="16" fill="url(#pinkBeadGrad)" filter="url(#laserGlow)" />
+        <circle cx="1472" cy="328" r="4.5" fill="#ffffff" opacity="0.9" />
+      </g>
+
+      <!-- Star 1: Top Left Vibrant Pink Sparkle -->
+      <g class="twinkle-star" transform="translate(335, 125)">
+        <path d="M 0 -22 Q 0 0 22 0 Q 0 0 0 22 Q 0 0 -22 0 Q 0 0 0 -22 Z" fill="#ff7da7" />
+        <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+      </g>
+
+      <!-- Star 2: Top Center Pale White/Aqua Sparkle -->
+      <g class="twinkle-star-delayed-1" transform="translate(668, 148)">
+        <path d="M 0 -18 Q 0 0 18 0 Q 0 0 0 18 Q 0 0 -18 0 Q 0 0 0 -18 Z" fill="#e8ffff" opacity="0.95" />
+        <circle cx="0" cy="0" r="2.5" fill="#ffffff" />
+      </g>
+
+      <!-- Star 3: Above Typo Subtle Pink Sparkle -->
+      <g class="twinkle-star-delayed-2" transform="translate(525, 342)">
+        <path d="M 0 -10 Q 0 0 10 0 Q 0 0 0 10 Q 0 0 -10 0 Q 0 0 0 -10 Z" fill="#ff8fbe" opacity="0.85" />
+      </g>
+
+      <!-- Star 4: Bottom Left Soft Pink Sparkle -->
+      <g class="twinkle-star" transform="translate(218, 715)">
+        <path d="M 0 -15 Q 0 0 15 0 Q 0 0 0 15 Q 0 0 -15 0 Q 0 0 0 -15 Z" fill="#ff7fae" opacity="0.9" />
+        <circle cx="0" cy="0" r="2" fill="#ffffff" />
+      </g>
+
+      <!-- Star 5: Far Right Tiny Sparkle -->
+      <g class="twinkle-star-delayed-1" transform="translate(1385, 486)">
+        <path d="M 0 -8 Q 0 0 8 0 Q 0 0 0 8 Q 0 0 -8 0 Q 0 0 0 -8 Z" fill="#ffffff" opacity="0.85" />
+      </g>
+
+      <!-- Star 6: Top Margin Tiny Dot Sparkles -->
+      <circle cx="115" cy="105" r="3" fill="#ffb4cf" opacity="0.75" />
+      <circle cx="195" cy="190" r="2" fill="#ffffff" opacity="0.8" />
+      <circle cx="395" cy="298" r="2.5" fill="#ffffff" opacity="0.7" />
+      <circle cx="612" cy="245" r="2" fill="#ff9ec3" opacity="0.65" />
+      <circle cx="860" cy="95" r="2.5" fill="#e0fbff" opacity="0.8" />
+      <circle cx="1110" cy="85" r="2" fill="#ffffff" opacity="0.85" />
+
+    </svg>
+
+    <div class="relative z-30 w-full max-w-7xl px-8 md:px-16 lg:px-24 flex flex-col items-start justify-center h-full pointer-events-auto">
+      
+      <!-- Main Typographic Lockup matching the source artwork -->
+      <div id="heroTextContainer" class="max-w-2xl transform transition-transform duration-200 ease-out">
+        <h1 class="editorial-title text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem] tracking-tight leading-none text-[#0d2125]">
+          Avery Malbon
+        </h1>
+
+        <!-- Delicate horizontal hairline accented with centered 4-point star -->
+        <div class="flex items-center justify-start mt-6 md:mt-8 w-[240px] sm:w-[320px] md:w-[380px]">
+          <!-- Left Hairline Rule -->
+          <div class="h-[1px] flex-grow bg-gradient-to-r from-[#215a5f]/40 via-[#f05c9e]/70 to-[#f05c9e]"></div>
+          
+          <!-- Iconic Pink Diamond Star Center -->
+          <div class="mx-3.5 flex items-center justify-center">
+            <svg class="w-5 h-5 text-[#eb3c84] filter drop-shadow-[0_0_6px_rgba(240,65,140,0.85)]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0 C12 6.6 6.6 12 0 12 C6.6 12 12 17.4 12 24 C12 17.4 17.4 12 24 12 C17.4 12 12 6.6 12 0 Z" />
+            </svg>
+          </div>
+
+          <!-- Right Hairline Rule -->
+          <div class="h-[1px] flex-grow bg-gradient-to-l from-[#215a5f]/40 via-[#f05c9e]/70 to-[#f05c9e]"></div>
+        </div>
+
+        <!-- Luxury subtitle -->
+        <p class="font-sans font-light text-xs sm:text-sm tracking-[0.28em] uppercase text-[#1b4348]/80 mt-5 pl-1">
+          Visual Identity &bull; Digital Form &bull; 2026
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <nav class="absolute bottom-6 left-6 right-6 z-40 flex items-center justify-between pointer-events-none">
+    
+    <!-- Status indicator badge -->
+    <div class="pointer-events-auto flex items-center space-x-3 px-4 py-2 rounded-full glass-btn text-[#0f2d31]">
+      <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#f43f8e] animate-ping"></span>
+      <span class="font-sans text-xs uppercase tracking-widest font-medium">Interactive Art Canvas</span>
+    </div>
+
+    <!-- Action Toolbar -->
+    <div class="pointer-events-auto flex items-center space-x-2 sm:space-x-3">
+      <button id="toggleSparkleBtn" class="glass-btn px-4 py-2 rounded-full font-sans text-xs text-[#0f2d31] hover:text-[#06181b] tracking-wider uppercase font-medium flex items-center gap-1.5 transition-all">
+        <svg class="w-3.5 h-3.5 text-[#e8327e]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+        </svg>
+        <span>Burst Sparkles</span>
+      </button>
+
+      <button id="colorShiftBtn" class="glass-btn px-4 py-2 rounded-full font-sans text-xs text-[#0f2d31] hover:text-[#06181b] tracking-wider uppercase font-medium flex items-center gap-1.5 transition-all">
+        <svg class="w-3.5 h-3.5 text-[#1b5d63]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+        </svg>
+        <span>Vibe Mode</span>
+      </button>
+    </div>
+
+  </nav>
+
+  <!-- Interactive Dynamic Sparkle Spawn Container -->
+  <div id="particleCanvas" class="absolute inset-0 pointer-events-none z-35 overflow-hidden"></div>
+
+  <script>
+    (function() {
+      const artStage = document.getElementById('artStage');
+      const heroText = document.getElementById('heroTextContainer');
+      const ambientGlare = document.getElementById('ambientGlare');
+      const particleContainer = document.getElementById('particleCanvas');
+      const toggleSparkleBtn = document.getElementById('toggleSparkleBtn');
+      const colorShiftBtn = document.getElementById('colorShiftBtn');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let targetX = 0;
+      let targetY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let isAltVibe = false;
+
+      // Mouse Parallax & Dynamic Sheen Tracking
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        targetX = (mouseX / window.innerWidth - 0.5) * 2;
+        targetY = (mouseY / window.innerHeight - 0.5) * 2;
+
+        ambientGlare.style.opacity = '1';
+        ambientGlare.style.left = `${mouseX}px`;
+        ambientGlare.style.top = `${mouseY}px`;
+      });
+
+      // Touch support for mobile parallax
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          const t = e.touches[0];
+          mouseX = t.clientX;
+          mouseY = t.clientY;
+          targetX = (mouseX / window.innerWidth - 0.5) * 2;
+          targetY = (mouseY / window.innerHeight - 0.5) * 2;
+          ambientGlare.style.opacity = '0.85';
+          ambientGlare.style.left = `${mouseX}px`;
+          ambientGlare.style.top = `${mouseY}px`;
+        }
+      }, { passive: true });
+
+      // Smooth Animation Loop via RAF
+      function renderLoop() {
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+
+        const stageMoveX = currentX * 12;
+        const stageMoveY = currentY * 10;
+        artStage.style.transform = `translate3d(${stageMoveX}px, ${stageMoveY}px, 0)`;
+
+        const textMoveX = currentX * -18;
+        const textMoveY = currentY * -14;
+        heroText.style.transform = `translate3d(${textMoveX}px, ${textMoveY}px, 0)`;
+
+        requestAnimationFrame(renderLoop);
+      }
+      renderLoop();
+
+      // Spawn interactive star sparkles on click/tap
+      function createSparkle(x, y) {
+        const star = document.createElement('div');
+        const size = Math.floor(Math.random() * 20) + 14;
+        const isPink = Math.random() > 0.35;
+        const color = isPink ? '#ff4d99' : '#ffffff';
+        const shadow = isPink ? '0 0 10px rgba(255, 60, 140, 0.9)' : '0 0 12px rgba(255,255,255,0.9)';
+
+        star.innerHTML = `
+          <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" style="filter: drop-shadow(${shadow});">
+            <path d="M12 0 C12 6.6 6.6 12 0 12 C6.6 12 12 17.4 12 24 C12 17.4 17.4 12 24 12 C17.4 12 12 6.6 12 0 Z"/>
+          </svg>
+        `;
+        star.style.position = 'absolute';
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.pointerEvents = 'none';
+        star.style.transform = 'translate(-50%, -50%) scale(0) rotate(0deg)';
+        star.style.transition = 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease-out';
+        star.style.opacity = '1';
+
+        particleContainer.appendChild(star);
+
+        const destX = (Math.random() - 0.5) * 160;
+        const destY = (Math.random() - 0.5) * 160;
+        const rot = (Math.random() - 0.5) * 180;
+
+        requestAnimationFrame(() => {
+          star.style.transform = `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px)) scale(1.3) rotate(${rot}deg)`;
+          setTimeout(() => {
+            star.style.opacity = '0';
+            star.style.transform += ' scale(0.4)';
+            setTimeout(() => star.remove(), 900);
+          }, 450);
+        });
+      }
+
+      // Burst interactive stars anywhere user clicks
+      window.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('button')) return;
+
+        for (let i = 0; i < 6; i++) {
+          setTimeout(() => {
+            createSparkle(
+              e.clientX + (Math.random() - 0.5) * 40,
+              e.clientY + (Math.random() - 0.5) * 40
+            );
+          }, i * 40);
+        }
+      });
+
+      // Button: Burst sparkles in creative positions
+      toggleSparkleBtn.addEventListener('click', () => {
+        const cx = window.innerWidth * 0.72;
+        const cy = window.innerHeight * 0.45;
+        for (let i = 0; i < 18; i++) {
+          setTimeout(() => {
+            const rx = cx + (Math.random() - 0.5) * 350;
+            const ry = cy + (Math.random() - 0.5) * 300;
+            createSparkle(rx, ry);
+          }, i * 35);
+        }
+      });
+
+      // Button: Toggle Twilight Sunset / Deep Teal palette mode
+      colorShiftBtn.addEventListener('click', () => {
+        isAltVibe = !isAltVibe;
+        const bgGrad = document.getElementById('canvasBgGradient');
+        if (!bgGrad) return;
+
+        if (isAltVibe) {
+          bgGrad.children[0].setAttribute('stop-color', '#599da0');
+          bgGrad.children[1].setAttribute('stop-color', '#498b8e');
+          bgGrad.children[2].setAttribute('stop-color', '#367276');
+          bgGrad.children[3].setAttribute('stop-color', '#225559');
+          document.body.style.backgroundColor = '#498b8e';
+        } else {
+          bgGrad.children[0].setAttribute('stop-color', '#8fd3d2');
+          bgGrad.children[1].setAttribute('stop-color', '#7fc1c0');
+          bgGrad.children[2].setAttribute('stop-color', '#6ea9a7');
+          bgGrad.children[3].setAttribute('stop-color', '#5a9896');
+          document.body.style.backgroundColor = '#74b6b5';
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
