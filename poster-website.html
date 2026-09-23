@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avery Malbon — Portfolio</title>
+
+  <!-- Google Fonts: Emily's Candy for display headings, Yuji Boku & Yuji Syuku for Japanese/Yuyu calligraphic body typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Yuji+Boku&family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN for utility structure -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-color: #8AD4CE;
+      --text-color: #030001;
+      --accent-color: #F7608F;
+      --font-heading: 'Emilys Candy', cursive;
+      --font-body: 'Yuji Boku', 'Yuji Syuku', serif, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Headings adhering to exact specifications */
+    h1, h2, h3, .font-heading {
+      font-family: var(--font-heading);
+      letter-spacing: 0.02em;
+    }
+
+    .primary-heading {
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .secondary-heading {
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+
+    .section-label {
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    #starfieldCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.65;
+    }
+
+    .assignment-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 16px;
+      border: 1.5px solid var(--accent-color);
+      background: transparent;
+      color: var(--text-color);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 260ms cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 260ms ease,
+                  color 260ms ease;
+    }
+
+    .assignment-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px -4px rgba(247, 96, 143, 0.45);
+      border-color: var(--accent-color);
+    }
+
+    .assignment-btn:focus-visible {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 3px;
+    }
+
+    /* Dior-inspired focus behavior: fade out sibling cards when one is hovered */
+    .gallery-grid:hover .gallery-item {
+      opacity: 0.35;
+      filter: saturate(0.85);
+      transform: scale(0.985);
+      transition: opacity 250ms ease, transform 250ms ease, filter 250ms ease;
+    }
+
+    .gallery-grid .gallery-item:hover {
+      opacity: 1 !important;
+      filter: saturate(1) !important;
+      transform: translateY(-6px) scale(1.01) !important;
+      z-index: 10;
+    }
+
+    /* &WALSH-inspired subtle artwork-title hover reveal */
+    .gallery-item .walsh-reveal-label {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 250ms cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--accent-color);
+    }
+
+    .gallery-item:hover .walsh-reveal-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #walshLoader {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      pointer-events: none;
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    @keyframes spinInfinite {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .spinner-icon {
+      animation: spinInfinite 2.8s linear infinite;
+      color: var(--accent-color);
+      filter: drop-shadow(0 0 6px rgba(247, 96, 143, 0.5));
+    }
+
+    /* Lightbox Modal */
+    #lightboxModal {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), visibility 300ms ease;
+    }
+
+    #lightboxModal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body class="relative">
+
+  <canvas id="starfieldCanvas"></canvas>
+
+  <div id="walshLoader" class="flex items-center gap-2 bg-[#8AD4CE]/80 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#F7608F]/50 shadow-lg">
+    <svg class="spinner-icon w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+      <circle cx="12" cy="12" r="3" fill="#F7608F" />
+    </svg>
+    <span class="text-xs tracking-wider text-[#030001] font-medium hidden sm:inline-block">WALSH &bull; READY</span>
+  </div>
+
+  <div class="relative z-10 w-full max-w-[1400px] mx-auto px-5 sm:px-8 py-8 sm:py-10">
+
+    <!-- Header with Student / Artist Name -->
+    <header class="flex flex-col sm:flex-row items-baseline justify-between border-b border-[#F7608F]/40 pb-5 mb-10 sm:mb-16">
+      <div>
+        <h1 class="font-heading primary-heading text-[#030001] transition-transform duration-200">
+          Avery Malbon
+        </h1>
+        <p class="section-label text-[#030001]/80 mt-1">
+          Visual Identity &bull; Generative Poster Explorations &bull; Fall 2026
+        </p>
+      </div>
+
+      <!-- Quick Jump Navigation -->
+      <nav class="flex items-center gap-3 mt-4 sm:mt-0 flex-wrap">
+        <a href="#hero-section" class="assignment-btn text-xs py-1.5 px-3.5">Hero Visual</a>
+        <a href="#assignments-section" class="assignment-btn text-xs py-1.5 px-3.5">Assignments</a>
+        <a href="#posters-gallery" class="assignment-btn text-xs py-1.5 px-3.5">Poster Series</a>
+      </nav>
+    </header>
+
+    <section id="hero-section" class="w-full mb-10 sm:mb-16">
+      <div class="flex items-center justify-between mb-4">
+        <span class="section-label font-heading text-[#030001]">Featured Hero Work</span>
+        <span class="text-xs text-[#030001]/70 font-medium">Interactive Canvas &bull; 60vh Focus</span>
+      </div>
+
+      <!-- Hero container occupying at least 60% viewport height -->
+      <div class="w-full min-h-[60vh] h-[65vh] rounded-[24px] overflow-hidden border-2 border-[#F7608F] shadow-[0_12px_36px_rgba(247,96,143,0.22)] relative bg-[#74b6b5] group">
+        <!-- Embedded interactive hero.html directly via responsive iframe -->
+        <iframe 
+          src="hero.html" 
+          title="Avery Malbon - Hero Interactive Visual" 
+          class="w-full h-full border-0 pointer-events-auto"
+          loading="eager">
+        </iframe>
+
+        <!-- Subtle badge in the hero area -->
+        <div class="absolute top-4 left-4 pointer-events-none bg-[#8AD4CE]/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#F7608F]/60 text-xs text-[#030001] flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#F7608F] animate-pulse"></span>
+          <span>hero.html</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="assignments-section" class="mb-10 sm:mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <h2 class="font-heading secondary-heading text-[#030001]">Assignment Index</h2>
+        <div class="h-[1px] flex-grow bg-[#F7608F]/40"></div>
+      </div>
+
+      <!-- Exact responsive 2-column layout (on desktop and phones) -->
+      <div class="grid grid-cols-2 gap-4 sm:gap-6">
+        <a href="#poster-sketch" class="assignment-btn text-center justify-center">
+          Assignment 01 &mdash; Sketch
+        </a>
+        <a href="#poster-1" class="assignment-btn text-center justify-center">
+          Assignment 02 &mdash; 1st Generation
+        </a>
+        <a href="#poster-2" class="assignment-btn text-center justify-center">
+          Assignment 03 &mdash; Cubism Change
+        </a>
+        <a href="#poster-3" class="assignment-btn text-center justify-center">
+          Assignment 04 &mdash; Crazy Gen
+        </a>
+        <a href="#poster-final" class="assignment-btn text-center justify-center col-span-2 sm:col-span-1">
+          Assignment 05 &mdash; Final Generation
+        </a>
+        <a href="#hero-section" class="assignment-btn text-center justify-center col-span-2 sm:col-span-1">
+          Interactive Hero Canvas
+        </a>
+      </div>
+    </section>
+
+    <section id="posters-gallery" class="mb-14 sm:mb-20">
+      <div class="flex items-baseline justify-between mb-8">
+        <div>
+          <h2 class="font-heading secondary-heading text-[#030001]">
+            The Big Apple: Progression Series
+          </h2>
+          <p class="text-xs sm:text-sm text-[#030001]/80 mt-1">
+            Click any artwork to expand. Hover to focus individual iterations.
+          </p>
+        </div>
+        <span class="section-label text-[#F7608F] font-bold">5 Stages</span>
+      </div>
+
+      <!-- 2-column responsive layout on both desktop & mobile -->
+      <div class="gallery-grid grid grid-cols-2 gap-4 sm:gap-6">
+
+        <!-- 1. Sketch -->
+        <article id="poster-sketch" class="gallery-item group relative flex flex-col bg-[#8AD4CE] border-2 border-[#F7608F] rounded-[20px] p-3 sm:p-4 overflow-hidden transition-all duration-300">
+          <div class="relative w-full aspect-[3/4] rounded-[14px] overflow-hidden bg-[#030001]/5 cursor-pointer" onclick="openLightbox('poster-sketch.jpg', 'sketch', 'Initial Concept Drawing')">
+            <img 
+              src="poster-sketch.jpg" 
+              alt="The Big Apple - sketch" 
+              onerror="this.src='poster-sketch.jpeg'"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-[#030001]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <span class="bg-[#8AD4CE]/90 text-[#030001] text-xs px-3 py-1.5 rounded-full border border-[#F7608F] shadow">Click to enlarge</span>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-col justify-between flex-grow">
+            <div class="flex items-center justify-between">
+              <span class="font-heading text-lg sm:text-xl text-[#030001]">sketch</span>
+              <span class="walsh-reveal-label text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                Stage 01
+              </span>
+            </div>
+            <p class="text-xs text-[#030001]/75 mt-1 line-clamp-1">Original pen & marker line art composition</p>
+          </div>
+        </article>
+
+        <!-- 2. 1st Generation -->
+        <article id="poster-1" class="gallery-item group relative flex flex-col bg-[#8AD4CE] border-2 border-[#F7608F] rounded-[20px] p-3 sm:p-4 overflow-hidden transition-all duration-300">
+          <div class="relative w-full aspect-[3/4] rounded-[14px] overflow-hidden bg-[#030001]/5 cursor-pointer" onclick="openLightbox('1st-poster.jpeg', 'first generation', 'Cinematic Horror & Sci-Fi Realism')">
+            <img 
+              src="1st-poster.jpeg" 
+              alt="The Big Apple - first generation" 
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-[#030001]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <span class="bg-[#8AD4CE]/90 text-[#030001] text-xs px-3 py-1.5 rounded-full border border-[#F7608F] shadow">Click to enlarge</span>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-col justify-between flex-grow">
+            <div class="flex items-center justify-between">
+              <span class="font-heading text-lg sm:text-xl text-[#030001]">first generation</span>
+              <span class="walsh-reveal-label text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                Stage 02
+              </span>
+            </div>
+            <p class="text-xs text-[#030001]/75 mt-1 line-clamp-1">Cinematic B-movie aesthetic with radioactive beam</p>
+          </div>
+        </article>
+
+        <!-- 3. Cubism Change Generation -->
+        <article id="poster-2" class="gallery-item group relative flex flex-col bg-[#8AD4CE] border-2 border-[#F7608F] rounded-[20px] p-3 sm:p-4 overflow-hidden transition-all duration-300">
+          <div class="relative w-full aspect-[3/4] rounded-[14px] overflow-hidden bg-[#030001]/5 cursor-pointer" onclick="openLightbox('2nd-poster.jpeg', 'cubism change generation', 'Picasso Facets & Painted Textures')">
+            <img 
+              src="2nd-poster.jpeg" 
+              alt="The Big Apple - cubism change generation" 
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-[#030001]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <span class="bg-[#8AD4CE]/90 text-[#030001] text-xs px-3 py-1.5 rounded-full border border-[#F7608F] shadow">Click to enlarge</span>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-col justify-between flex-grow">
+            <div class="flex items-center justify-between">
+              <span class="font-heading text-lg sm:text-xl text-[#030001]">cubism change generation</span>
+              <span class="walsh-reveal-label text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                Stage 03
+              </span>
+            </div>
+            <p class="text-xs text-[#030001]/75 mt-1 line-clamp-1">Multi-perspective facial facets and expressive gouache</p>
+          </div>
+        </article>
+
+        <!-- 4. Crazy Generation -->
+        <article id="poster-3" class="gallery-item group relative flex flex-col bg-[#8AD4CE] border-2 border-[#F7608F] rounded-[20px] p-3 sm:p-4 overflow-hidden transition-all duration-300">
+          <div class="relative w-full aspect-[3/4] rounded-[14px] overflow-hidden bg-[#030001]/5 cursor-pointer" onclick="openLightbox('3rd-poster.jpeg', 'crazy generation', 'Mixed-Media Collage & Stained Glass Montage')">
+            <img 
+              src="3rd-poster.jpeg" 
+              alt="The Big Apple - crazy generation" 
+              onerror="this.src='final-3rd-poster.jpeg'"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-[#030001]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <span class="bg-[#8AD4CE]/90 text-[#030001] text-xs px-3 py-1.5 rounded-full border border-[#F7608F] shadow">Click to enlarge</span>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-col justify-between flex-grow">
+            <div class="flex items-center justify-between">
+              <span class="font-heading text-lg sm:text-xl text-[#030001]">crazy generation</span>
+              <span class="walsh-reveal-label text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                Stage 04
+              </span>
+            </div>
+            <p class="text-xs text-[#030001]/75 mt-1 line-clamp-1">Deconstructed collage, cyborg oculars and skyline shard</p>
+          </div>
+        </article>
+
+        <!-- 5. Final Generation (spans 2 columns on mobile/desktop as highlighted focal piece) -->
+        <article id="poster-final" class="gallery-item col-span-2 group relative flex flex-col md:flex-row bg-[#8AD4CE] border-2 border-[#F7608F] rounded-[20px] p-4 sm:p-6 overflow-hidden transition-all duration-300 gap-6">
+          <div class="relative w-full md:w-1/2 aspect-[3/4] rounded-[16px] overflow-hidden bg-[#030001]/5 cursor-pointer shadow-md" onclick="openLightbox('final-poster.jpeg', 'Final generation', 'Stained Glass Masterwork & Deco Typographic Lockup')">
+            <img 
+              src="final-poster.jpeg" 
+              alt="The Big Apple - Final generation" 
+              onerror="this.src='poster.jpeg'"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-[#030001]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <span class="bg-[#8AD4CE]/90 text-[#030001] text-sm px-4 py-2 rounded-full border border-[#F7608F] shadow">Click to enlarge</span>
+            </div>
+          </div>
+          
+          <div class="flex flex-col justify-center w-full md:w-1/2">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wider font-semibold border border-[#F7608F] text-[#F7608F] bg-[#8AD4CE]">
+                Culmination
+              </span>
+              <span class="walsh-reveal-label text-sm font-bold tracking-widest uppercase">
+                Stage 05
+              </span>
+            </div>
+            
+            <h3 class="font-heading primary-heading text-[#030001] mb-2">
+              Final generation
+            </h3>
+            
+            <p class="text-sm sm:text-base text-[#030001]/90 leading-relaxed mb-6">
+              The realized stained-glass window synthesis. Vibrant fractured cobalt blues, emerald greens, and fiery beam refraction uniting Art Deco architecture with supernatural pop mythology.
+            </p>
+
+            <div class="flex flex-wrap gap-3 items-center">
+              <button onclick="openLightbox('final-poster.jpeg', 'Final generation', 'Stained Glass Masterwork')" class="assignment-btn font-medium">
+                Enlarge Master Poster
+              </button>
+              <a href="#hero-section" class="assignment-btn font-medium">
+                Return to Top
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <footer class="border-t border-[#F7608F]/40 pt-6 pb-12 flex flex-col sm:flex-row items-center justify-between text-xs text-[#030001]/75 gap-4">
+      <div class="font-heading text-sm text-[#030001]">
+        Avery Malbon &copy; 2026
+      </div>
+      <div class="flex items-center gap-6">
+        <span>Palette: #8AD4CE &bull; #030001 &bull; #F7608F</span>
+        <span class="hidden sm:inline">&bull;</span>
+        <span>&WALSH + Dior Aesthetic</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <div id="lightboxModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-[#030001]/85 backdrop-blur-md" onclick="closeLightbox(event)">
+    <div class="relative max-w-5xl max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+      <!-- Close button -->
+      <button 
+        type="button" 
+        onclick="closeLightbox(event)" 
+        aria-label="Close modal"
+        class="absolute -top-12 right-0 sm:right-0 text-[#8AD4CE] hover:text-[#F7608F] p-2 transition-colors focus:outline-none flex items-center gap-1.5 font-heading text-sm">
+        <span>CLOSE</span>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Lightbox Image -->
+      <div class="overflow-hidden rounded-[20px] border-2 border-[#F7608F] shadow-[0_16px_40px_rgba(247,96,143,0.35)] bg-[#8AD4CE]">
+        <img id="lightboxImg" src="" alt="Enlarged Poster" class="max-h-[75vh] w-auto object-contain mx-auto transition-transform duration-300 select-none">
+      </div>
+
+      <!-- Lightbox Caption -->
+      <div class="mt-4 text-center">
+        <h4 id="lightboxTitle" class="font-heading text-2xl text-[#8AD4CE]"></h4>
+        <p id="lightboxSubtitle" class="text-xs sm:text-sm text-[#F7608F] mt-1 tracking-wide"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // 1. Drifting Starfield Background Animation
+      const canvas = document.getElementById('starfieldCanvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const stars = [];
+      const STAR_COUNT = 65; // subtle, clean, not distracting
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      class DriftingStar {
+        constructor() {
+          this.reset(true);
+        }
+
+        reset(initial = false) {
+          this.x = Math.random() * width;
+          this.y = initial ? Math.random() * height : -10;
+          this.size = Math.random() * 2.2 + 0.8;
+          // Very slow, subtle downward-right drift
+          this.speedY = Math.random() * 0.28 + 0.12;
+          this.speedX = Math.random() * 0.16 + 0.04;
+          // Low opacity to preserve high contrast and readability
+          this.baseAlpha = Math.random() * 0.45 + 0.2;
+          this.pulseSpeed = Math.random() * 0.02 + 0.008;
+          this.pulseVal = Math.random() * Math.PI * 2;
+          this.isAccent = Math.random() > 0.55;
+        }
+
+        update() {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.pulseVal += this.pulseSpeed;
+
+          if (this.y > height + 10 || this.x > width + 10) {
+            this.reset(false);
+          }
+        }
+
+        draw() {
+          const currentAlpha = this.baseAlpha + Math.sin(this.pulseVal) * 0.15;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+          if (this.isAccent) {
+            ctx.fillStyle = `rgba(247, 96, 143, ${Math.max(0.1, currentAlpha)})`;
+          } else {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.15, currentAlpha)})`;
+          }
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push(new DriftingStar());
+      }
+
+      function animateStars() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < stars.length; i++) {
+          stars[i].update();
+          stars[i].draw();
+        }
+        requestAnimationFrame(animateStars);
+      }
+      animateStars();
+
+      // 2. &WALSH inspired bottom-right spinner loader: rotates smoothly & fades away on load
+      const loader = document.getElementById('walshLoader');
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          loader.style.opacity = '0';
+          loader.style.transform = 'scale(0.8) translateY(10px)';
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 600);
+        }, 800);
+      });
+
+      // 3. Click to Enlarge Lightbox
+      const modal = document.getElementById('lightboxModal');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxTitle = document.getElementById('lightboxTitle');
+      const lightboxSubtitle = document.getElementById('lightboxSubtitle');
+
+      window.openLightbox = function(src, title, subtitle) {
+        lightboxImg.src = src;
+        lightboxTitle.textContent = title;
+        lightboxSubtitle.textContent = subtitle || '';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      window.closeLightbox = function(e) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeLightbox();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
