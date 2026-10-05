@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyper-Affect Trance Poster Generator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800;900&family=Modak&family=Space+Grotesk:wght@500;700&family=UnifrakturCook:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+    :root {
+      --bg-dark: #0a0a0c;
+      --panel-bg: #141418;
+      --panel-border: #23232c;
+      --accent: #ff2a2a;
+      --accent-toxic: #eaff00;
+      --text-main: #f0f0f5;
+      --text-muted: #8b8b99;
+      --input-bg: #1c1c24;
+      --input-border: #30303d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Split Screen Layout */
+    .app-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Left Control Sidebar */
+    .sidebar {
+      width: 380px;
+      min-width: 380px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      height: 100%;
+      overflow-y: auto;
+      padding: 24px 20px 80px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--input-border);
+      border-radius: 3px;
+    }
+
+    .app-header {
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 16px;
+    }
+
+    .app-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-toxic);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .control-group {
+      background: #111116;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .group-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-main);
+      gap: 6px;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .val-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-toxic);
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    textarea {
+      font-family: 'Space Mono', monospace;
+      resize: vertical;
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent-toxic);
+      background: #23232f;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .color-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+
+    .color-field input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-field input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+    }
+
+    .color-field span {
+      font-size: 0.72rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: var(--input-border);
+      height: 4px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-toxic);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Floating Action Dock */
+    .button-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 380px;
+      background: rgba(20, 20, 24, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--panel-border);
+      padding: 14px 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-random {
+      background: #252532;
+      color: #fff;
+      border: 1px solid var(--panel-border);
+    }
+
+    .btn-random:hover {
+      background: #323244;
+      border-color: #55556a;
+    }
+
+    .btn-export {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-export:hover {
+      background: #ff4747;
+      box-shadow: 0 0 15px rgba(255, 42, 42, 0.4);
+    }
+
+    /* Right Preview Canvas */
+    .viewport {
+      flex: 1;
+      background: #050507;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poster-frame {
+      height: 94vh;
+      max-height: 1200px;
+      aspect-ratio: 900 / 1200;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(234, 255, 0, 0.08);
+      background: #000;
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #posterSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Control Sidebar -->
+    <aside class="sidebar">
+      <div class="app-header">
+        <h1 class="app-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+          </svg>
+          Hyper-Affect
+        </h1>
+        <div class="app-subtitle">Cyber-Rave Poster Generator · 2014 System</div>
+      </div>
+
+      <!-- Typography -->
+      <div class="control-group">
+        <div class="group-title">Typography & Copy</div>
+        
+        <label>
+          Headline 1 (Condensed Serif)
+          <input type="text" id="inputHeadline1" value="WHAT TIME IS">
+        </label>
+
+        <label>
+          Artist Headline (Gothic Blackletter)
+          <input type="text" id="inputArtist" value="EVAN CHRIST">
+        </label>
+
+        <label>
+          Support Act & Tour
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <input type="text" id="inputSupport" value="Dutch E. Germ">
+            <input type="text" id="inputTourInfo" value="US TOUR 2014">
+          </div>
+        </label>
+
+        <label>
+          Side Micro-Text Labels
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <input type="text" id="inputMicroL" value="TRANCE">
+            <input type="text" id="inputMicroR" value="HYPER-AFFECT">
+          </div>
+        </label>
+
+        <label>
+          Bottom Brand Badge
+          <input type="text" id="inputBrand" value="TRANCE AMERICA?">
+        </label>
+      </div>
+
+      <!-- Tour Schedule -->
+      <div class="control-group">
+        <div class="group-title">Date & Venue Schedule (Date | City | Venue)</div>
+        <label>
+          <textarea id="inputDates" rows="8">Jun 18 | Philadelphia | Dolphin Tavern
+Jun 19 | Chicago | Primary
+Jun 20 | Toronto | NXNE / Tattoo
+Jun 21 | Montreal | Le Belmont
+Jun 25 | New York | Output
+Jun 26 | Miami | Bardot
+Jun 27 | Austin | Vulcan Gas Co
+Jun 28 | Los Angeles | Los Globos</textarea>
+        </label>
+      </div>
+
+      <!-- Colorways -->
+      <div class="control-group">
+        <div class="group-title">Color System & Palettes</div>
+        
+        <label>
+          Thermal Inversion Palette
+          <select id="selectPalette">
+            <option value="acid">Acid UV Thermal (Original: Cyan/Yellow/Magenta)</option>
+            <option value="toxic">Toxic Nuclear (Electric Lime/Violet)</option>
+            <option value="cyber">Cyber Infrared (Blood Red/Electric Cyan)</option>
+            <option value="solar">Solar Flare (Gold/Orange/Deep Purple)</option>
+          </select>
+        </label>
+
+        <div class="color-grid">
+          <div class="color-field">
+            <input type="color" id="colHeadline" value="#ff2a2a">
+            <span>Headline 1</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colAccent" value="#eaff00">
+            <span>Sidebar Icons</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colBg" value="#050508">
+            <span>Outer Base</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colDateCity" value="#ffffff">
+            <span>City Text</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Composition & Processing FX -->
+      <div class="control-group">
+        <div class="group-title">Distortion & Collage Controls</div>
+
+        <label>
+          <div class="label-row">
+            <span>Thermal Warp Scale</span>
+            <span class="val-display" id="valWarp">45</span>
+          </div>
+          <input type="range" id="rangeWarp" min="0" max="100" value="45">
+        </label>
+
+        <label>
+          <div class="label-row">
+            <span>Torn Paper Roughness</span>
+            <span class="val-display" id="valTear">6</span>
+          </div>
+          <input type="range" id="rangeTear" min="1" max="15" value="6">
+        </label>
+
+        <label>
+          <div class="label-row">
+            <span>Algorithmic Pattern Density</span>
+            <span class="val-display" id="valPattern">24</span>
+          </div>
+          <input type="range" id="rangePattern" min="8" max="64" value="24">
+        </label>
+
+        <label>
+          <div class="label-row">
+            <span>Gloss Reflection Sheen</span>
+            <span class="val-display" id="valGloss">65%</span>
+          </div>
+          <input type="range" id="rangeGloss" min="0" max="100" value="65">
+        </label>
+      </div>
+    </aside>
+
+    <!-- Floating Dock -->
+    <div class="button-dock">
+      <button class="btn-random" id="btnRandomize">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Randomize
+      </button>
+      <button class="btn-export" id="btnExport">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export SVG
+      </button>
+    </div>
+
+    <!-- Center Canvas Preview -->
+    <main class="viewport">
+      <div class="poster-frame">
+        <svg id="posterSvg" viewBox="0 0 900 1200" width="900" height="1200" xmlns="http://www.w3.org/2000/svg">
+          <defs id="svgDefs">
+            <!-- Stylesheet embedded for SVG self-sufficiency during Illustrator export -->
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800;900&family=Modak&family=Space+Grotesk:wght@500;700&family=UnifrakturCook:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+              .f-headline { font-family: 'Bebas Neue', sans-serif; font-weight: 400; }
+              .f-gothic { font-family: 'UnifrakturCook', cursive; font-weight: 700; }
+              .f-sans { font-family: 'Inter', sans-serif; }
+              .f-bold-sans { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+              .f-bubble { font-family: 'Modak', cursive; }
+              .f-mono { font-family: 'Space Mono', monospace; }
+            </style>
+
+            <!-- Displacement & Inversion Filters -->
+            <filter id="thermalFilter" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" id="turbFilter" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="45" xChannelSelector="R" yChannelSelector="G" result="warped" id="dispFilter" />
+              <feColorMatrix type="matrix" in="warped" id="colorMatrixFilter"
+                values="-1.5  1.2  0.8  0.0  0.1
+                         0.6 -1.8  1.4  0.0  0.2
+                         1.8  0.4 -1.6  0.0  0.1
+                         0.0  0.0  0.0  1.0  0.0" />
+            </filter>
+
+            <!-- Torn Paper Edge Filter -->
+            <filter id="tornEdgeFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="roughNoise" id="tearTurb" />
+              <feDisplacementMap in="SourceGraphic" in2="roughNoise" scale="25" result="tornMask" id="tearDisp" />
+            </filter>
+
+            <!-- Glossy Highlight Gradients -->
+            <linearGradient id="glossGradTop" x1="0" y1="0" x2="0.6" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45" />
+              <stop offset="25%" stop-color="#ffffff" stop-opacity="0.15" />
+              <stop offset="55%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+
+            <linearGradient id="glossGradBottom" x1="1" y1="1" x2="0.3" y2="0">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+              <stop offset="40%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+
+            <!-- Algorithmic Pattern for Date Field -->
+            <pattern id="algoPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+              <rect width="24" height="24" fill="#0d0814" />
+              <path d="M0 0h12v12H0z" fill="#ff0055" fill-opacity="0.3" />
+              <path d="M12 12h12v12H12z" fill="#00ffcc" fill-opacity="0.25" />
+              <circle cx="6" cy="6" r="3" fill="#ffe600" fill-opacity="0.4" />
+              <circle cx="18" cy="18" r="3" fill="#ff0044" fill-opacity="0.3" />
+              <path d="M0 24L24 0M0 12L12 0M12 24L24 12" stroke="#ffffff" stroke-width="0.75" stroke-opacity="0.35" />
+            </pattern>
+          </defs>
+
+          <!-- Outer Background Canvas -->
+          <rect width="900" height="1200" fill="#050508" id="svgCanvasBg" />
+
+          <!-- ================= CENTER DISPLAY FIELD (X: 162 to 738, Width: 576) ================= -->
+          <g id="center-display-field">
+            <!-- Clip Path for center poster field -->
+            <clipPath id="centerClip">
+              <rect x="162" y="0" width="576" height="1200" />
+            </clipPath>
+
+            <g clip-path="url(#centerClip)">
+              <!-- Layer 1: Base Dark Gradient -->
+              <rect x="162" y="0" width="576" height="1200" fill="#0b0816" />
+              <path d="M162 0 L738 0 L738 1200 L162 1200 Z" fill="url(#bgGradient)" />
+
+              <!-- Layer 2: Thermal Face & Distorted Subject -->
+              <g id="thermalSubjectGroup" filter="url(#thermalFilter)">
+                <!-- Synthetic Abstract Subject (Portrait Geometry) -->
+                <g id="proceduralPortrait">
+                  <!-- Head Contour & Skin Volume -->
+                  <ellipse cx="440" cy="380" rx="190" ry="240" fill="#4deeea" />
+                  <path d="M300 240 Q430 180 570 230 Q630 380 560 520 Q440 600 320 480 Z" fill="#74ee15" opacity="0.8" />
+                  <!-- Hair & Dynamic Textures -->
+                  <path d="M250 160 Q440 60 620 180 Q680 340 590 310 Q450 140 280 280 Z" fill="#f000ff" />
+                  <path d="M420 120 Q560 220 540 380 Q480 300 380 260 Z" fill="#ffe700" opacity="0.9" />
+                  <!-- Facial Shadow & Thermal Hollows -->
+                  <ellipse cx="380" cy="340" rx="28" ry="18" fill="#001eff" />
+                  <ellipse cx="490" cy="355" rx="30" ry="20" fill="#001eff" />
+                  <path d="M425 360 L445 430 L395 440 Z" fill="#ff0055" />
+                  <path d="M390 490 Q435 520 480 495 Q440 470 390 490 Z" fill="#001eff" />
+                  <!-- Shoulders and Torso -->
+                  <path d="M220 580 Q450 480 670 560 L738 1000 L162 1000 Z" fill="#00e5ff" opacity="0.7" />
+                  <path d="M340 580 Q490 620 620 850 L400 1100 Z" fill="#ff0077" opacity="0.65" />
+                </g>
+              </g>
+
+              <!-- Layer 3: Torn Mask & Glitch Overlay Edge -->
+              <g id="tornMaskLayer" filter="url(#tornEdgeFilter)">
+                <path id="tornPath" d="M162 0 L480 0 Q430 140 380 260 T350 480 Q420 580 360 720 L162 760 Z" fill="#07070b" />
+              </g>
+
+              <!-- Layer 4: Algorithmic Date Texture Block (Bottom Right) -->
+              <g id="dateTextureField">
+                <rect x="390" y="730" width="348" height="470" fill="url(#algoPattern)" />
+                <rect x="390" y="730" width="348" height="470" fill="#20003b" fill-opacity="0.35" />
+                <!-- Subtle divider line between thermal image and date texture -->
+                <line x1="390" y1="730" x2="390" y2="1200" stroke="#ff0055" stroke-width="2" stroke-dasharray="6,4" />
+                <line x1="390" y1="730" x2="738" y2="730" stroke="#00ffcc" stroke-width="2" />
+              </g>
+
+              <!-- Layer 5: Gloss Sheen Highlights -->
+              <g id="glossLayer" opacity="0.65">
+                <rect x="162" y="0" width="576" height="500" fill="url(#glossGradTop)" />
+                <rect x="162" y="700" width="576" height="500" fill="url(#glossGradBottom)" />
+              </g>
+
+              <!-- ================= CENTRAL TYPOGRAPHY ================= -->
+              <g id="centerTypography">
+                <!-- Headline 1: WHAT TIME IS -->
+                <g id="groupHeadline1" transform="translate(714, 55)">
+                  <text class="f-headline" font-size="118" fill="#ff2a2a" text-anchor="end" letter-spacing="1">
+                    <tspan x="0" y="50" id="txtHead1">WHAT</tspan>
+                    <tspan x="0" y="145" id="txtHead2">TIME</tspan>
+                    <tspan x="0" y="240" id="txtHead3">IS</tspan>
+                  </text>
+                  <!-- Cherry Icon beneath 'IS' -->
+                  <g transform="translate(-130, 260) scale(1.15)">
+                    <circle cx="16" cy="42" r="16" fill="#ff2a2a" />
+                    <circle cx="50" cy="46" r="16" fill="#ff2a2a" />
+                    <path d="M16 38 C 16 16, 32 4, 40 0 C 36 12, 46 22, 50 42" stroke="#00ff66" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                    <path d="M40 0 C 50 8, 62 12, 70 8 C 65 18, 52 14, 40 0" fill="#00ff66"/>
+                  </g>
+                </g>
+
+                <!-- Artist Headline 2: EVAN CHRIST -->
+                <g id="groupArtist" transform="translate(185, 435)">
+                  <!-- White / Pale Cyan Gothic Wordmark with Drop-Warp Effect -->
+                  <text class="f-gothic" font-size="70" fill="#e9ffff" letter-spacing="2" id="txtArtist">EVAN CHRIST</text>
+                  <text class="f-gothic" font-size="70" fill="#00ffcc" letter-spacing="2" opacity="0.5" x="-2" y="-2">EVAN CHRIST</text>
+                  
+                  <text class="f-sans" font-size="16" font-weight="700" fill="#ffffff" x="4" y="38" letter-spacing="0.5" id="txtSupport">Dutch E. Germ</text>
+                </g>
+
+                <!-- Vertical Mask Margin Detail: US TOUR 2014 -->
+                <g transform="translate(182, 670) rotate(-90)">
+                  <text class="f-mono" font-size="12" font-weight="700" fill="#ffffff" letter-spacing="3" opacity="0.9" id="txtTourInfo">US TOUR 2014</text>
+                </g>
+
+                <!-- Vertical Micro Margins inside Poster -->
+                <g transform="translate(182, 60) rotate(-90)">
+                  <text class="f-sans" font-size="10" font-weight="800" fill="#00ffff" letter-spacing="2" id="txtMicroL">TRANCE</text>
+                </g>
+                <g transform="translate(725, 430) rotate(90)">
+                  <text class="f-sans" font-size="10" font-weight="800" fill="#ffffff" letter-spacing="3" opacity="0.8" id="txtMicroR">HYPER-AFFECT</text>
+                </g>
+
+                <!-- Bottom Left Brand: TRANCE AMERICA? + Cherries -->
+                <g id="groupBrand" transform="translate(195, 1030)">
+                  <g transform="translate(30, 0) scale(0.9)">
+                    <circle cx="16" cy="38" r="14" fill="#ff2a2a" />
+                    <circle cx="45" cy="42" r="14" fill="#ff2a2a" />
+                    <path d="M16 34 C 16 14, 30 4, 36 0 C 32 10, 42 20, 45 38" stroke="#00ff66" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M36 0 C 46 6, 56 10, 62 6 C 58 16, 48 12, 36 0" fill="#00ff66"/>
+                  </g>
+                  <text class="f-sans" font-size="18" font-weight="900" fill="#ff7700" x="0" y="70" letter-spacing="1.5" id="txtBrand">TRANCE AMERICA?</text>
+                </g>
+
+                <!-- Tour Dates & Venues Table (Bottom-Right) -->
+                <g id="tourDatesContainer" transform="translate(415, 775)">
+                  <!-- Injected via JS -->
+                </g>
+              </g>
+            </g>
+
+            <!-- White Keyline Boundary Dividers -->
+            <line x1="162" y1="0" x2="162" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+            <line x1="738" y1="0" x2="738" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+          </g>
+
+          <!-- ================= LEFT SIDEBAR (X: 0 to 162, Width: 162) ================= -->
+          <g id="sidebar-left">
+            <rect x="0" y="0" width="162" height="1200" fill="#000000" />
+            
+            <!-- Top Symbol: Star & United States -->
+            <g transform="translate(81, 75)">
+              <polygon points="0,-25 7,-8 25,-8 11,3 16,21 0,10 -16,21 -11,3 -25,-8 -7,-8" fill="none" stroke="#ff2a2a" stroke-width="2" />
+              <text class="f-mono" font-size="8" fill="#ffffff" text-anchor="middle" y="34" letter-spacing="1.5">UNITED</text>
+              <text class="f-mono" font-size="8" fill="#ffffff" text-anchor="middle" y="44" letter-spacing="1.5">STATES</text>
+            </g>
+
+            <!-- Capsule/Pod Geometric Vector Icon -->
+            <g transform="translate(81, 230)" id="capsuleIconLeft">
+              <!-- Outer Ring -->
+              <rect x="-24" y="-55" width="48" height="110" rx="24" fill="none" stroke="#eaff00" stroke-width="5" class="accent-stroke" />
+              <!-- Inner Split Chambers -->
+              <path d="M-15 -35 Q -4 -35 -4 -20 L -4 20 Q -4 35 -15 35 Z" fill="none" stroke="#eaff00" stroke-width="3" class="accent-stroke" />
+              <path d="M15 -35 Q 4 -35 4 -20 L 4 20 Q 4 35 15 35 Z" fill="none" stroke="#eaff00" stroke-width="3" class="accent-stroke" />
+              <!-- Core Beam -->
+              <line x1="0" y1="-42" x2="0" y2="42" stroke="#eaff00" stroke-width="3.5" class="accent-stroke" />
+              <ellipse cx="0" cy="-35" rx="10" ry="4" fill="#eaff00" class="accent-fill" />
+            </g>
+
+            <!-- Vertical Wordmark 1: CHRIST (Ornate Calligraphic Gothic) -->
+            <g transform="translate(85, 440)">
+              <g transform="rotate(90)">
+                <text class="f-gothic" font-size="75" fill="#eaff00" text-anchor="start" letter-spacing="4" class="accent-fill">CHRIST</text>
+              </g>
+            </g>
+
+            <!-- Vertical Wordmark 2: TRANCE (Red Shaded Bubble/Grotesque Block) -->
+            <g transform="translate(81, 740)">
+              <g id="tranceVerticalStack">
+                <!-- Stacked Vertical Character Decals -->
+              </g>
+            </g>
+          </g>
+
+          <!-- ================= RIGHT SIDEBAR (X: 738 to 900, Width: 162) ================= -->
+          <g id="sidebar-right">
+            <rect x="738" y="0" width="162" height="1200" fill="#000000" />
+
+            <!-- Top Swirl/Orbital Hook Symbol -->
+            <g transform="translate(819, 75)">
+              <path d="M-18 10 C-22 -14, 12 -25, 20 -5 C 26 12, 0 25, -12 12" fill="none" stroke="#00ffcc" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="15" cy="18" r="4.5" fill="#ff2a2a" />
+            </g>
+
+            <!-- Vertical Wordmark: EVAN (Yellow Gothic Metal Emblem) -->
+            <g transform="translate(819, 260)">
+              <g transform="rotate(90)">
+                <text class="f-gothic" font-size="75" fill="#eaff00" text-anchor="middle" letter-spacing="5" class="accent-fill">EVAN</text>
+              </g>
+            </g>
+
+            <!-- Red Cherry Duo Badge -->
+            <g transform="translate(819, 445) scale(1.1)">
+              <circle cx="-16" cy="16" r="14" fill="#ff2a2a" />
+              <circle cx="14" cy="19" r="14" fill="#ff2a2a" />
+              <path d="M-16 12 C -16 -6, -2 -14, 0 -18 C 0 -6, 12 2, 14 14" stroke="#00ff66" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <path d="M0 -18 C 8 -12, 18 -8, 24 -12 C 20 -2, 10 -4, 0 -18" fill="#00ff66"/>
+            </g>
+
+            <!-- "Trance Nation" Flag Emblem -->
+            <g transform="translate(819, 580)">
+              <rect x="-30" y="-18" width="60" height="36" fill="none" stroke="#eaff00" stroke-width="2.5" class="accent-stroke" />
+              <circle cx="-10" cy="-3" r="6" fill="#eaff00" class="accent-fill" />
+              <line x1="8" y1="-8" x2="22" y2="-8" stroke="#eaff00" stroke-width="2.5" class="accent-stroke" />
+              <line x1="8" y1="2" x2="22" y2="2" stroke="#eaff00" stroke-width="2.5" class="accent-stroke" />
+              <text class="f-mono" font-size="7" font-weight="700" fill="#ffffff" text-anchor="middle" y="28" letter-spacing="1">TRANCE</text>
+              <text class="f-mono" font-size="7" font-weight="700" fill="#ffffff" text-anchor="middle" y="37" letter-spacing="1">NATION</text>
+            </g>
+
+            <!-- Medical / Greek Cross -->
+            <g transform="translate(819, 730)">
+              <path d="M-10 -30 H10 V-10 H30 V10 H10 V30 H-10 V10 H-30 V-10 H-10 Z" fill="#eaff00" class="accent-fill" />
+            </g>
+
+            <!-- Spoke Wheel / Citrus Target Icon -->
+            <g transform="translate(819, 890)">
+              <circle cx="0" cy="0" r="32" fill="none" stroke="#ff5500" stroke-width="4.5" />
+              <!-- 8 Spokes -->
+              <line x1="0" y1="-32" x2="0" y2="32" stroke="#ff5500" stroke-width="3" />
+              <line x1="-32" y1="0" x2="32" y2="0" stroke="#ff5500" stroke-width="3" />
+              <line x1="-22.6" y1="-22.6" x2="22.6" y2="22.6" stroke="#ff5500" stroke-width="3" />
+              <line x1="-22.6" y1="22.6" x2="22.6" y2="-22.6" stroke="#ff5500" stroke-width="3" />
+              <circle cx="0" cy="0" r="5" fill="#ff5500" />
+            </g>
+          </g>
+        </svg>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // State & Palettes
+    const state = {
+      palette: 'acid',
+      warp: 45,
+      tear: 6,
+      patternDensity: 24,
+      gloss: 65,
+      headlineCol: '#ff2a2a',
+      accentCol: '#eaff00',
+      bgCol: '#050508',
+      cityCol: '#ffffff'
+    };
+
+    const palettes = {
+      acid: {
+        matrix: `-1.5  1.2  0.8  0.0  0.1
+                 0.6 -1.8  1.4  0.0  0.2
+                 1.8  0.4 -1.6  0.0  0.1
+                 0.0  0.0  0.0  1.0  0.0`,
+        gradient: ['#040212', '#2d004b', '#00ffcc']
+      },
+      toxic: {
+        matrix: `-0.8  2.2 -0.4  0.0  0.0
+                 0.2 -1.2  2.0  0.0  0.1
+                 1.5 -1.0 -0.5  0.0  0.2
+                 0.0  0.0  0.0  1.0  0.0`,
+        gradient: ['#021204', '#004b28', '#eaff00']
+      },
+      cyber: {
+        matrix: ` 2.0 -0.5 -0.5  0.0  0.1
+                 -0.5  0.2  1.8  0.0  0.1
+                  1.2 -1.5  0.5  0.0  0.2
+                  0.0  0.0  0.0  1.0  0.0`,
+        gradient: ['#140005', '#550022', '#00e5ff']
+      },
+      solar: {
+        matrix: ` 1.8  0.8 -1.2  0.0  0.1
+                  0.5  1.5 -1.0  0.0  0.1
+                 -1.0 -0.5  2.0  0.0  0.0
+                  0.0  0.0  0.0  1.0  0.0`,
+        gradient: ['#120800', '#4a1500', '#ffd000']
+      }
+    };
+
+    // DOM Elements
+    const svg = document.getElementById('posterSvg');
+    const colorMatrixFilter = document.getElementById('colorMatrixFilter');
+    const dispFilter = document.getElementById('dispFilter');
+    const tearDisp = document.getElementById('tearDisp');
+    const algoPattern = document.getElementById('algoPattern');
+    const glossLayer = document.getElementById('glossLayer');
+    const tourDatesContainer = document.getElementById('tourDatesContainer');
+    const tranceVerticalStack = document.getElementById('tranceVerticalStack');
+
+    // Controls
+    const inputHeadline1 = document.getElementById('inputHeadline1');
+    const inputArtist = document.getElementById('inputArtist');
+    const inputSupport = document.getElementById('inputSupport');
+    const inputTourInfo = document.getElementById('inputTourInfo');
+    const inputMicroL = document.getElementById('inputMicroL');
+    const inputMicroR = document.getElementById('inputMicroR');
+    const inputBrand = document.getElementById('inputBrand');
+    const inputDates = document.getElementById('inputDates');
+    const selectPalette = document.getElementById('selectPalette');
+
+    const colHeadline = document.getElementById('colHeadline');
+    const colAccent = document.getElementById('colAccent');
+    const colBg = document.getElementById('colBg');
+    const colDateCity = document.getElementById('colDateCity');
+
+    const rangeWarp = document.getElementById('rangeWarp');
+    const rangeTear = document.getElementById('rangeTear');
+    const rangePattern = document.getElementById('rangePattern');
+    const rangeGloss = document.getElementById('rangeGloss');
+
+    const valWarp = document.getElementById('valWarp');
+    const valTear = document.getElementById('valTear');
+    const valPattern = document.getElementById('valPattern');
+    const valGloss = document.getElementById('valGloss');
+
+    const btnRandomize = document.getElementById('btnRandomize');
+    const btnExport = document.getElementById('btnExport');
+
+    // Render Dates Schedule
+    function renderDates() {
+      const lines = inputDates.value.trim().split('\n');
+      tourDatesContainer.innerHTML = '';
+      
+      lines.forEach((line, index) => {
+        const parts = line.split('|').map(s => s.trim());
+        if (parts.length < 2) return;
+        
+        const dateStr = parts[0] || '';
+        const cityStr = parts[1] || '';
+        const venueStr = parts[2] || '';
+
+        const yOffset = index * 48;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(0, ${yOffset})`);
+
+        // Date Column
+        const tDate = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tDate.setAttribute('class', 'f-mono');
+        tDate.setAttribute('font-size', '13');
+        tDate.setAttribute('fill', '#9999aa');
+        tDate.setAttribute('x', '0');
+        tDate.setAttribute('y', '20');
+        tDate.textContent = dateStr;
+        g.appendChild(tDate);
+
+        // City Column (Bold Grotesque)
+        const tCity = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tCity.setAttribute('class', 'f-bold-sans');
+        tCity.setAttribute('font-size', '28');
+        tCity.setAttribute('font-weight', '700');
+        tCity.setAttribute('fill', state.cityCol);
+        tCity.setAttribute('x', '65');
+        tCity.setAttribute('y', '22');
+        tCity.setAttribute('letter-spacing', '-0.5');
+        tCity.textContent = cityStr;
+        g.appendChild(tCity);
+
+        // Venue Column (Contrasting Red/Orange)
+        if (venueStr) {
+          const tVenue = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          tVenue.setAttribute('class', 'f-sans');
+          tVenue.setAttribute('font-size', '11');
+          tVenue.setAttribute('font-weight', '600');
+          tVenue.setAttribute('fill', '#ff2a2a');
+          tVenue.setAttribute('x', '220');
+          tVenue.setAttribute('y', '19');
+          tVenue.setAttribute('letter-spacing', '0.5');
+          tVenue.textContent = venueStr;
+          g.appendChild(tVenue);
+        }
+
+        tourDatesContainer.appendChild(g);
+      });
+    }
+
+    // Render Vertical "TRANCE" Block Letters
+    function renderVerticalTrance() {
+      const letters = ['T', 'R', 'A', 'N', 'C', 'E'];
+      tranceVerticalStack.innerHTML = '';
+      
+      letters.forEach((char, idx) => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(0, ${idx * 64})`);
+
+        // Red Block Base Character
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('class', 'f-bubble');
+        text.setAttribute('font-size', '66');
+        text.setAttribute('fill', '#ff2a2a');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('x', '0');
+        text.setAttribute('y', '48');
+        text.textContent = char;
+
+        // Cutaway highlight drop line
+        const cut = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        cut.setAttribute('d', 'M-12 18 L12 34');
+        cut.setAttribute('stroke', '#ffffff');
+        cut.setAttribute('stroke-width', '3');
+        cut.setAttribute('stroke-linecap', 'round');
+
+        g.appendChild(text);
+        g.appendChild(cut);
+        tranceVerticalStack.appendChild(g);
+      });
+    }
+
+    // Generate Procedural Torn Edge Path
+    function updateTornPath() {
+      const roughness = state.tear;
+      const pts = [];
+      pts.push('M162 0');
+      pts.push('L480 0');
+
+      let currentX = 480;
+      let currentY = 0;
+      const steps = 14;
+      const stepY = 800 / steps;
+
+      for (let i = 1; i <= steps; i++) {
+        const targetY = i * stepY;
+        const deltaX = (Math.random() - 0.55) * (roughness * 18);
+        currentX = Math.max(260, Math.min(540, currentX + deltaX));
+        pts.push(`Q ${currentX + (Math.random()-0.5)*30} ${targetY - stepY/2} ${currentX} ${targetY}`);
+      }
+
+      pts.push('L162 800 Z');
+      const d = pts.join(' ');
+      document.getElementById('tornPath').setAttribute('d', d);
+    }
+
+    // Update Pattern Grid
+    function updatePattern() {
+      const size = state.patternDensity;
+      algoPattern.setAttribute('width', size);
+      algoPattern.setAttribute('height', size);
+    }
+
+    // Update Poster UI Elements
+    function updatePoster() {
+      // Texts
+      const headParts = inputHeadline1.value.split(' ');
+      document.getElementById('txtHead1').textContent = headParts[0] || '';
+      document.getElementById('txtHead2').textContent = headParts[1] || '';
+      document.getElementById('txtHead3').textContent = headParts.slice(2).join(' ') || '';
+
+      document.getElementById('txtArtist').textContent = inputArtist.value;
+      document.getElementById('txtSupport').textContent = inputSupport.value;
+      document.getElementById('txtTourInfo').textContent = inputTourInfo.value;
+      document.getElementById('txtMicroL').textContent = inputMicroL.value;
+      document.getElementById('txtMicroR').textContent = inputMicroR.value;
+      document.getElementById('txtBrand').textContent = inputBrand.value;
+
+      // Color Updates
+      document.querySelectorAll('.accent-stroke').forEach(el => el.setAttribute('stroke', state.accentCol));
+      document.querySelectorAll('.accent-fill').forEach(el => el.setAttribute('fill', state.accentCol));
+      
+      const txtHead = document.querySelector('#groupHeadline1 text');
+      if (txtHead) txtHead.setAttribute('fill', state.headlineCol);
+      document.getElementById('svgCanvasBg').setAttribute('fill', state.bgCol);
+
+      // FX Filter Tweaks
+      colorMatrixFilter.setAttribute('values', palettes[state.palette].matrix);
+      dispFilter.setAttribute('scale', state.warp);
+      tearDisp.setAttribute('scale', state.tear * 4);
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+
+      updatePattern();
+      renderDates();
+    }
+
+    // Event Listeners
+    inputHeadline1.addEventListener('input', updatePoster);
+    inputArtist.addEventListener('input', updatePoster);
+    inputSupport.addEventListener('input', updatePoster);
+    inputTourInfo.addEventListener('input', updatePoster);
+    inputMicroL.addEventListener('input', updatePoster);
+    inputMicroR.addEventListener('input', updatePoster);
+    inputBrand.addEventListener('input', updatePoster);
+    inputDates.addEventListener('input', renderDates);
+
+    selectPalette.addEventListener('change', (e) => {
+      state.palette = e.target.value;
+      updatePoster();
+    });
+
+    colHeadline.addEventListener('input', (e) => {
+      state.headlineCol = e.target.value;
+      updatePoster();
+    });
+
+    colAccent.addEventListener('input', (e) => {
+      state.accentCol = e.target.value;
+      updatePoster();
+    });
+
+    colBg.addEventListener('input', (e) => {
+      state.bgCol = e.target.value;
+      updatePoster();
+    });
+
+    colDateCity.addEventListener('input', (e) => {
+      state.cityCol = e.target.value;
+      renderDates();
+    });
+
+    rangeWarp.addEventListener('input', (e) => {
+      state.warp = e.target.value;
+      valWarp.textContent = state.warp;
+      dispFilter.setAttribute('scale', state.warp);
+    });
+
+    rangeTear.addEventListener('input', (e) => {
+      state.tear = parseInt(e.target.value);
+      valTear.textContent = state.tear;
+      updateTornPath();
+    });
+
+    rangePattern.addEventListener('input', (e) => {
+      state.patternDensity = parseInt(e.target.value);
+      valPattern.textContent = state.patternDensity;
+      updatePattern();
+    });
+
+    rangeGloss.addEventListener('input', (e) => {
+      state.gloss = parseInt(e.target.value);
+      valGloss.textContent = `${state.gloss}%`;
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+    });
+
+    // Randomize Engine
+    btnRandomize.addEventListener('click', () => {
+      const paletteKeys = Object.keys(palettes);
+      state.palette = paletteKeys[Math.floor(Math.random() * paletteKeys.length)];
+      selectPalette.value = state.palette;
+
+      state.warp = Math.floor(Math.random() * 70) + 15;
+      rangeWarp.value = state.warp;
+      valWarp.textContent = state.warp;
+
+      state.tear = Math.floor(Math.random() * 10) + 3;
+      rangeTear.value = state.tear;
+      valTear.textContent = state.tear;
+
+      state.patternDensity = Math.floor(Math.random() * 40) + 12;
+      rangePattern.value = state.patternDensity;
+      valPattern.textContent = state.patternDensity;
+
+      // Random seed for turbulence
+      document.getElementById('turbFilter').setAttribute('baseFrequency', (Math.random() * 0.02 + 0.008).toFixed(4));
+      document.getElementById('tearTurb').setAttribute('baseFrequency', (Math.random() * 0.05 + 0.02).toFixed(4));
+
+      updateTornPath();
+      updatePoster();
+    });
+
+    // Clean Illustrator-compatible Vector SVG Exporter
+    btnExport.addEventListener('click', () => {
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svg);
+
+      // Add name-spaces for standard vector graphic specs
+      if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      if (!source.match(/^<svg[^>]+xmlns\:xlink="http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+      }
+
+      // Add xml declaration
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+      const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = url;
+      downloadLink.download = `hyper_affect_poster_${Date.now()}.svg`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+
+    // Initialize
+    renderVerticalTrance();
+    updateTornPath();
+    updatePoster();
+  </script>
+</body>
+</html>
