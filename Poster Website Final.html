@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyper-Affect Trance Poster Generator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&family=UnifrakturCook:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+    :root {
+      --bg-dark: #08080a;
+      --panel-bg: #111116;
+      --panel-border: #1f1f28;
+      --accent: #ff2a2a;
+      --accent-toxic: #eaff00;
+      --text-main: #f0f0f5;
+      --text-muted: #8b8b99;
+      --input-bg: #181822;
+      --input-border: #2c2c3b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .app-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 450px;
+      min-width: 450px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 18px 100px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--input-border);
+      border-radius: 3px;
+    }
+
+    .app-header {
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 12px;
+    }
+
+    .app-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-toxic);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-group {
+      background: #0d0d12;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .group-title {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 4px;
+      margin-bottom: 2px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-main);
+      gap: 4px;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .val-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent-toxic);
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    textarea {
+      font-family: 'Space Mono', monospace;
+      resize: vertical;
+      font-size: 0.68rem;
+      line-height: 1.35;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .color-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .color-field input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-field input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+    }
+
+    .color-field span {
+      font-size: 0.65rem;
+      color: var(--text-main);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pos-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 6px;
+      align-items: center;
+      background: rgba(255,255,255,0.02);
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .pos-row span {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .pos-row input[type="number"] {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--accent-toxic);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      padding: 3px 5px;
+      border-radius: 3px;
+      width: 100%;
+    }
+
+    .btn-toggle-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-toggle-group button {
+      flex: 1;
+      padding: 6px 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid var(--panel-border);
+      background: #1c1c24;
+      color: #fff;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+    }
+
+    .btn-toggle-group button.active {
+      background: var(--accent-toxic);
+      color: #000;
+      border-color: var(--accent-toxic);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: var(--input-border);
+      height: 4px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-toxic);
+      cursor: pointer;
+    }
+
+    .button-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 450px;
+      background: rgba(17, 17, 22, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--panel-border);
+      padding: 12px 18px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .button-dock button {
+      flex: 1;
+      padding: 9px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-random {
+      background: #eaff00;
+      color: #000;
+    }
+
+    .btn-revert {
+      background: #2b2b36;
+      color: #fff;
+      border: 1px solid var(--panel-border);
+    }
+
+    .btn-export {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .viewport {
+      flex: 1;
+      background: #030305;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poster-frame {
+      height: 95vh;
+      max-height: 1200px;
+      aspect-ratio: 900 / 1200;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95);
+      background: #000;
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #posterSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .interactive-element {
+      cursor: grab;
+      user-select: none;
+    }
+
+    .interactive-element:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="app-header">
+        <h1 class="app-title">Hyper-Affect Poster Studio</h1>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Background & Exposed Layer Style</div>
+        <label>
+          Background Palette Theme
+          <select id="selectBgTheme">
+            <option value="uvTeal">UV Teal & Acid Magenta (Original)</option>
+            <option value="nuclearLime">Nuclear Lime & Violet Glow</option>
+            <option value="solarInfrared">Solar Infrared & Blood Amber</option>
+            <option value="chromeCyber">Chrome Cobalt & Cyan Frost</option>
+            <option value="toxicSlime">Toxic Slime & Poison Yellow</option>
+            <option value="darkInversion">Monochrome Dark Negative</option>
+          </select>
+        </label>
+        <label>Inner Exposed Layer Style</label>
+        <div class="btn-toggle-group" id="underStyleGroup">
+          <button id="btnUnderThermal" class="active" data-val="thermal">Thermal</button>
+          <button id="btnUnderAcid" data-val="acidLime">Acid Lime</button>
+          <button id="btnUnderInfrared" data-val="deepInfrared">Infrared</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Interactive Elements (Drag & Drop Anywhere)</div>
+        <div class="pos-row">
+          <span>Q1: Artist Group</span>
+          <input type="number" id="posXArtist" value="185">
+          <input type="number" id="posYArtist" value="385">
+        </div>
+        <div class="pos-row">
+          <span>Q2: What Time Is</span>
+          <input type="number" id="posXHead" value="714">
+          <input type="number" id="posYHead" value="45">
+        </div>
+        <div class="pos-row">
+          <span>Q3: Dates & Venues</span>
+          <input type="number" id="posXDates" value="430">
+          <input type="number" id="posYDates" value="675">
+        </div>
+        <div class="pos-row">
+          <span>Q4: Trance America</span>
+          <input type="number" id="posXBrand" value="190">
+          <input type="number" id="posYBrand" value="890">
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Procedural Rip Archetype & Tears</div>
+        <label>Rip Geometry Archetype</label>
+        <select id="selectRipArchetype">
+          <option value="diagonal">Diagonal Slashes (Original)</option>
+          <option value="horizontal">Horizontal Layer Tears</option>
+          <option value="vTear">V-Notch Deep Bite</option>
+          <option value="peeledPatch">Peeled Center Window</option>
+        </select>
+
+        <label>Active Rip Count</label>
+        <div class="btn-toggle-group" id="ripCountGroup">
+          <button id="btnRipCount0">0 (None)</button>
+          <button id="btnRipCount1">1 Rip</button>
+          <button id="btnRipCount2" class="active">2 Rips</button>
+        </div>
+
+        <div id="rip1Controls" style="display: flex; flex-direction: column; gap: 8px;">
+          <label>
+            <div class="label-row">
+              <span>Primary Rip Cut Depth</span>
+              <span class="val-display" id="valRipY1">590px</span>
+            </div>
+            <input type="range" id="rangeRipY1" min="150" max="850" value="590">
+          </label>
+        </div>
+
+        <div id="rip2Controls" style="display: flex; flex-direction: column; gap: 8px;">
+          <label>
+            <div class="label-row">
+              <span>Secondary Rip Cut Depth</span>
+              <span class="val-display" id="valRipY2">750px</span>
+            </div>
+            <input type="range" id="rangeRipY2" min="300" max="1050" value="750">
+          </label>
+        </div>
+
+        <label>
+          <div class="label-row">
+            <span>Tear Teeth & Paper Roughness</span>
+            <span class="val-display" id="valRipRough">7</span>
+          </div>
+          <input type="range" id="rangeRipRough" min="1" max="15" value="7">
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Aligned Side Graphic Settings</div>
+        <label>Left Column Orientation</label>
+        <div class="btn-toggle-group">
+          <button id="btnFlipLNormal" class="active">Normal</button>
+          <button id="btnFlipLInvert">Flipped</button>
+        </div>
+
+        <label>Right Column Orientation</label>
+        <div class="btn-toggle-group">
+          <button id="btnFlipRNormal" class="active">Normal</button>
+          <button id="btnFlipRInvert">Flipped</button>
+        </div>
+
+        <label>Sidebar Colors</label>
+        <div class="grid-2">
+          <div class="color-field">
+            <input type="color" id="colLeft" value="#eaff00">
+            <span>Left Graphics</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colRight" value="#eaff00">
+            <span>Right Graphics</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colSideRed" value="#ff2a2a">
+            <span>Side Red Accent</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colPanels" value="#000000">
+            <span>Side Panels</span>
+          </div>
+        </div>
+
+        <button id="btnShuffleSides" style="margin-top:4px; width:100%; padding:6px; background:#1c1c28; color:#fff; border:1px solid var(--panel-border); font-size:0.68rem; font-weight:700; border-radius:4px; cursor:pointer;">
+          🔀 SWITCH & SWAP SIDE IMAGES
+        </button>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Typography Colors</div>
+        <div class="grid-2">
+          <div class="color-field">
+            <input type="color" id="colHead" value="#ff2a2a">
+            <span>Headline 1</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colArtist" value="#e9ffff">
+            <span>Artist Name</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colSupport" value="#ffffff">
+            <span>Support Act</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colDate" value="#000000">
+            <span>Tour Dates</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colCity" value="#ffffff">
+            <span>City Text</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colVenue" value="#ff2a2a">
+            <span>Venue Text</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colBrand" value="#ff2a2a">
+            <span>Brand Badge</span>
+          </div>
+          <div class="color-field">
+            <input type="color" id="colMicro" value="#00ffff">
+            <span>Micro Labels</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Typography Copy</div>
+        <label>
+          Headline 1
+          <input type="text" id="inputHeadline1" value="WHAT TIME IS">
+        </label>
+        <div class="grid-2">
+          <label>
+            Support Act
+            <input type="text" id="inputSupport" value="Dutch E. Germ">
+          </label>
+          <label>
+            Tour Info
+            <input type="text" id="inputTourInfo" value="US TOUR 2014">
+          </label>
+        </div>
+        <label>
+          Tour Schedule (Date | City | Venue)
+          <textarea id="inputDates" rows="5">Jun 18 | Philadelphia | Dolphin Tavern
+Jun 19 | Chicago | Primary
+Jun 20 | Toronto | NXNE / Tattoo
+Jun 21 | Montreal | Le Belmont
+Jun 25 | New York | Output
+Jun 26 | Miami | Bardot
+Jun 27 | Austin | Vulcan Gas Co
+Jun 28 | Los Angeles | Los Globos</textarea>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Distortion & Sheen</div>
+        <label>
+          <div class="label-row">
+            <span>Thermal Warp Scale</span>
+            <span class="val-display" id="valWarp">45</span>
+          </div>
+          <input type="range" id="rangeWarp" min="0" max="100" value="45">
+        </label>
+        <label>
+          <div class="label-row">
+            <span>Gloss Reflection</span>
+            <span class="val-display" id="valGloss">65%</span>
+          </div>
+          <input type="range" id="rangeGloss" min="0" max="100" value="65">
+        </label>
+      </div>
+    </aside>
+
+    <div class="button-dock">
+      <button class="btn-random" id="btnRandomize">🎲 Random</button>
+      <button class="btn-revert" id="btnRevert">↺ Revert</button>
+      <button class="btn-export" id="btnExport">Export</button>
+    </div>
+
+    <main class="viewport">
+      <div class="poster-frame">
+        <svg id="posterSvg" viewBox="0 0 900 1200" width="900" height="1200" xmlns="http://www.w3.org/2000/svg">
+          <defs id="svgDefs">
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&family=UnifrakturCook:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+              .f-headline { font-family: 'Bebas Neue', sans-serif; font-weight: 400; }
+              .f-gothic { font-family: 'UnifrakturCook', cursive; font-weight: 700; }
+              .f-sans { font-family: 'Inter', sans-serif; }
+              .f-bold-sans { font-family: 'Inter', sans-serif; font-weight: 800; }
+              .f-mono { font-family: 'Space Mono', monospace; }
+            </style>
+
+            <linearGradient id="bgOriginalGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#023b38" id="oGrad0" />
+              <stop offset="30%" stop-color="#0a7a72" id="oGrad1" />
+              <stop offset="60%" stop-color="#46002c" id="oGrad2" />
+              <stop offset="85%" stop-color="#00ffe0" id="oGrad3" />
+              <stop offset="100%" stop-color="#041226" id="oGrad4" />
+            </linearGradient>
+
+            <linearGradient id="underneathGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2a0012" id="uGrad0" />
+              <stop offset="40%" stop-color="#730045" id="uGrad1" />
+              <stop offset="70%" stop-color="#ff0055" id="uGrad2" />
+              <stop offset="100%" stop-color="#ffd500" id="uGrad3" />
+            </linearGradient>
+
+            <linearGradient id="deepLayerGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#050314" id="dGrad0" />
+              <stop offset="50%" stop-color="#14062a" id="dGrad1" />
+              <stop offset="80%" stop-color="#103a30" id="dGrad2" />
+              <stop offset="100%" stop-color="#00ffe0" id="dGrad3" />
+            </linearGradient>
+
+            <filter id="thermalFilter" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" id="turbFilter" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="45" xChannelSelector="R" yChannelSelector="G" result="warped" id="dispFilter" />
+              <feColorMatrix type="matrix" in="warped" id="colorMatrixFilter"
+                values="-1.5  1.2  0.8  0.0  0.1
+                         0.6 -1.8  1.4  0.0  0.2
+                         1.8  0.4 -1.6  0.0  0.1
+                         0.0  0.0  0.0  1.0  0.0" />
+            </filter>
+
+            <filter id="underneathFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="uNoise" />
+              <feDisplacementMap in="SourceGraphic" in2="uNoise" scale="35" result="uWarp" />
+              <feColorMatrix type="matrix" in="uWarp" id="underneathMatrix"
+                values=" 2.0 -0.5 -0.5  0.0  0.1
+                        -0.5  0.2  1.8  0.0  0.1
+                         1.2 -1.5  0.5  0.0  0.2
+                         0.0  0.0  0.0  1.0  0.0" />
+            </filter>
+
+            <filter id="deepOverlayFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" result="dNoise" />
+              <feDisplacementMap in="SourceGraphic" in2="dNoise" scale="55" result="dWarp" />
+              <feColorMatrix type="matrix" in="dWarp" id="deepMatrix" values="-0.5 1.5 -1.0 0 0 0.2 -1.8 1.5 0 0 1.2 0.3 -0.5 0 0 0 0 0 1 0" />
+            </filter>
+
+            <filter id="ripShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+              <feOffset dx="-2" dy="7" result="offset" />
+              <feFlood flood-color="#000000" flood-opacity="0.92" />
+              <feComposite in2="offset" operator="in" />
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <linearGradient id="glossGradTop" x1="0" y1="0" x2="0.6" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+              <stop offset="35%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="glossGradBottom" x1="1" y1="1" x2="0.3" y2="0">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+              <stop offset="40%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+
+            <g id="asset-star">
+              <polygon points="0,-28 8,-9 28,-9 12,3 18,23 0,11 -18,23 -12,3 -28,-9 -8,-9" fill="none" stroke="#ff2a2a" stroke-width="2.5" class="side-red-stroke" />
+              <circle cx="0" cy="0" r="7" fill="#007f3f" />
+              <text class="f-bold-sans" font-size="10" font-weight="900" fill="#ff2a2a" text-anchor="middle" y="38" letter-spacing="0.5" class="side-red-fill">UNITED</text>
+              <text class="f-bold-sans" font-size="10" font-weight="900" fill="#ff2a2a" text-anchor="middle" y="49" letter-spacing="0.5" class="side-red-fill">STATES</text>
+            </g>
+
+            <g id="asset-capsule">
+              <rect x="-24" y="-55" width="48" height="110" rx="24" fill="none" stroke="currentColor" stroke-width="4.5" />
+              <ellipse cx="0" cy="-35" rx="14" ry="5" fill="none" stroke="currentColor" stroke-width="3" />
+              <line x1="0" y1="-26" x2="0" y2="42" stroke="currentColor" stroke-width="4" />
+              <path d="M-15 -20 C-6 -20 -6 0 -6 38" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+              <path d="M15 -20 C6 -20 6 0 6 38" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            </g>
+
+            <g id="asset-gothic-christ">
+              <g transform="rotate(90) scale(1, 0.95)">
+                <text class="f-gothic" font-size="62" fill="currentColor" text-anchor="middle" letter-spacing="4">CHRIST</text>
+                <line x1="-120" y1="-22" x2="120" y2="12" stroke="#000000" stroke-width="3.5" />
+                <line x1="-100" y1="-8" x2="140" y2="26" stroke="#000000" stroke-width="3.5" />
+              </g>
+            </g>
+
+            <g id="asset-trance-stack">
+              <g transform="translate(0, -115) scale(0.72)">
+                <g transform="translate(0, 0)">
+                  <path d="M-22 -18 H22 V-4 Q12 -4 8 2 V32 Q8 38 0 38 Q-8 38 -8 32 V2 Q-12 -4 -22 -4 Z" fill="#ff2a2a" class="side-red-fill" />
+                  <path d="M-15 -13 H15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M3 10 V28" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(0, 52)">
+                  <rect x="-22" y="-18" width="44" height="42" rx="10" fill="#ff2a2a" class="side-red-fill" />
+                  <circle cx="4" cy="-4" r="6" fill="#000000" />
+                  <path d="M-14 -12 C-6 -14, 12 -14, 14 -4 C16 4, 2 6, -10 6" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M-4 14 L10 20" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(0, 108)">
+                  <rect x="-22" y="-18" width="44" height="42" rx="12" fill="#ff2a2a" class="side-red-fill" />
+                  <circle cx="-6" cy="-2" r="5" fill="#000000" />
+                  <circle cx="6" cy="-2" r="5" fill="#000000" />
+                  <path d="M-12 -12 Q0 -16 12 -12" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M-14 16 Q0 20 14 16" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(0, 164)">
+                  <rect x="-22" y="-18" width="44" height="42" rx="10" fill="#ff2a2a" class="side-red-fill" />
+                  <rect x="-6" y="-8" width="12" height="22" rx="5" fill="#000000" />
+                  <path d="M-14 -10 Q0 -14 14 -10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M-14 14 Q0 18 14 14" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(0, 220)">
+                  <rect x="-22" y="-18" width="44" height="42" rx="12" fill="#ff2a2a" class="side-red-fill" />
+                  <path d="M-6 -8 H14 V2 H-6 V8 H14 V20 H-12 Q-20 20 -20 0 Q-20 -18 -6 -18 Z" fill="#000000" />
+                  <path d="M-14 -12 C-4 -16, 8 -16, 12 -8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M-14 14 C-4 18, 8 18, 12 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(0, 276)">
+                  <rect x="-22" y="-18" width="44" height="42" rx="10" fill="#ff2a2a" class="side-red-fill" />
+                  <rect x="0" y="-12" width="16" height="7" rx="3" fill="#000000" />
+                  <rect x="0" y="5" width="16" height="7" rx="3" fill="#000000" />
+                  <path d="M-14 -12 H6" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                  <path d="M-14 16 H6" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                </g>
+              </g>
+            </g>
+
+            <g id="asset-hook">
+              <g transform="rotate(-40) scale(0.9)">
+                <rect x="-16" y="-36" width="32" height="72" rx="16" fill="none" stroke="#007f3f" stroke-width="4.5" />
+                <line x1="-16" y1="0" x2="16" y2="0" stroke="#007f3f" stroke-width="4.5" />
+                <circle cx="8" cy="12" r="7.5" fill="#ff2a2a" class="side-red-fill" />
+              </g>
+            </g>
+
+            <g id="asset-gothic-evan">
+              <g transform="rotate(90) scale(1, 0.95)">
+                <text class="f-gothic" font-size="62" fill="currentColor" text-anchor="middle" letter-spacing="4">EVAN</text>
+                <line x1="-90" y1="-22" x2="90" y2="12" stroke="#000000" stroke-width="3.5" />
+                <line x1="-70" y1="-8" x2="110" y2="26" stroke="#000000" stroke-width="3.5" />
+              </g>
+            </g>
+
+            <g id="asset-cherries">
+              <g transform="scale(1.15)">
+                <path d="M-14 -8 Q-7 -18 0 -8 Q7 -18 14 -8 Q7 2 0 -8 Q-7 2 -14 -8 Z" fill="#007f3f" />
+                <path d="M-7 -6 Q-9 6 -11 12" stroke="#007f3f" stroke-width="2.5" fill="none" />
+                <path d="M7 -6 Q9 6 11 12" stroke="#007f3f" stroke-width="2.5" fill="none" />
+                <circle cx="-11" cy="18" r="11" fill="#ff2a2a" class="side-red-fill" />
+                <circle cx="11" cy="18" r="11" fill="#ff2a2a" class="side-red-fill" />
+                <ellipse cx="-1" cy="13" rx="2" ry="4" transform="rotate(25 -1 13)" fill="#ffffff" />
+              </g>
+            </g>
+
+            <g id="asset-flag">
+              <g transform="scale(0.85)">
+                <rect x="-30" y="-36" width="22" height="22" fill="currentColor" />
+                <circle cx="-19" cy="-25" r="5" fill="#000000" />
+                <line x1="-3" y1="-32" x2="30" y2="-32" stroke="currentColor" stroke-width="5" />
+                <line x1="-3" y1="-19" x2="30" y2="-19" stroke="currentColor" stroke-width="5" />
+                <line x1="-30" y1="-5" x2="30" y2="-5" stroke="currentColor" stroke-width="5" />
+                <line x1="-30" y1="8" x2="30" y2="8" stroke="currentColor" stroke-width="5" />
+                <text class="f-bold-sans" font-size="11" font-weight="900" fill="currentColor" text-anchor="middle" y="24" letter-spacing="1">TRANCE</text>
+                <text class="f-bold-sans" font-size="11" font-weight="900" fill="currentColor" text-anchor="middle" y="35" letter-spacing="1">NATION</text>
+              </g>
+            </g>
+
+            <g id="asset-cross">
+              <path d="M-8 -26 H8 V-8 H26 V8 H8 V26 H-8 V8 H-26 V-8 H-8 Z" fill="currentColor" />
+            </g>
+
+            <g id="asset-spoke">
+              <circle cx="0" cy="0" r="28" fill="none" stroke="#ff2a2a" stroke-width="4.5" class="side-red-stroke" />
+              <circle cx="0" cy="0" r="24" fill="none" stroke="#eaff00" stroke-width="2" />
+              <line x1="0" y1="-28" x2="0" y2="28" stroke="#ff2a2a" stroke-width="3" class="side-red-stroke" />
+              <line x1="-24.2" y1="-14" x2="24.2" y2="14" stroke="#ff2a2a" stroke-width="3" class="side-red-stroke" />
+              <line x1="-24.2" y1="14" x2="24.2" y2="-14" stroke="#ff2a2a" stroke-width="3" class="side-red-stroke" />
+              <line x1="0" y1="-28" x2="0" y2="28" stroke="#eaff00" stroke-width="1.2" />
+              <line x1="-24.2" y1="-14" x2="24.2" y2="14" stroke="#eaff00" stroke-width="1.2" />
+              <line x1="-24.2" y1="14" x2="24.2" y2="-14" stroke="#eaff00" stroke-width="1.2" />
+            </g>
+
+            <clipPath id="centerClip">
+              <rect x="162" y="0" width="576" height="1200" />
+            </clipPath>
+
+            <clipPath id="tornTopLayerClip">
+              <path id="topLayerClipPath" d="M162 0 L738 0 L738 1200 L162 1200 Z" />
+            </clipPath>
+
+            <clipPath id="tornUnderwearClip">
+              <path id="innerLayerClipPath" d="M162 0 L738 0 L738 1200 L162 1200 Z" />
+            </clipPath>
+          </defs>
+
+          <rect width="900" height="1200" fill="#050508" id="svgCanvasBg" />
+
+          <!-- ================= CENTER DISPLAY FIELD ================= -->
+          <g id="center-display-field" clip-path="url(#centerClip)">
+            
+            <!-- LAYER 3 (DEEPEST LAYER) -->
+            <g id="deepBackgroundLayer">
+              <rect x="162" y="0" width="576" height="1200" fill="url(#deepLayerGrad)" />
+              <g filter="url(#deepOverlayFilter)" opacity="0.9" id="proceduralDeepSubject">
+              </g>
+            </g>
+
+            <!-- LAYER 2 (MIDDLE UNDERNEATH LAYER) -->
+            <g id="underneathPosterLayer" clip-path="url(#tornUnderwearClip)" filter="url(#ripShadow)">
+              <rect x="162" y="0" width="576" height="1200" fill="url(#underneathGrad)" />
+              <g filter="url(#underneathFilter)" opacity="0.95" id="proceduralUnderSubject">
+              </g>
+              <rect x="162" y="0" width="576" height="1200" fill="#ff0044" opacity="0.08" mix-blend-mode="color-burn" />
+            </g>
+
+            <!-- LAYER 1 (TOP ORIGINAL LAYER) -->
+            <g id="topRippedPosterLayer" clip-path="url(#tornTopLayerClip)" filter="url(#ripShadow)">
+              <rect x="162" y="0" width="576" height="1200" fill="url(#bgOriginalGradient)" />
+              <g id="thermalSubjectGroup" filter="url(#thermalFilter)">
+                <g id="proceduralTopSubject">
+                </g>
+              </g>
+              <g id="glossLayer" opacity="0.65">
+                <rect x="162" y="0" width="576" height="500" fill="url(#glossGradTop)" />
+                <rect x="162" y="700" width="576" height="500" fill="url(#glossGradBottom)" />
+              </g>
+            </g>
+
+            <path id="ripEdgeHighlight" d="" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.95" />
+            <path id="innerEdgeHighlight" d="" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.85" />
+
+            <!-- ================= CENTRAL 4 INTERACTIVE DRAGGABLE TEXT QUADRANTS ================= -->
+            <g id="centerTypography">
+              
+              <!-- QUADRANT 1: Middle-Left "EVAN CHRIST & Dutch E. Germ" -->
+              <g id="groupArtist" class="interactive-element" transform="translate(185, 385)">
+                <g id="artistWordmarkGroup">
+                  <g transform="translate(0, -18)">
+                    <text class="f-gothic" font-size="64" fill="#000000" letter-spacing="3" x="4" y="2">EVAN</text>
+                    <text class="f-gothic" font-size="64" fill="#e9ffff" letter-spacing="3" x="0" y="0" id="txtArtist1">EVAN</text>
+                  </g>
+                  <g transform="translate(0, 42)">
+                    <text class="f-gothic" font-size="64" fill="#000000" letter-spacing="3" x="4" y="2">CHRIST</text>
+                    <text class="f-gothic" font-size="64" fill="#e9ffff" letter-spacing="3" x="0" y="0" id="txtArtist2">CHRIST</text>
+                  </g>
+                </g>
+                <text class="f-sans" font-size="16" font-weight="700" fill="#ffffff" x="4" y="78" letter-spacing="0.5" id="txtSupport">Dutch E. Germ</text>
+              </g>
+
+              <!-- QUADRANT 2: Top-Right "WHAT TIME (Cherry) IS" -->
+              <g id="groupHeadline1" class="interactive-element" transform="translate(714, 45)">
+                <text class="f-headline" font-size="124" fill="#ff2a2a" text-anchor="end" letter-spacing="1">
+                  <tspan x="0" y="60" id="txtHead1">WHAT</tspan>
+                  <tspan x="0" y="155" id="txtHead2">TIME</tspan>
+                  <tspan x="0" y="250" id="txtHead3">IS</tspan>
+                </text>
+                <g transform="translate(-130, 275) scale(1.15)">
+                  <circle cx="16" cy="42" r="16" fill="#ff2a2a" class="side-red-fill" />
+                  <circle cx="50" cy="46" r="16" fill="#ff2a2a" class="side-red-fill" />
+                  <path d="M16 38 C 16 16, 32 4, 40 0 C 36 12, 46 22, 50 42" stroke="#00ff66" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                  <path d="M40 0 C 50 8, 62 12, 70 8 C 65 18, 52 14, 40 0" fill="#00ff66"/>
+                </g>
+              </g>
+
+              <!-- QUADRANT 3: Bottom-Right "Dates, Places & Artists" -->
+              <g id="tourDatesContainer" class="interactive-element" transform="translate(430, 675)">
+              </g>
+
+              <!-- QUADRANT 4: Bottom-Left "(Cherry Image) TRANCE AMERICA" -->
+              <g id="groupBrand" class="interactive-element" transform="translate(190, 890)">
+                <g transform="translate(25, -20) scale(1.1)">
+                  <path d="M-14 -8 Q-7 -18 0 -8 Q7 -18 14 -8 Q7 2 0 -8 Q-7 2 -14 -8 Z" fill="#007f3f" />
+                  <path d="M-7 -6 Q-9 6 -11 12" stroke="#007f3f" stroke-width="2.5" fill="none" />
+                  <path d="M7 -6 Q9 6 11 12" stroke="#007f3f" stroke-width="2.5" fill="none" />
+                  <circle cx="-11" cy="18" r="11" fill="#ff2a2a" class="side-red-fill" />
+                  <circle cx="11" cy="18" r="11" fill="#ff2a2a" class="side-red-fill" />
+                  <ellipse cx="-1" cy="13" rx="2" ry="4" transform="rotate(25 -1 13)" fill="#ffffff" />
+                </g>
+                <text class="f-bold-sans" font-size="22" font-weight="900" fill="#ff2a2a" x="0" y="55" letter-spacing="0.5" id="txtBrand" class="side-red-fill">TRANCE</text>
+                <text class="f-bold-sans" font-size="22" font-weight="900" fill="#ff2a2a" x="0" y="76" letter-spacing="0.5" class="side-red-fill">AMERICA?</text>
+              </g>
+
+              <!-- Micro Labels & Margins -->
+              <g id="groupTourInfo" class="interactive-element" transform="translate(182, 560) rotate(-90)">
+                <text class="f-mono" font-size="12" font-weight="700" fill="#00e5ff" letter-spacing="3" opacity="0.9" id="txtTourInfo">US TOUR 2014</text>
+              </g>
+              <g id="groupMicroL" class="interactive-element" transform="translate(182, 60) rotate(-90)">
+                <text class="f-sans" font-size="10" font-weight="800" fill="#ffffff" letter-spacing="2" id="txtMicroL">TRANCE</text>
+              </g>
+              <g id="groupMicroR" class="interactive-element" transform="translate(725, 430) rotate(90)">
+                <text class="f-sans" font-size="10" font-weight="800" fill="#ffffff" letter-spacing="3" opacity="0.9" id="txtMicroR">HYPER-AFFECT</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- Framing Divider Lines -->
+          <line x1="162" y1="0" x2="162" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+          <line x1="738" y1="0" x2="738" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+
+          <!-- ================= LEFT SIDEBAR (Movable Icons) ================= -->
+          <g id="sidebar-left">
+            <rect x="0" y="0" width="162" height="1200" fill="#000000" id="sidePanelLeft" />
+            <g id="leftSlot0" class="interactive-element" transform="translate(81, 100)"></g>
+            <g id="leftSlot1" class="interactive-element" transform="translate(81, 300)"></g>
+            <g id="leftSlot2" class="interactive-element" transform="translate(81, 560)"></g>
+            <g id="leftSlot3" class="interactive-element" transform="translate(81, 930)"></g>
+          </g>
+
+          <!-- ================= RIGHT SIDEBAR (Movable Icons) ================= -->
+          <g id="sidebar-right">
+            <rect x="738" y="0" width="162" height="1200" fill="#000000" id="sidePanelRight" />
+            <g id="rightSlot0" class="interactive-element" transform="translate(819, 80)"></g>
+            <g id="rightSlot1" class="interactive-element" transform="translate(819, 270)"></g>
+            <g id="rightSlot2" class="interactive-element" transform="translate(819, 480)"></g>
+            <g id="rightSlot3" class="interactive-element" transform="translate(819, 680)"></g>
+            <g id="rightSlot4" class="interactive-element" transform="translate(819, 870)"></g>
+            <g id="rightSlot5" class="interactive-element" transform="translate(819, 1070)"></g>
+          </g>
+        </svg>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const BG_PALETTES = {
+      uvTeal: {
+        topGrad: ['#023b38', '#0a7a72', '#46002c', '#00ffe0', '#041226'],
+        matrix: "-1.5 1.2 0.8 0 0.1 0.6 -1.8 1.4 0 0.2 1.8 0.4 -1.6 0 0.1 0 0 0 1 0",
+        deepGrad: ['#050314', '#14062a', '#103a30', '#00ffe0'],
+        deepAccent: '#ff0055'
+      },
+      nuclearLime: {
+        topGrad: ['#062402', '#145c05', '#55005c', '#c4ff00', '#020d01'],
+        matrix: "-1.2 2.0 -0.4 0 0.0 0.3 -1.5 1.8 0 0.1 1.4 -0.6 -1.2 0 0.2 0 0 0 1 0",
+        deepGrad: ['#12011a', '#300247', '#063d04', '#74ee15'],
+        deepAccent: '#eaff00'
+      },
+      solarInfrared: {
+        topGrad: ['#2e0202', '#780a0a', '#084742', '#ff5500', '#1c0000'],
+        matrix: "2.0 -0.6 -0.6 0 0.1 -0.4 0.2 1.6 0 0.1 1.1 -1.4 0.4 0 0.2 0 0 0 1 0",
+        deepGrad: ['#1f0006', '#47000d', '#2b1b00', '#ffd000'],
+        deepAccent: '#ff0033'
+      },
+      chromeCyber: {
+        topGrad: ['#031024', '#062d69', '#5c0032', '#00d5ff', '#020712'],
+        matrix: "0.2 1.4 -0.7 0 0.1 -0.7 1.8 0.3 0 0.1 1.1 0.4 -0.9 0 0.1 0 0 0 1 0",
+        deepGrad: ['#010914', '#081c3d', '#1a0033', '#00f2ff'],
+        deepAccent: '#00e5ff'
+      },
+      toxicSlime: {
+        topGrad: ['#1c1c02', '#474705', '#24004f', '#a6ff00', '#0a0a00'],
+        matrix: "-0.8 1.8 -0.3 0 0.0 0.4 -1.2 1.5 0 0.1 1.2 -0.8 -1.0 0 0.2 0 0 0 1 0",
+        deepGrad: ['#0d021c', '#290457', '#2e3802', '#ccff00'],
+        deepAccent: '#ff0077'
+      },
+      darkInversion: {
+        topGrad: ['#0d0d12', '#242430', '#1f1a29', '#a0a0ba', '#050508'],
+        matrix: "-1.0 -1.0 -1.0 0 1.0 -1.0 -1.0 -1.0 0 1.0 -1.0 -1.0 -1.0 0 1.0 0 0 0 1 0",
+        deepGrad: ['#000000', '#171721', '#262636', '#ffffff'],
+        deepAccent: '#ffffff'
+      }
+    };
+
+    const defaultState = {
+      bgTheme: 'uvTeal',
+      ripArchetype: 'diagonal',
+      ripCount: 2,
+      ripY1: 590,
+      ripY2: 750,
+      ripRough: 7,
+      warp: 45,
+      gloss: 65,
+      underStyle: 'thermal',
+      flipL: 1,
+      flipR: 1,
+      
+      leftAssets: ['asset-star', 'asset-capsule', 'asset-gothic-christ', 'asset-trance-stack'],
+      rightAssets: ['asset-hook', 'asset-gothic-evan', 'asset-cherries', 'asset-flag', 'asset-cross', 'asset-spoke'],
+
+      pos: {
+        artist: { x: 185, y: 385 },
+        head: { x: 714, y: 45 },
+        dates: { x: 430, y: 675 },
+        brand: { x: 190, y: 890 },
+        tourInfo: { x: 182, y: 560 },
+        microL: { x: 182, y: 60 },
+        microR: { x: 725, y: 430 }
+      },
+
+      sidePos: {
+        left: [
+          { x: 81, y: 100 },
+          { x: 81, y: 300 },
+          { x: 81, y: 560 },
+          { x: 81, y: 930 }
+        ],
+        right: [
+          { x: 819, y: 80 },
+          { x: 819, y: 270 },
+          { x: 819, y: 480 },
+          { x: 819, y: 680 },
+          { x: 819, y: 870 },
+          { x: 819, y: 1070 }
+        ]
+      },
+
+      col: {
+        left: '#eaff00',
+        right: '#eaff00',
+        sideRed: '#ff2a2a',
+        panels: '#000000',
+        head: '#ff2a2a',
+        artist: '#e9ffff',
+        support: '#ffffff',
+        date: '#000000',
+        city: '#ffffff',
+        venue: '#ff2a2a',
+        brand: '#ff2a2a',
+        micro: '#00ffff'
+      },
+
+      copy: {
+        head: 'WHAT TIME IS',
+        support: 'Dutch E. Germ',
+        tourInfo: 'US TOUR 2014',
+        dates: `Jun 18 | Philadelphia | Dolphin Tavern\nJun 19 | Chicago | Primary\nJun 20 | Toronto | NXNE / Tattoo\nJun 21 | Montreal | Le Belmont\nJun 25 | New York | Output\nJun 26 | Miami | Bardot\nJun 27 | Austin | Vulcan Gas Co\nJun 28 | Los Angeles | Los Globos`
+      }
+    };
+
+    let state = JSON.parse(JSON.stringify(defaultState));
+    let lastGeneratedKey = '';
+
+    const QUADRANT_BOUNDS = {
+      artist: { w: 220, h: 140 },
+      head: { w: 260, h: 320, anchorRight: true },
+      dates: { w: 300, h: 400 },
+      brand: { w: 210, h: 140 }
+    };
+
+    const SIDE_BOUNDS = {
+      left: { minX: 30, maxX: 132, minY: 50, maxY: 1150 },
+      right: { minX: 768, maxX: 870, minY: 50, maxY: 1150 }
+    };
+
+    const svg = document.getElementById('posterSvg');
+    const dispFilter = document.getElementById('dispFilter');
+    const glossLayer = document.getElementById('glossLayer');
+    const tourDatesContainer = document.getElementById('tourDatesContainer');
+    const topLayerClipPath = document.getElementById('topLayerClipPath');
+    const innerLayerClipPath = document.getElementById('innerLayerClipPath');
+    const ripEdgeHighlight = document.getElementById('ripEdgeHighlight');
+    const innerEdgeHighlight = document.getElementById('innerEdgeHighlight');
+    const underneathMatrix = document.getElementById('underneathMatrix');
+    const colorMatrixFilter = document.getElementById('colorMatrixFilter');
+
+    const selectBgTheme = document.getElementById('selectBgTheme');
+    const selectRipArchetype = document.getElementById('selectRipArchetype');
+    const btnRipCount0 = document.getElementById('btnRipCount0');
+    const btnRipCount1 = document.getElementById('btnRipCount1');
+    const btnRipCount2 = document.getElementById('btnRipCount2');
+    const rip1Controls = document.getElementById('rip1Controls');
+    const rip2Controls = document.getElementById('rip2Controls');
+    const rangeRipY1 = document.getElementById('rangeRipY1');
+    const rangeRipY2 = document.getElementById('rangeRipY2');
+    const valRipY1 = document.getElementById('valRipY1');
+    const valRipY2 = document.getElementById('valRipY2');
+    const rangeRipRough = document.getElementById('rangeRipRough');
+    const valRipRough = document.getElementById('valRipRough');
+
+    const btnUnderThermal = document.getElementById('btnUnderThermal');
+    const btnUnderAcid = document.getElementById('btnUnderAcid');
+    const btnUnderInfrared = document.getElementById('btnUnderInfrared');
+
+    const rangeWarp = document.getElementById('rangeWarp');
+    const rangeGloss = document.getElementById('rangeGloss');
+    const valWarp = document.getElementById('valWarp');
+    const valGloss = document.getElementById('valGloss');
+
+    const btnFlipLNormal = document.getElementById('btnFlipLNormal');
+    const btnFlipLInvert = document.getElementById('btnFlipLInvert');
+    const btnFlipRNormal = document.getElementById('btnFlipRNormal');
+    const btnFlipRInvert = document.getElementById('btnFlipRInvert');
+    const btnShuffleSides = document.getElementById('btnShuffleSides');
+
+    const btnRandomize = document.getElementById('btnRandomize');
+    const btnRevert = document.getElementById('btnRevert');
+    const btnExport = document.getElementById('btnExport');
+
+    const colLeft = document.getElementById('colLeft');
+    const colRight = document.getElementById('colRight');
+    const colSideRed = document.getElementById('colSideRed');
+    const colPanels = document.getElementById('colPanels');
+    const colHead = document.getElementById('colHead');
+    const colArtist = document.getElementById('colArtist');
+    const colSupport = document.getElementById('colSupport');
+    const colDate = document.getElementById('colDate');
+    const colCity = document.getElementById('colCity');
+    const colVenue = document.getElementById('colVenue');
+    const colBrand = document.getElementById('colBrand');
+    const colMicro = document.getElementById('colMicro');
+
+    const posXArtist = document.getElementById('posXArtist');
+    const posYArtist = document.getElementById('posYArtist');
+    const posXHead = document.getElementById('posXHead');
+    const posYHead = document.getElementById('posYHead');
+    const posXDates = document.getElementById('posXDates');
+    const posYDates = document.getElementById('posYDates');
+    const posXBrand = document.getElementById('posXBrand');
+    const posYBrand = document.getElementById('posYBrand');
+
+    const inputHeadline1 = document.getElementById('inputHeadline1');
+    const inputSupport = document.getElementById('inputSupport');
+    const inputTourInfo = document.getElementById('inputTourInfo');
+    const inputDates = document.getElementById('inputDates');
+
+    function syncInputsFromState() {
+      selectBgTheme.value = state.bgTheme;
+      selectRipArchetype.value = state.ripArchetype;
+      rangeRipY1.value = state.ripY1;
+      valRipY1.textContent = `${state.ripY1}px`;
+      rangeRipY2.value = state.ripY2;
+      valRipY2.textContent = `${state.ripY2}px`;
+      rangeRipRough.value = state.ripRough;
+      valRipRough.textContent = state.ripRough;
+      rangeWarp.value = state.warp;
+      valWarp.textContent = state.warp;
+      rangeGloss.value = state.gloss;
+      valGloss.textContent = `${state.gloss}%`;
+
+      [btnRipCount0, btnRipCount1, btnRipCount2].forEach((btn, idx) => {
+        btn.classList.toggle('active', state.ripCount === idx);
+      });
+      rip1Controls.style.display = state.ripCount >= 1 ? 'flex' : 'none';
+      rip2Controls.style.display = state.ripCount >= 2 ? 'flex' : 'none';
+
+      btnUnderThermal.classList.toggle('active', state.underStyle === 'thermal');
+      btnUnderAcid.classList.toggle('active', state.underStyle === 'acidLime');
+      btnUnderInfrared.classList.toggle('active', state.underStyle === 'deepInfrared');
+
+      btnFlipLNormal.classList.toggle('active', state.flipL === 1);
+      btnFlipLInvert.classList.toggle('active', state.flipL === -1);
+      btnFlipRNormal.classList.toggle('active', state.flipR === 1);
+      btnFlipRInvert.classList.toggle('active', state.flipR === -1);
+
+      colLeft.value = state.col.left;
+      colRight.value = state.col.right;
+      colSideRed.value = state.col.sideRed;
+      colPanels.value = state.col.panels;
+      colHead.value = state.col.head;
+      colArtist.value = state.col.artist;
+      colSupport.value = state.col.support;
+      colDate.value = state.col.date;
+      colCity.value = state.col.city;
+      colVenue.value = state.col.venue;
+      colBrand.value = state.col.brand;
+      colMicro.value = state.col.micro;
+
+      posXArtist.value = state.pos.artist.x;
+      posYArtist.value = state.pos.artist.y;
+      posXHead.value = state.pos.head.x;
+      posYHead.value = state.pos.head.y;
+      posXDates.value = state.pos.dates.x;
+      posYDates.value = state.pos.dates.y;
+      posXBrand.value = state.pos.brand.x;
+      posYBrand.value = state.pos.brand.y;
+
+      inputHeadline1.value = state.copy.head;
+      inputSupport.value = state.copy.support;
+      inputTourInfo.value = state.copy.tourInfo;
+      inputDates.value = state.copy.dates;
+    }
+
+    function applyBgPalette() {
+      const p = BG_PALETTES[state.bgTheme] || BG_PALETTES.uvTeal;
+      p.topGrad.forEach((col, idx) => {
+        const el = document.getElementById(`oGrad${idx}`);
+        if (el) el.setAttribute('stop-color', col);
+      });
+      p.deepGrad.forEach((col, idx) => {
+        const el = document.getElementById(`dGrad${idx}`);
+        if (el) el.setAttribute('stop-color', col);
+      });
+      if (colorMatrixFilter) {
+        colorMatrixFilter.setAttribute('values', p.matrix);
+      }
+      const deepAccent = document.getElementById('deepAccent');
+      if (deepAccent) deepAccent.setAttribute('fill', p.deepAccent);
+    }
+
+    function generateRipSegment(x1, y1, x2, y2, rough, steps = 18) {
+      const dx = (x2 - x1) / steps;
+      const dy = (y2 - y1) / steps;
+      const pts = [`M ${x1} ${y1}`];
+      let currX = x1, currY = y1;
+      for (let i = 1; i <= steps; i++) {
+        const targetX = x1 + (dx * i);
+        const targetY = y1 + (dy * i);
+        const normalX = -dy / Math.hypot(dx, dy);
+        const normalY = dx / Math.hypot(dx, dy);
+        const offset = (Math.random() - 0.5) * (rough * 12);
+        currX = targetX + (normalX * offset);
+        currY = targetY + (normalY * offset);
+        const cx = currX - (dx / 2) + ((Math.random() - 0.5) * 6);
+        const cy = currY - (dy / 2) + ((Math.random() - 0.5) * 6);
+        pts.push(`Q ${cx} ${cy} ${currX} ${currY}`);
+      }
+      return pts.join(' ');
+    }
+
+    function updateRipPath() {
+      const arch = state.ripArchetype;
+      const r = state.ripRough;
+
+      if (state.ripCount === 0) {
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        ripEdgeHighlight.setAttribute('display', 'none');
+        innerEdgeHighlight.setAttribute('display', 'none');
+        return;
+      }
+
+      if (arch === 'diagonal') {
+        const line1 = generateRipSegment(162, state.ripY1 - 80, 738, state.ripY1 + 100, r);
+        const topPoly = `M 162 0 L 738 0 L 738 1200 ${line1.replace('M 162', 'L 162')} Z`;
+        topLayerClipPath.setAttribute('d', topPoly);
+        ripEdgeHighlight.setAttribute('d', line1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2 + 60, 738, state.ripY2 - 80, r);
+          const midPoly = `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`;
+          innerLayerClipPath.setAttribute('d', midPoly);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'horizontal') {
+        const line1 = generateRipSegment(162, state.ripY1, 738, state.ripY1, r);
+        const topPoly = `M 162 0 L 738 0 L 738 1200 ${line1.replace('M 162', 'L 162')} Z`;
+        topLayerClipPath.setAttribute('d', topPoly);
+        ripEdgeHighlight.setAttribute('d', line1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2, 738, state.ripY2, r);
+          const midPoly = `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`;
+          innerLayerClipPath.setAttribute('d', midPoly);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'vTear') {
+        const apexX = 450 + (Math.random() - 0.5) * 80;
+        const line1a = generateRipSegment(162, state.ripY1 - 100, apexX, state.ripY1 + 120, r, 12);
+        const line1b = generateRipSegment(apexX, state.ripY1 + 120, 738, state.ripY1 - 80, r, 12);
+        const fullLine1 = line1a + ' ' + line1b.replace(/^M [0-9.]+ [0-9.]+ /, '');
+        const topPoly = `M 162 0 L 738 0 L 738 1200 ${fullLine1.replace('M 162', 'L 162')} Z`;
+        topLayerClipPath.setAttribute('d', topPoly);
+        ripEdgeHighlight.setAttribute('d', fullLine1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2 + 50, 738, state.ripY2 - 50, r);
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'peeledPatch') {
+        const cx = 450, cy = (state.ripY1 + state.ripY2) / 2;
+        const rx = 180 + (Math.random() - 0.5) * 40;
+        const ry = 190 + (Math.random() - 0.5) * 40;
+        const p1 = generateRipSegment(cx - rx, cy - ry, cx + rx, cy - ry, r, 8);
+        const p2 = generateRipSegment(cx + rx, cy - ry, cx + rx, cy + ry, r, 8);
+        const p3 = generateRipSegment(cx + rx, cy + ry, cx - rx, cy + ry, r, 8);
+        const p4 = generateRipSegment(cx - rx, cy + ry, cx - rx, cy - ry, r, 8);
+        const patch = `${p1} ${p2.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p3.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p4.replace(/^M [0-9.]+ [0-9.]+ /, '')} Z`;
+        
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z ${patch}`);
+        ripEdgeHighlight.setAttribute('d', `${p1} ${p2.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p3.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p4.replace(/^M [0-9.]+ [0-9.]+ /, '')}`);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        innerEdgeHighlight.setAttribute('display', 'none');
+      }
+    }
+
+    function generateParametricBackgrounds() {
+      const topSubject = document.getElementById('proceduralTopSubject');
+      const underSubject = document.getElementById('proceduralUnderSubject');
+      const deepSubject = document.getElementById('proceduralDeepSubject');
+
+      const headScale = 0.85 + Math.random() * 0.35;
+      const headTilt = (Math.random() - 0.5) * 25;
+      const headX = 420 + (Math.random() - 0.5) * 60;
+      const headY = 340 + (Math.random() - 0.5) * 50;
+
+      let hairTendrils = '';
+      const tendrilCount = 4 + Math.floor(Math.random() * 5);
+      const tendrilColors = ['#ff2a00', '#ffe700', '#74ee15', '#f000ff', '#001eff', '#00e5ff'];
+      for (let i = 0; i < tendrilCount; i++) {
+        const startX = headX - 180 + (i * 380 / tendrilCount);
+        const cp1X = startX + (Math.random() - 0.5) * 160;
+        const cp1Y = headY - 140 + (Math.random() - 0.5) * 80;
+        const cp2X = cp1X + (Math.random() - 0.5) * 180;
+        const cp2Y = headY + 100 + Math.random() * 160;
+        const endX = startX + (Math.random() - 0.5) * 120;
+        const endY = headY + 180 + Math.random() * 200;
+        const color = tendrilColors[i % tendrilColors.length];
+        hairTendrils += `<path d="M ${startX} ${headY - 60} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}" stroke="${color}" stroke-width="${18 + Math.random() * 22}" fill="none" stroke-linecap="round" opacity="0.85" />`;
+      }
+
+      topSubject.innerHTML = `
+        <g transform="rotate(${headTilt} ${headX} ${headY})">
+          <ellipse cx="${headX}" cy="${headY}" rx="${210 * headScale}" ry="${260 * headScale}" fill="#4deeea" />
+          <path d="M ${headX - 180} ${headY - 180} Q ${headX} ${headY - 280} ${headX + 180} ${headY - 160} Q ${headX + 260} ${headY} ${headX + 160} ${headY + 120} Q ${headX} ${headY + 220} ${headX - 160} ${headY + 80} Z" fill="#74ee15" opacity="0.85" />
+          ${hairTendrils}
+          <ellipse cx="${headX - 50}" cy="${headY - 10}" rx="${30 * headScale}" ry="${20 * headScale}" fill="#001eff" />
+          <ellipse cx="${headX + 70}" cy="${headY + 5}" rx="${32 * headScale}" ry="${22 * headScale}" fill="#001eff" />
+          <path d="M ${headX} ${headY + 10} L ${headX + 20} ${headY + 85} L ${headX - 30} ${headY + 95} Z" fill="#ff0055" />
+          <path d="M ${headX - 40} ${headY + 140} Q ${headX + 10} ${headY + 175} ${headX + 60} ${headY + 145} Q ${headX + 15} ${headY + 120} ${headX - 40} ${headY + 140} Z" fill="#001eff" />
+          <path d="M 190 540 Q ${headX} 440 680 520 L 738 900 L 162 900 Z" fill="#00e5ff" opacity="0.75" />
+          <path d="M 300 550 Q ${headX + 40} 590 600 800 L 380 1000 Z" fill="#ff0077" opacity="0.7" />
+        </g>
+      `;
+
+      underSubject.innerHTML = `
+        <ellipse cx="${headX + 20}" cy="${headY + 140}" rx="${190 * headScale}" ry="${250 * headScale}" fill="#00ffcc" id="subFaceOuter" />
+        <path d="M ${headX - 170} ${headY - 20} Q ${headX} ${headY - 120} ${headX + 200} ${headY} Q ${headX + 260} ${headY + 200} ${headX + 120} ${headY + 340} Q ${headX - 40} ${headY + 380} ${headX - 180} ${headY + 220} Z" fill="#ff0055" opacity="0.85" id="subFaceWarp" />
+        <ellipse cx="${headX - 40}" cy="${headY + 110}" rx="35" ry="25" fill="#0022ff" id="subEye1" />
+        <ellipse cx="${headX + 90}" cy="${headY + 130}" rx="38" ry="26" fill="#0022ff" id="subEye2" />
+        <path d="M 220 580 Q 450 480 670 560 L 738 1000 L 162 1000 Z" fill="#ffff00" opacity="0.85" id="subBodyShape" />
+        <path d="M 360 620 Q 480 560 620 720 L 738 1100 L 260 1100 Z" fill="#ff0044" opacity="0.75" />
+      `;
+
+      let deepStripes = '';
+      for (let i = 0; i < 5; i++) {
+        const sx = 260 + (i * 70);
+        deepStripes += `<line x1="${sx}" y1="720" x2="${sx + 30}" y2="1200" stroke="${i % 2 === 0 ? '#ff0055' : '#00ffcc'}" stroke-width="${10 + Math.random() * 8}" stroke-opacity="0.35" />`;
+      }
+
+      deepSubject.innerHTML = `
+        <path d="M 162 650 Q 280 580 430 640 T 738 720 L 738 1200 L 162 1200 Z" fill="#0a3536" />
+        <path d="M 220 720 Q 360 620 520 750 L 680 1200 L 162 1200 Z" fill="#ff0055" opacity="0.75" id="deepAccent" />
+        <path d="M 300 800 Q 450 700 620 900 L 738 1200 L 250 1200 Z" fill="#00ffe0" opacity="0.6" />
+        ${deepStripes}
+      `;
+    }
+
+    function updateUnderneathStyle() {
+      const uGrad0 = document.getElementById('uGrad0');
+      const uGrad1 = document.getElementById('uGrad1');
+      const uGrad2 = document.getElementById('uGrad2');
+      const uGrad3 = document.getElementById('uGrad3');
+      const subFaceOuter = document.getElementById('subFaceOuter');
+      const subFaceWarp = document.getElementById('subFaceWarp');
+      const subBodyShape = document.getElementById('subBodyShape');
+
+      if (!subFaceOuter) return;
+
+      if (state.underStyle === 'thermal') {
+        underneathMatrix.setAttribute('values', `2.0 -0.5 -0.5 0.0 0.1 -0.5 0.2 1.8 0.0 0.1 1.2 -1.5 0.5 0.0 0.2 0.0 0.0 0.0 1.0 0.0`);
+        uGrad0.setAttribute('stop-color', '#2a0012');
+        uGrad1.setAttribute('stop-color', '#730045');
+        uGrad2.setAttribute('stop-color', '#ff0055');
+        uGrad3.setAttribute('stop-color', '#ffd500');
+        subFaceOuter.setAttribute('fill', '#00ffcc');
+        subFaceWarp.setAttribute('fill', '#ff0055');
+        subBodyShape.setAttribute('fill', '#ffff00');
+      } else if (state.underStyle === 'acidLime') {
+        underneathMatrix.setAttribute('values', `-1.8 0.2 1.4 0.0 0.2 0.5 -1.2 0.8 0.0 0.1 1.5 0.2 -1.5 0.0 0.1 0.0 0.0 0.0 1.0 0.0`);
+        uGrad0.setAttribute('stop-color', '#041d06');
+        uGrad1.setAttribute('stop-color', '#1c5e03');
+        uGrad2.setAttribute('stop-color', '#eaff00');
+        uGrad3.setAttribute('stop-color', '#a2ff00');
+        subFaceOuter.setAttribute('fill', '#74ee15');
+        subFaceWarp.setAttribute('fill', '#f000ff');
+        subBodyShape.setAttribute('fill', '#4deeea');
+      } else {
+        underneathMatrix.setAttribute('values', `0.2 1.5 -0.8 0.0 0.1 -0.8 2.0 0.4 0.0 0.1 1.2 0.5 -1.0 0.0 0.1 0.0 0.0 0.0 1.0 0.0`);
+        uGrad0.setAttribute('stop-color', '#260007');
+        uGrad1.setAttribute('stop-color', '#6b001a');
+        uGrad2.setAttribute('stop-color', '#00e5ff');
+        uGrad3.setAttribute('stop-color', '#00ffff');
+        subFaceOuter.setAttribute('fill', '#ff0055');
+        subFaceWarp.setAttribute('fill', '#00e5ff');
+        subBodyShape.setAttribute('fill', '#001eff');
+      }
+    }
+
+    function renderSideImages() {
+      for (let i = 0; i < 4; i++) {
+        const leftSlot = document.getElementById(`leftSlot${i}`);
+        leftSlot.innerHTML = '';
+        leftSlot.setAttribute('transform', `translate(${state.sidePos.left[i].x}, ${state.sidePos.left[i].y})`);
+        
+        const lg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        lg.setAttribute('transform', `scale(${state.flipL}, 1)`);
+        lg.setAttribute('color', state.col.left);
+        lg.setAttribute('fill', state.col.left);
+
+        const useL = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        useL.setAttribute('href', `#${state.leftAssets[i]}`);
+        lg.appendChild(useL);
+        leftSlot.appendChild(lg);
+      }
+
+      for (let i = 0; i < 6; i++) {
+        const rightSlot = document.getElementById(`rightSlot${i}`);
+        rightSlot.innerHTML = '';
+        rightSlot.setAttribute('transform', `translate(${state.sidePos.right[i].x}, ${state.sidePos.right[i].y})`);
+
+        const rg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        rg.setAttribute('transform', `scale(${state.flipR}, 1)`);
+        rg.setAttribute('color', state.col.right);
+        rg.setAttribute('fill', state.col.right);
+
+        const useR = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        useR.setAttribute('href', `#${state.rightAssets[i]}`);
+        rg.appendChild(useR);
+        rightSlot.appendChild(rg);
+      }
+    }
+
+    function renderDates() {
+      const lines = inputDates.value.trim().split('\n');
+      tourDatesContainer.innerHTML = '';
+
+      lines.forEach((line, index) => {
+        const parts = line.split('|').map(s => s.trim());
+        if (parts.length < 2) return;
+
+        const dateStr = parts[0] || '';
+        const cityStr = parts[1] || '';
+        const venueStr = parts[2] || '';
+        const yOffset = index * 48;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(0, ${yOffset})`);
+
+        const tDate = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tDate.setAttribute('class', 'f-bold-sans');
+        tDate.setAttribute('font-size', '17');
+        tDate.setAttribute('font-weight', '800');
+        tDate.setAttribute('fill', state.col.date);
+        tDate.setAttribute('x', '0');
+        tDate.setAttribute('y', '22');
+        tDate.textContent = dateStr;
+        g.appendChild(tDate);
+
+        const tCity = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tCity.setAttribute('class', 'f-bold-sans');
+        tCity.setAttribute('font-size', '34');
+        tCity.setAttribute('font-weight', '800');
+        tCity.setAttribute('fill', state.col.city);
+        tCity.setAttribute('x', '65');
+        tCity.setAttribute('y', '24');
+        tCity.setAttribute('letter-spacing', '-1');
+        tCity.textContent = cityStr;
+        g.appendChild(tCity);
+
+        if (venueStr) {
+          const tVenue = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          tVenue.setAttribute('class', 'f-bold-sans');
+          tVenue.setAttribute('font-size', '13');
+          tVenue.setAttribute('font-weight', '700');
+          tVenue.setAttribute('fill', state.col.venue);
+          tVenue.setAttribute('x', '225');
+          tVenue.setAttribute('y', '15');
+          tVenue.setAttribute('letter-spacing', '0.2');
+          
+          if (venueStr.includes('/')) {
+            const vParts = venueStr.split('/');
+            const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan1.textContent = vParts[0].trim();
+            const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan2.setAttribute('x', '225');
+            tspan2.setAttribute('dy', '15');
+            tspan2.textContent = vParts[1].trim();
+            tVenue.appendChild(tspan1);
+            tVenue.appendChild(tspan2);
+          } else if (venueStr.includes(' ')) {
+            const vWords = venueStr.split(' ');
+            const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan1.textContent = vWords[0];
+            const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan2.setAttribute('x', '225');
+            tspan2.setAttribute('dy', '15');
+            tspan2.textContent = vWords.slice(1).join(' ');
+            tVenue.appendChild(tspan1);
+            tVenue.appendChild(tspan2);
+          } else {
+            tVenue.textContent = venueStr;
+          }
+          g.appendChild(tVenue);
+        }
+
+        tourDatesContainer.appendChild(g);
+      });
+    }
+
+    function updatePositions() {
+      document.getElementById('groupArtist').setAttribute('transform', `translate(${state.pos.artist.x}, ${state.pos.artist.y})`);
+      document.getElementById('groupHeadline1').setAttribute('transform', `translate(${state.pos.head.x}, ${state.pos.head.y})`);
+      document.getElementById('tourDatesContainer').setAttribute('transform', `translate(${state.pos.dates.x}, ${state.pos.dates.y})`);
+      document.getElementById('groupBrand').setAttribute('transform', `translate(${state.pos.brand.x}, ${state.pos.brand.y})`);
+      document.getElementById('groupTourInfo').setAttribute('transform', `translate(${state.pos.tourInfo.x}, ${state.pos.tourInfo.y}) rotate(-90)`);
+      document.getElementById('groupMicroL').setAttribute('transform', `translate(${state.pos.microL.x}, ${state.pos.microL.y}) rotate(-90)`);
+      document.getElementById('groupMicroR').setAttribute('transform', `translate(${state.pos.microR.x}, ${state.pos.microR.y}) rotate(90)`);
+    }
+
+    function updatePoster() {
+      const headParts = inputHeadline1.value.split(' ');
+      document.getElementById('txtHead1').textContent = headParts[0] || '';
+      document.getElementById('txtHead2').textContent = headParts[1] || '';
+      document.getElementById('txtHead3').textContent = headParts.slice(2).join(' ') || '';
+
+      document.getElementById('txtSupport').textContent = inputSupport.value;
+      document.getElementById('txtTourInfo').textContent = inputTourInfo.value;
+
+      const txtHead = document.querySelector('#groupHeadline1 text');
+      if (txtHead) txtHead.setAttribute('fill', state.col.head);
+      document.getElementById('txtArtist1').setAttribute('fill', state.col.artist);
+      document.getElementById('txtArtist2').setAttribute('fill', state.col.artist);
+      document.getElementById('txtSupport').setAttribute('fill', state.col.support);
+      document.getElementById('txtMicroL').setAttribute('fill', state.col.micro);
+      document.getElementById('txtMicroR').setAttribute('fill', state.col.micro);
+
+      document.querySelectorAll('.side-red-fill').forEach(el => el.setAttribute('fill', state.col.sideRed));
+      document.querySelectorAll('.side-red-stroke').forEach(el => el.setAttribute('stroke', state.col.sideRed));
+      document.getElementById('sidePanelLeft').setAttribute('fill', state.col.panels);
+      document.getElementById('sidePanelRight').setAttribute('fill', state.col.panels);
+
+      dispFilter.setAttribute('scale', state.warp);
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+
+      applyBgPalette();
+      updateUnderneathStyle();
+      updatePositions();
+      renderSideImages();
+      renderDates();
+    }
+
+    function clampPositionToQuadrant(key, x, y) {
+      const def = QUADRANT_BOUNDS[key];
+      const minX = def.anchorRight ? (162 + def.w + 10) : 172;
+      const maxX = def.anchorRight ? 728 : (738 - def.w - 10);
+      const minY = 30;
+      const maxY = 1170 - def.h;
+
+      return {
+        x: Math.max(minX, Math.min(maxX, x)),
+        y: Math.max(minY, Math.min(maxY, y))
+      };
+    }
+
+    function shuffleSideAssets() {
+      const shuffle = arr => {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      };
+      shuffle(state.leftAssets);
+      shuffle(state.rightAssets);
+      renderSideImages();
+    }
+
+    let activeDrag = null;
+    let dragOffset = { x: 0, y: 0 };
+
+    function makeDraggable(elementId, type, key, index = null) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.addEventListener('mousedown', (e) => {
+        activeDrag = { elementId, type, key, index, el };
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+        if (type === 'quadrant' || type === 'micro') {
+          dragOffset.x = svgP.x - state.pos[key].x;
+          dragOffset.y = svgP.y - state.pos[key].y;
+        } else if (type === 'side') {
+          dragOffset.x = svgP.x - state.sidePos[key][index].x;
+          dragOffset.y = svgP.y - state.sidePos[key][index].y;
+        }
+        e.preventDefault();
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (!activeDrag) return;
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      
+      if (activeDrag.type === 'quadrant') {
+        const rawX = Math.round(svgP.x - dragOffset.x);
+        const rawY = Math.round(svgP.y - dragOffset.y);
+        state.pos[activeDrag.key].x = rawX;
+        state.pos[activeDrag.key].y = rawY;
+        updatePositions();
+        syncInputsFromState();
+      } else if (activeDrag.type === 'micro') {
+        state.pos[activeDrag.key].x = Math.round(svgP.x - dragOffset.x);
+        state.pos[activeDrag.key].y = Math.round(svgP.y - dragOffset.y);
+        updatePositions();
+      } else if (activeDrag.type === 'side') {
+        const bounds = SIDE_BOUNDS[activeDrag.key];
+        const rawX = Math.round(svgP.x - dragOffset.x);
+        const rawY = Math.round(svgP.y - dragOffset.y);
+        state.sidePos[activeDrag.key][activeDrag.index].x = Math.max(bounds.minX, Math.min(bounds.maxX, rawX));
+        state.sidePos[activeDrag.key][activeDrag.index].y = Math.max(bounds.minY, Math.min(bounds.maxY, rawY));
+        renderSideImages();
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      activeDrag = null;
+    });
+
+    makeDraggable('groupArtist', 'quadrant', 'artist');
+    makeDraggable('groupHeadline1', 'quadrant', 'head');
+    makeDraggable('tourDatesContainer', 'quadrant', 'dates');
+    makeDraggable('groupBrand', 'quadrant', 'brand');
+    makeDraggable('groupTourInfo', 'micro', 'tourInfo');
+    makeDraggable('groupMicroL', 'micro', 'microL');
+    makeDraggable('groupMicroR', 'micro', 'microR');
+
+    for (let i = 0; i < 4; i++) makeDraggable(`leftSlot${i}`, 'side', 'left', i);
+    for (let i = 0; i < 6; i++) makeDraggable(`rightSlot${i}`, 'side', 'right', i);
+
+    selectBgTheme.addEventListener('change', (e) => {
+      state.bgTheme = e.target.value;
+      updatePoster();
+    });
+
+    selectRipArchetype.addEventListener('change', (e) => {
+      state.ripArchetype = e.target.value;
+      updateRipPath();
+    });
+
+    btnRipCount0.addEventListener('click', () => {
+      state.ripCount = 0;
+      syncInputsFromState();
+      updateRipPath();
+    });
+    btnRipCount1.addEventListener('click', () => {
+      state.ripCount = 1;
+      syncInputsFromState();
+      updateRipPath();
+    });
+    btnRipCount2.addEventListener('click', () => {
+      state.ripCount = 2;
+      syncInputsFromState();
+      updateRipPath();
+    });
+
+    // Inner Exposed Layer Style Buttons
+    function setUnderneathStyle(style) {
+      state.underStyle = style;
+      btnUnderThermal.classList.toggle('active', style === 'thermal');
+      btnUnderAcid.classList.toggle('active', style === 'acidLime');
+      btnUnderInfrared.classList.toggle('active', style === 'deepInfrared');
+      updateUnderneathStyle();
+    }
+
+    btnUnderThermal.addEventListener('click', () => setUnderneathStyle('thermal'));
+    btnUnderAcid.addEventListener('click', () => setUnderneathStyle('acidLime'));
+    btnUnderInfrared.addEventListener('click', () => setUnderneathStyle('deepInfrared'));
+
+    rangeRipY1.addEventListener('input', (e) => {
+      state.ripY1 = parseInt(e.target.value);
+      valRipY1.textContent = `${state.ripY1}px`;
+      updateRipPath();
+    });
+    rangeRipY2.addEventListener('input', (e) => {
+      state.ripY2 = parseInt(e.target.value);
+      valRipY2.textContent = `${state.ripY2}px`;
+      updateRipPath();
+    });
+    rangeRipRough.addEventListener('input', (e) => {
+      state.ripRough = parseInt(e.target.value);
+      valRipRough.textContent = state.ripRough;
+      updateRipPath();
+    });
+
+    btnFlipLNormal.addEventListener('click', () => {
+      state.flipL = 1;
+      btnFlipLNormal.classList.add('active');
+      btnFlipLInvert.classList.remove('active');
+      renderSideImages();
+    });
+    btnFlipLInvert.addEventListener('click', () => {
+      state.flipL = -1;
+      btnFlipLInvert.classList.add('active');
+      btnFlipLNormal.classList.remove('active');
+      renderSideImages();
+    });
+    btnFlipRNormal.addEventListener('click', () => {
+      state.flipR = 1;
+      btnFlipRNormal.classList.add('active');
+      btnFlipRInvert.classList.remove('active');
+      renderSideImages();
+    });
+    btnFlipRInvert.addEventListener('click', () => {
+      state.flipR = -1;
+      btnFlipRInvert.classList.add('active');
+      btnFlipRNormal.classList.remove('active');
+      renderSideImages();
+    });
+    btnShuffleSides.addEventListener('click', shuffleSideAssets);
+
+    rangeWarp.addEventListener('input', (e) => {
+      state.warp = e.target.value;
+      valWarp.textContent = state.warp;
+      dispFilter.setAttribute('scale', state.warp);
+    });
+    rangeGloss.addEventListener('input', (e) => {
+      state.gloss = parseInt(e.target.value);
+      valGloss.textContent = `${state.gloss}%`;
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+    });
+
+    colLeft.addEventListener('input', (e) => { state.col.left = e.target.value; updatePoster(); });
+    colRight.addEventListener('input', (e) => { state.col.right = e.target.value; updatePoster(); });
+    colSideRed.addEventListener('input', (e) => { state.col.sideRed = e.target.value; updatePoster(); });
+    colPanels.addEventListener('input', (e) => { state.col.panels = e.target.value; updatePoster(); });
+    colHead.addEventListener('input', (e) => { state.col.head = e.target.value; updatePoster(); });
+    colArtist.addEventListener('input', (e) => { state.col.artist = e.target.value; updatePoster(); });
+    colSupport.addEventListener('input', (e) => { state.col.support = e.target.value; updatePoster(); });
+    colDate.addEventListener('input', (e) => { state.col.date = e.target.value; renderDates(); });
+    colCity.addEventListener('input', (e) => { state.col.city = e.target.value; renderDates(); });
+    colVenue.addEventListener('input', (e) => { state.col.venue = e.target.value; renderDates(); });
+    colBrand.addEventListener('input', (e) => { state.col.brand = e.target.value; updatePoster(); });
+    colMicro.addEventListener('input', (e) => { state.col.micro = e.target.value; updatePoster(); });
+
+    posXArtist.addEventListener('input', (e) => { state.pos.artist.x = parseInt(e.target.value); updatePositions(); });
+    posYArtist.addEventListener('input', (e) => { state.pos.artist.y = parseInt(e.target.value); updatePositions(); });
+    posXHead.addEventListener('input', (e) => { state.pos.head.x = parseInt(e.target.value); updatePositions(); });
+    posYHead.addEventListener('input', (e) => { state.pos.head.y = parseInt(e.target.value); updatePositions(); });
+    posXDates.addEventListener('input', (e) => { state.pos.dates.x = parseInt(e.target.value); updatePositions(); });
+    posYDates.addEventListener('input', (e) => { state.pos.dates.y = parseInt(e.target.value); updatePositions(); });
+    posXBrand.addEventListener('input', (e) => { state.pos.brand.x = parseInt(e.target.value); updatePositions(); });
+    posYBrand.addEventListener('input', (e) => { state.pos.brand.y = parseInt(e.target.value); updatePositions(); });
+
+    inputHeadline1.addEventListener('input', updatePoster);
+    inputSupport.addEventListener('input', updatePoster);
+    inputTourInfo.addEventListener('input', updatePoster);
+    inputDates.addEventListener('input', renderDates);
+
+    // Guaranteed Non-Repetitive Back-to-Back Random Generation
+    btnRandomize.addEventListener('click', () => {
+      const paletteKeys = Object.keys(BG_PALETTES);
+      const remainingPalettes = paletteKeys.filter(k => k !== state.bgTheme);
+      state.bgTheme = remainingPalettes[Math.floor(Math.random() * remainingPalettes.length)];
+
+      const archetypes = ['diagonal', 'horizontal', 'vTear', 'peeledPatch'].filter(a => a !== state.ripArchetype);
+      state.ripArchetype = archetypes[Math.floor(Math.random() * archetypes.length)];
+
+      const styles = ['thermal', 'acidLime', 'deepInfrared'].filter(s => s !== state.underStyle);
+      const chosenUnder = styles[Math.floor(Math.random() * styles.length)];
+      setUnderneathStyle(chosenUnder);
+
+      const availableRipCounts = [0, 1, 2].filter(c => c !== state.ripCount);
+      state.ripCount = availableRipCounts[Math.floor(Math.random() * availableRipCounts.length)];
+
+      state.ripY1 = Math.floor(Math.random() * 320) + 320;
+      state.ripY2 = state.ripY1 + Math.floor(Math.random() * 260) + 140;
+      state.ripRough = Math.floor(Math.random() * 8) + 5;
+      state.warp = Math.floor(Math.random() * 55) + 25;
+      state.gloss = Math.floor(Math.random() * 45) + 45;
+
+      const randomHex = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      state.col.left = randomHex();
+      state.col.right = randomHex();
+      state.col.sideRed = randomHex();
+      state.col.head = randomHex();
+      state.col.venue = randomHex();
+      state.col.micro = randomHex();
+
+      state.flipL = state.flipL === 1 ? -1 : 1;
+      state.flipR = Math.random() > 0.5 ? 1 : -1;
+
+      const discreteSlots = [
+        { x: 175, y: 55 },
+        { x: 725, y: 50 },
+        { x: 420, y: 700 },
+        { x: 185, y: 920 }
+      ];
+
+      let permutedKeys;
+      let signature = '';
+      do {
+        permutedKeys = ['artist', 'head', 'dates', 'brand'].sort(() => Math.random() - 0.5);
+        signature = permutedKeys.join('-');
+      } while (signature === lastGeneratedKey);
+      lastGeneratedKey = signature;
+
+      permutedKeys.forEach((k, idx) => {
+        state.pos[k] = clampPositionToQuadrant(k, discreteSlots[idx].x, discreteSlots[idx].y);
+      });
+
+      state.sidePos.left.forEach((pt, i) => {
+        pt.x = Math.floor(Math.random() * 70) + 45;
+        pt.y = [110, 310, 560, 930][i] + Math.floor((Math.random() - 0.5) * 40);
+      });
+      state.sidePos.right.forEach((pt, i) => {
+        pt.x = Math.floor(Math.random() * 70) + 780;
+        pt.y = [90, 270, 480, 680, 880, 1070][i] + Math.floor((Math.random() - 0.5) * 35);
+      });
+
+      document.getElementById('turbFilter').setAttribute('baseFrequency', (Math.random() * 0.02 + 0.008).toFixed(4));
+      
+      generateParametricBackgrounds();
+      shuffleSideAssets();
+      syncInputsFromState();
+      updateRipPath();
+      updatePoster();
+    });
+
+    btnRevert.addEventListener('click', () => {
+      state = JSON.parse(JSON.stringify(defaultState));
+      lastGeneratedKey = '';
+      setUnderneathStyle('thermal');
+      generateParametricBackgrounds();
+      syncInputsFromState();
+      updateRipPath();
+      updatePoster();
+    });
+
+    btnExport.addEventListener('click', () => {
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(svg);
+
+      if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      if (!source.match(/^<svg[^>]+xmlns\:xlink="http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+      }
+
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+      const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = url;
+      downloadLink.download = `hyper_affect_poster_${Date.now()}.svg`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+
+    generateParametricBackgrounds();
+    syncInputsFromState();
+    updateRipPath();
+    updatePoster();
+  </script>
+</body>
+</html>
