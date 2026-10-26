@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baruch College SSEP Mission Patch Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bebas+Neue&family=Black+Ops+One&family=Chakra+Petch:wght@700;900&family=Cinzel:wght@900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@900&family=Orbitron:wght@800;900&family=Righteous&family=Russo+One&family=Space+Grotesk:wght@600;700&family=Syncopate:wght@700&family=Teko:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    input[type=range] { accent-color: #05336B; }
+    .embroidery-mode {
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4)) contrast(110%);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-5 py-3 sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded-full bg-[#05336B] border-2 border-blue-400 flex items-center justify-center font-black text-white text-xs shadow-md">
+        ISS
+      </div>
+      <div>
+        <h1 class="heading-font text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+          Baruch SSEP Mission Patch Generator
+          <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-blue-900/70 text-blue-300 border border-blue-700/60">Flight 2027</span>
+        </h1>
+        <p class="text-xs text-slate-400">Strict 3.5″ × 3.5″ &bull; Spacetime Fabric &bull; Equatorial Typography &bull; Optional Logo Upload &bull; All Draggable</p>
+      </div>
+    </div>
+
+    <div class="flex items-center flex-wrap gap-2">
+      <!-- Reset to Exact Original -->
+      <button id="btnResetOriginal" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
+        <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Reset to Original Generation
+      </button>
+
+      <!-- Randomize / Generate New Patch -->
+      <button id="btnNewPatch" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-900/80 hover:bg-blue-800 text-blue-200 border border-blue-600/70 transition flex items-center gap-1.5 shadow-sm">
+        <svg class="w-3.5 h-3.5 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Generate New Patch (Grid + Font + Colors)
+      </button>
+
+      <!-- Export 1000x1000 PNG -->
+      <button id="btnExport" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#05336B] hover:bg-blue-800 text-white shadow-lg shadow-blue-950 transition flex items-center gap-1.5 border border-blue-400/50">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Export PNG (1000×1000)
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Stage -->
+  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+    <!-- Canvas Workspace -->
+    <div class="flex-1 flex flex-col items-center justify-center p-5 bg-slate-950 relative overflow-auto select-none">
+      
+      <!-- Interactive Drag Info Hint -->
+      <div class="mb-3 flex items-center gap-2 text-xs text-slate-300 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full shadow-lg">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+        <span>Drag elements on canvas: <strong class="text-blue-300">BARUCH text</strong>, <strong class="text-blue-300">Uploaded Logo</strong> (if added), and <strong class="text-blue-300">Gravity Center (&oplus;)</strong></span>
+      </div>
+
+      <!-- 3.5" x 3.5" Patch Frame (1:1 Ratio) -->
+      <div id="patchWrapper" class="relative p-2.5 rounded-2xl bg-gradient-to-b from-slate-800/80 to-slate-900/90 shadow-2xl border border-slate-800 transition-all">
+        <svg id="patchSvg" viewBox="0 0 1000 1000" class="w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] md:w-[520px] md:h-[520px] rounded-xl shadow-inner cursor-default transition-all">
+          <defs>
+            <clipPath id="patchClip">
+              <circle cx="500" cy="500" r="425" />
+            </clipPath>
+
+            <!-- Outline extractor for uploaded logo -->
+            <filter id="logoOutlineFilter" x="-20%" y="-20%" width="140%" height="140%">
+              <feMorphology operator="dilate" radius="3" in="SourceAlpha" result="dilated"/>
+              <feComposite in="dilated" in2="SourceAlpha" operator="out" result="outline"/>
+              <feFlood id="logoFloodColor" flood-color="#05336B" result="floodColor"/>
+              <feComposite in="floodColor" in2="outline" operator="in"/>
+            </filter>
+
+            <!-- Monochrome tint filter for uploaded logo -->
+            <filter id="logoTintFilter" color-interpolation-filters="sRGB">
+              <feColorMatrix id="logoMatrix" type="matrix"
+                values="0 0 0 0 0.0196
+                        0 0 0 0 0.2000
+                        0 0 0 0 0.4196
+                        0 0 0 1 0" />
+            </filter>
+          </defs>
+
+          <!-- Patch Interior (NO solid blocking background; pure grid lines) -->
+          <g clip-path="url(#patchClip)">
+            <!-- Layer 1: Pure Spacetime Grid Fabric -->
+            <g id="spacetimeGridLayer"></g>
+
+            <!-- Gravity Center Crosshair / Drag Target -->
+            <g id="gravityCrosshair" class="cursor-move" opacity="0.85">
+              <circle id="gravRing" cx="680" cy="320" r="18" fill="none" stroke="#05336B" stroke-width="2" stroke-dasharray="4,3" />
+              <circle id="gravCenter" cx="680" cy="320" r="4" fill="#05336B" />
+              <line id="gravLineH" x1="660" y1="320" x2="700" y2="320" stroke="#05336B" stroke-width="2" />
+              <line id="gravLineV" x1="680" y1="300" x2="680" y2="340" stroke="#05336B" stroke-width="2" />
+            </g>
+
+            <!-- Layer 2: Optional User Uploaded Logo (Hidden by default) -->
+            <g id="logoLayer" class="cursor-grab active:cursor-grabbing"></g>
+
+            <!-- Layer 3: BARUCH Typography (Equatorial, spans across the middle, curve-adjustable) -->
+            <g id="typographyLayer" class="cursor-grab active:cursor-grabbing select-none"></g>
+          </g>
+
+          <!-- Layer 4: Outer Border Ring & Mission Text -->
+          <g id="outerBorderLayer" pointer-events="none"></g>
+        </svg>
+      </div>
+
+      <!-- Live Legibility Size Checks (3.5" vs 1" badge) -->
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-5 bg-slate-900/90 border border-slate-800 px-5 py-2.5 rounded-xl text-xs text-slate-300">
+        <div class="flex items-center gap-3">
+          <span class="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Scale Verification:</span>
+          <div class="flex items-center gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-12 h-12 rounded-full border border-slate-700 overflow-hidden shadow bg-white">
+                <svg viewBox="0 0 1000 1000" class="w-full h-full"><use href="#patchSvg"></use></svg>
+              </div>
+              <span class="text-[9px] text-slate-400 mt-0.5">1″ Mini</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="w-20 h-20 rounded-full border border-slate-700 overflow-hidden shadow bg-white">
+                <svg viewBox="0 0 1000 1000" class="w-full h-full"><use href="#patchSvg"></use></svg>
+              </div>
+              <span class="text-[9px] text-slate-400 mt-0.5">2″ Flight Suit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-6 w-px bg-slate-800 hidden sm:block"></div>
+
+        <div class="flex items-center gap-3">
+          <label class="flex items-center gap-1.5 cursor-pointer text-xs">
+            <input type="checkbox" id="chkEmbroidery" class="rounded border-slate-700 text-[#05336B] focus:ring-0">
+            <span>Embroidery Texture</span>
+          </label>
+          <span class="text-slate-500 font-mono text-[11px]">&bull; 3.5″ × 3.5″ (1:1)</span>
+        </div>
+      </div>
+
+      <!-- Offscreen Canvas for 1000x1000 PNG Rendering -->
+      <canvas id="exportCanvas" width="1000" height="1000" class="hidden"></canvas>
+    </div>
+
+    <!-- Inspector / Control Panel -->
+    <aside class="w-full lg:w-[410px] bg-slate-900/95 backdrop-blur border-l border-slate-800 flex flex-col h-auto lg:h-full max-h-screen overflow-y-auto">
+      
+      <!-- Tab Bar -->
+      <div class="flex border-b border-slate-800 bg-slate-950/80 text-xs font-semibold sticky top-0 z-20">
+        <button data-tab="tab-text" class="tab-btn flex-1 py-3 text-center border-b-2 border-blue-500 text-white">1. Typography</button>
+        <button data-tab="tab-grid" class="tab-btn flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200">2. Spacetime Grid</button>
+        <button data-tab="tab-logo" class="tab-btn flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200">3. Logo (Optional)</button>
+        <button data-tab="tab-theme" class="tab-btn flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200">4. Colors & Border</button>
+      </div>
+
+      <div class="p-5 space-y-5 flex-1 text-sm">
+
+        <!-- ================= TAB 1: TYPOGRAPHY ================= -->
+        <div id="tab-text" class="tab-content space-y-4">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-bold text-blue-400 block mb-1">Equatorial Typography</span>
+            <p class="text-xs text-slate-400">Centered across the patch equator. Directly drag on the canvas or use the controls below to adjust the curve, size, and font.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Patch Text</label>
+            <input type="text" id="inputText" value="BARUCH" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-black tracking-widest uppercase focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Font Family</label>
+            <select id="selectFont" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
+              <option value="'Alfa Slab One', cursive">Alfa Slab One (Collegiate Block)</option>
+              <option value="'Russo One', sans-serif">Russo One (Sci-Fi Slab)</option>
+              <option value="'Orbitron', sans-serif">Orbitron (NASA Geometric)</option>
+              <option value="'Montserrat', sans-serif">Montserrat Black (Heavy Modern)</option>
+              <option value="'Bebas Neue', sans-serif">Bebas Neue (Tall Condensed)</option>
+              <option value="'Chakra Petch', sans-serif">Chakra Petch (Aerospace Chamfer)</option>
+              <option value="'Syncopate', sans-serif">Syncopate (Ultra-Wide Modern)</option>
+              <option value="'Teko', sans-serif">Teko (Athletic Impact)</option>
+              <option value="'Righteous', cursive">Righteous (Curved Retro)</option>
+              <option value="'Black Ops One', cursive">Black Ops One (Military Stencil)</option>
+              <option value="'Cinzel', serif">Cinzel Black (Roman Seal)</option>
+            </select>
+          </div>
+
+          <!-- Curvature Slider -->
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300 font-semibold">Curvature Level</span>
+              <span id="lblTextCurve" class="text-blue-400 font-mono">0&deg; (Flat across equator)</span>
+            </div>
+            <input type="range" id="rngTextCurve" min="-75" max="75" value="0" class="w-full">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>-75&deg; (U-Arc)</span>
+              <span>0&deg; (Flat Equator)</span>
+              <span>+75&deg; (Dome Arch)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Font Size</span>
+                <span id="lblTextSize" class="text-slate-400 font-mono">132px</span>
+              </div>
+              <input type="range" id="rngTextSize" min="70" max="180" value="132" class="w-full">
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Letter Spacing</span>
+                <span id="lblLetterSpacing" class="text-slate-400 font-mono">12px</span>
+              </div>
+              <input type="range" id="rngLetterSpacing" min="0" max="45" value="12" class="w-full">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Position X</span>
+                <span id="lblTextX" class="text-slate-400 font-mono">500</span>
+              </div>
+              <input type="range" id="rngTextX" min="250" max="750" value="500" class="w-full">
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Position Y</span>
+                <span id="lblTextY" class="text-slate-400 font-mono">485</span>
+              </div>
+              <input type="range" id="rngTextY" min="250" max="750" value="485" class="w-full">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Letter Rendering</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button id="btnTextSolid" class="py-1.5 px-3 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-white font-semibold">Solid Fill</button>
+              <button id="btnTextOutline" class="py-1.5 px-3 rounded-lg border border-slate-700 bg-slate-950 text-slate-300">Outlines Only</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= TAB 2: SPACETIME GRID ================= -->
+        <div id="tab-grid" class="tab-content hidden space-y-4">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-bold text-blue-400 block mb-1">Fabric of Spacetime Topology</span>
+            <p class="text-xs text-slate-400">Curved mathematical models of general relativity and microgravity. Off-center focal point is fully adjustable and draggable.</p>
+          </div>
+
+          <!-- Topologies -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button data-topology="funnel" class="topo-btn py-2 px-2.5 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-left font-semibold text-white">
+              <span class="block text-xs">Wormhole Throat</span>
+              <span class="text-[10px] text-slate-400 font-normal">Funnel singularity</span>
+            </button>
+            <button data-topology="lensing" class="topo-btn py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block text-xs">Orbital Lensing</span>
+              <span class="text-[10px] text-slate-400 font-normal">Planetary deflection</span>
+            </button>
+            <button data-topology="hyperbolic" class="topo-btn py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block text-xs">Perspective Mesh</span>
+              <span class="text-[10px] text-slate-400 font-normal">Curved horizon sheet</span>
+            </button>
+            <button data-topology="frame-drag" class="topo-btn py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block text-xs">Kerr Vortex</span>
+              <span class="text-[10px] text-slate-400 font-normal">Rotational frame-drag</span>
+            </button>
+          </div>
+
+          <!-- Off-Center Coordinates -->
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300 font-semibold">Off-Center Gravity Focal Point</span>
+              <span class="text-[10px] text-blue-400">Drag &oplus; crosshair</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[11px] text-slate-400">Coord X: <span id="lblGridX" class="font-mono text-slate-200">680</span></label>
+                <input type="range" id="rngGridX" min="150" max="850" value="680" class="w-full">
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-400">Coord Y: <span id="lblGridY" class="font-mono text-slate-200">320</span></label>
+                <input type="range" id="rngGridY" min="150" max="850" value="320" class="w-full">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300">Curvature & Warp Strength</span>
+              <span id="lblWarpStrength" class="text-slate-400 font-mono">60</span>
+            </div>
+            <input type="range" id="rngWarpStrength" min="10" max="100" value="60" class="w-full">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Concentric Rings</span>
+                <span id="lblGridRings" class="text-slate-400 font-mono">22</span>
+              </div>
+              <input type="range" id="rngGridRings" min="8" max="36" value="22" class="w-full">
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Radial Spokes</span>
+                <span id="lblGridSpokes" class="text-slate-400 font-mono">26</span>
+              </div>
+              <input type="range" id="rngGridSpokes" min="8" max="44" value="26" class="w-full">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Grid Line Weight</span>
+                <span id="lblGridWeight" class="text-slate-400 font-mono">2.0px</span>
+              </div>
+              <input type="range" id="rngGridWeight" min="0.8" max="4.5" step="0.1" value="2.0" class="w-full">
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Grid Tilt Angle</span>
+                <span id="lblGridAngle" class="text-slate-400 font-mono">15&deg;</span>
+              </div>
+              <input type="range" id="rngGridAngle" min="-90" max="90" value="15" class="w-full">
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= TAB 3: LOGO (OPTIONAL UPLOAD) ================= -->
+        <div id="tab-logo" class="tab-content hidden space-y-4">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-bold text-blue-400 block mb-1">Optional Logo Layer</span>
+            <p class="text-xs text-slate-400">By default, no logo is displayed so your patch focuses purely on typography and the spacetime fabric. You can upload any image/SVG here.</p>
+          </div>
+
+          <!-- Uploader Box -->
+          <div class="p-3.5 bg-slate-950 border border-dashed border-slate-700 hover:border-blue-500 rounded-xl transition space-y-2.5">
+            <label class="block text-xs font-semibold text-slate-200">
+              Upload Your Logo File (PNG, JPG, SVG)
+            </label>
+            <input type="file" id="inputLogoFile" accept="image/*,.svg" class="block w-full text-xs text-slate-400 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-900/70 file:text-blue-200 hover:file:bg-blue-800 cursor-pointer">
+            <div id="logoActiveNotice" class="hidden flex items-center justify-between pt-1">
+              <span id="uploadedFileName" class="text-xs text-emerald-400 truncate max-w-[200px]">Logo Active</span>
+              <button id="btnRemoveLogo" class="text-xs text-rose-400 hover:text-rose-300 font-medium underline">
+                Remove Logo
+              </button>
+            </div>
+          </div>
+
+          <!-- Logo Controls (only active when logo is uploaded) -->
+          <div id="logoControlsContainer" class="opacity-50 pointer-events-none p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3 transition-opacity">
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1.5">Rendering Mode</label>
+              <div class="grid grid-cols-3 gap-1.5 text-xs">
+                <button id="modeOutline" class="logo-mode-btn py-1.5 px-2 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-white font-semibold text-center">Blue Outline</button>
+                <button id="modeTint" class="logo-mode-btn py-1.5 px-2 rounded-lg border border-slate-700 bg-slate-950 text-slate-300 text-center">Tint</button>
+                <button id="modeOriginal" class="logo-mode-btn py-1.5 px-2 rounded-lg border border-slate-700 bg-slate-950 text-slate-300 text-center">Full Color</button>
+              </div>
+            </div>
+
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300 font-semibold">Scale</span>
+              <span id="lblLogoScale" class="text-blue-400 font-mono">0.45</span>
+            </div>
+            <input type="range" id="rngLogoScale" min="0.15" max="0.80" step="0.01" value="0.45" class="w-full">
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-slate-300">Position X</span>
+                  <span id="lblLogoX" class="text-slate-400 font-mono">500</span>
+                </div>
+                <input type="range" id="rngLogoX" min="200" max="800" value="500" class="w-full">
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-slate-300">Position Y</span>
+                  <span id="lblLogoY" class="text-slate-400 font-mono">680</span>
+                </div>
+                <input type="range" id="rngLogoY" min="300" max="850" value="680" class="w-full">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-slate-300">Rotation</span>
+                  <span id="lblLogoRot" class="text-slate-400 font-mono">0&deg;</span>
+                </div>
+                <input type="range" id="rngLogoRot" min="-45" max="45" value="0" class="w-full">
+              </div>
+              <div class="flex items-end">
+                <button id="btnFlipLogo" class="w-full py-1.5 bg-slate-900 hover:bg-slate-800 rounded-lg text-xs text-slate-200 border border-slate-700 font-medium">
+                  Flip Horizontal
+                </button>
+              </div>
+            </div>
+
+            <button id="btnLogoCenterUnderText" class="w-full py-1.5 text-xs text-blue-400 hover:text-blue-300 underline text-center">
+              Snap Directly Under BARUCH Text
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= TAB 4: THEMES & BORDER ================= -->
+        <div id="tab-theme" class="tab-content hidden space-y-4">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-bold text-blue-400 block mb-1">Color Palette & Outer Border</span>
+            <p class="text-xs text-slate-400">Clicking "Generate New Patch" explores combinations. You can also customize each color manually or restore canonical defaults anytime.</p>
+          </div>
+
+          <!-- Curated Themes -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button id="presetOriginal" class="py-2 px-2.5 rounded-lg border-2 border-blue-500 bg-slate-950 text-left font-semibold text-white">
+              <span class="block">Original Canonical</span>
+              <span class="text-[10px] text-slate-400">White &bull; Black grid &bull; Baruch Blue</span>
+            </button>
+            <button id="presetDeepSpace" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block">Deep Space Cyan</span>
+              <span class="text-[10px] text-slate-400">Void &bull; Cyan mesh &bull; White text</span>
+            </button>
+            <button id="presetWormholePink" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block">Infrared Flare</span>
+              <span class="text-[10px] text-slate-400">Dark violet &bull; Hot pink &bull; Amber</span>
+            </button>
+            <button id="presetOrbitalGold" class="py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300">
+              <span class="block">Orbital Gold</span>
+              <span class="text-[10px] text-slate-400">Navy &bull; Gold mesh &bull; Sky blue</span>
+            </button>
+          </div>
+
+          <!-- Color Pickers -->
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300">Canvas Base Color</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="inputBgColor" value="#FFFFFF" class="w-7 h-7 rounded border border-slate-700 bg-transparent cursor-pointer">
+                <span id="lblBgColor" class="font-mono text-slate-400 text-[11px]">#FFFFFF</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300">Spacetime Grid Color</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="inputGridColor" value="#000000" class="w-7 h-7 rounded border border-slate-700 bg-transparent cursor-pointer">
+                <span id="lblGridColor" class="font-mono text-slate-400 text-[11px]">#000000</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300">BARUCH Text Color</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="inputTextColor" value="#05336B" class="w-7 h-7 rounded border border-slate-700 bg-transparent cursor-pointer">
+                <span id="lblTextColor" class="font-mono text-slate-400 text-[11px]">#05336B</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300">Outer Border Ring Color</span>
+              <div class="flex items-center gap-2">
+                <input type="color" id="inputBorderColor" value="#05336B" class="w-7 h-7 rounded border border-slate-700 bg-transparent cursor-pointer">
+                <span id="lblBorderColor" class="font-mono text-slate-400 text-[11px]">#05336B</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outer Border & Rim Text -->
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-slate-300">Border Ring Thickness</span>
+                <span id="lblBorderWidth" class="text-slate-400 font-mono">22px</span>
+              </div>
+              <input type="range" id="rngBorderWidth" min="4" max="44" value="22" class="w-full">
+            </div>
+
+            <div>
+              <label class="flex items-center justify-between cursor-pointer mb-1.5">
+                <span class="text-xs font-semibold text-slate-200">Orbital Rim Typography</span>
+                <input type="checkbox" id="chkRimText" checked class="rounded border-slate-700 text-[#05336B] focus:ring-0">
+              </label>
+              <input type="text" id="inputRimText" value="SSEP • ISS RESEARCH • 2027" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 tracking-wider">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Info -->
+      <div class="p-4 bg-slate-950 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+        <span>Baruch College SSEP 2027</span>
+        <span class="text-blue-400 font-mono">3.5″ × 3.5″ Output</span>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Diverse generative font choices
+    const GENERATIVE_FONTS = [
+      "'Alfa Slab One', cursive",
+      "'Russo One', sans-serif",
+      "'Orbitron', sans-serif",
+      "'Montserrat', sans-serif",
+      "'Bebas Neue', sans-serif",
+      "'Chakra Petch', sans-serif",
+      "'Syncopate', sans-serif",
+      "'Teko', sans-serif",
+      "'Righteous', cursive",
+      "'Black Ops One', cursive",
+      "'Cinzel', serif"
+    ];
+
+    // Diverse generative color themes
+    const GENERATIVE_COLOR_THEMES = [
+      { bg: "#FFFFFF", grid: "#000000", text: "#05336B", border: "#05336B" }, // Canonical Baruch Blue
+      { bg: "#020B1A", grid: "#38BDF8", text: "#FFFFFF", border: "#0284C7" }, // Orbit Cyan
+      { bg: "#030712", grid: "#EC4899", text: "#FBBF24", border: "#BE185D" }, // Deep Infrared
+      { bg: "#0F172A", grid: "#94A3B8", text: "#38BDF8", border: "#1E293B" }, // Aerospace Slate
+      { bg: "#000000", grid: "#22C55E", text: "#F8FAFC", border: "#15803D" }, // Terminal Matrix
+      { bg: "#1E1B4B", grid: "#818CF8", text: "#FDE047", border: "#4338CA" }, // Stellar Gold
+      { bg: "#FFFFFF", grid: "#05336B", text: "#05336B", border: "#05336B" }, // Baruch Blue Monotone
+      { bg: "#05336B", grid: "#7BAFD4", text: "#FFFFFF", border: "#FFFFFF" }  // White on Baruch Blue
+    ];
+
+    // Strict Canonical Original Baseline (skills.md)
+    const CANONICAL_ORIGINAL = {
+      text: "BARUCH",
+      fontFamily: "'Alfa Slab One', cursive",
+      textCurve: 0, // Flat across equator
+      textSize: 132,
+      letterSpacing: 12,
+      textX: 500,
+      textY: 485,
+      textSolid: true,
+
+      // Default patch has NO logo displayed
+      hasLogo: false,
+      logoSrc: null,
+      logoMode: "outline", // 'outline', 'tint', 'original'
+      logoScale: 0.45,
+      logoX: 500,
+      logoY: 680,
+      logoRot: 0,
+      logoFlipped: false,
+
+      // Spacetime Grid
+      gridTopology: "funnel",
+      gridX: 680,
+      gridY: 320,
+      gridWarp: 60,
+      gridRings: 22,
+      gridSpokes: 26,
+      gridWeight: 2.0,
+      gridAngle: 15,
+
+      // Canonical Palette
+      bgColor: "#FFFFFF",
+      gridColor: "#000000",
+      textColor: "#05336B",
+      borderColor: "#05336B",
+      borderWidth: 22,
+
+      showRimText: true,
+      rimText: "SSEP • ISS RESEARCH • 2027",
+      embroideryTexture: false
+    };
+
+    let state = JSON.parse(JSON.stringify(CANONICAL_ORIGINAL));
+
+    // Drag tracking
+    let activeDragTarget = null;
+    let dragStartPointer = { x: 0, y: 0 };
+    let dragElementOrigin = { x: 0, y: 0 };
+
+    // SVG References
+    const patchSvg = document.getElementById("patchSvg");
+    const spacetimeGridLayer = document.getElementById("spacetimeGridLayer");
+    const logoLayer = document.getElementById("logoLayer");
+    const typographyLayer = document.getElementById("typographyLayer");
+    const outerBorderLayer = document.getElementById("outerBorderLayer");
+    const gravityCrosshair = document.getElementById("gravityCrosshair");
+
+    // UI Tab Navigation
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          b.classList.remove("border-blue-500", "text-white");
+          b.classList.add("border-transparent", "text-slate-400");
+        });
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.add("hidden"));
+        btn.classList.add("border-blue-500", "text-white");
+        btn.classList.remove("border-transparent", "text-slate-400");
+        document.getElementById(btn.dataset.tab).classList.remove("hidden");
+      });
+    });
+
+    // Spacetime Topology Selector
+    document.querySelectorAll(".topo-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".topo-btn").forEach(b => {
+          b.className = "topo-btn py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300";
+        });
+        btn.className = "topo-btn py-2 px-2.5 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-left font-semibold text-white";
+        state.gridTopology = btn.dataset.topology;
+        render();
+      });
+    });
+
+    // Logo Upload Handling
+    document.getElementById("inputLogoFile").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        state.hasLogo = true;
+        state.logoSrc = event.target.result;
+        
+        document.getElementById("logoActiveNotice").classList.remove("hidden");
+        document.getElementById("uploadedFileName").textContent = file.name;
+        document.getElementById("logoControlsContainer").classList.remove("opacity-50", "pointer-events-none");
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Remove Logo Button
+    document.getElementById("btnRemoveLogo").addEventListener("click", () => {
+      state.hasLogo = false;
+      state.logoSrc = null;
+      document.getElementById("inputLogoFile").value = "";
+      document.getElementById("logoActiveNotice").classList.add("hidden");
+      document.getElementById("logoControlsContainer").classList.add("opacity-50", "pointer-events-none");
+      render();
+    });
+
+    // Logo Render Mode Buttons
+    document.getElementById("modeOutline").addEventListener("click", () => setLogoMode("outline"));
+    document.getElementById("modeTint").addEventListener("click", () => setLogoMode("tint"));
+    document.getElementById("modeOriginal").addEventListener("click", () => setLogoMode("original"));
+
+    function setLogoMode(mode) {
+      state.logoMode = mode;
+      document.querySelectorAll(".logo-mode-btn").forEach(b => {
+        b.className = "logo-mode-btn py-1.5 px-2 rounded-lg border border-slate-700 bg-slate-950 text-slate-300 text-center";
+      });
+      const activeBtn = mode === "outline" ? document.getElementById("modeOutline") : (mode === "tint" ? document.getElementById("modeTint") : document.getElementById("modeOriginal"));
+      activeBtn.className = "logo-mode-btn py-1.5 px-2 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-white font-semibold text-center";
+      render();
+    }
+
+    // Flip Logo
+    document.getElementById("btnFlipLogo").addEventListener("click", () => {
+      state.logoFlipped = !state.logoFlipped;
+      render();
+    });
+
+    // Snap Logo Under BARUCH Text
+    document.getElementById("btnLogoCenterUnderText").addEventListener("click", () => {
+      state.logoX = state.textX;
+      state.logoY = state.textY + 195;
+      syncUI();
+      render();
+    });
+
+    // Typography Solid / Outline Mode
+    document.getElementById("btnTextSolid").addEventListener("click", () => {
+      state.textSolid = true;
+      document.getElementById("btnTextSolid").className = "py-1.5 px-3 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-white font-semibold";
+      document.getElementById("btnTextOutline").className = "py-1.5 px-3 rounded-lg border border-slate-700 bg-slate-950 text-slate-300";
+      render();
+    });
+
+    document.getElementById("btnTextOutline").addEventListener("click", () => {
+      state.textSolid = false;
+      document.getElementById("btnTextOutline").className = "py-1.5 px-3 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-white font-semibold";
+      document.getElementById("btnTextSolid").className = "py-1.5 px-3 rounded-lg border border-slate-700 bg-slate-950 text-slate-300";
+      render();
+    });
+
+    // Embroidery Checkbox
+    document.getElementById("chkEmbroidery").addEventListener("change", (e) => {
+      state.embroideryTexture = e.target.checked;
+      if (state.embroideryTexture) patchSvg.classList.add("embroidery-mode");
+      else patchSvg.classList.remove("embroidery-mode");
+    });
+
+    // Two-way Control Bindings
+    function bindCtrl(id, key, lblId, formatter = v => v) {
+      const el = document.getElementById(id);
+      const lbl = lblId ? document.getElementById(lblId) : null;
+      el.addEventListener("input", (e) => {
+        const val = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "range" ? parseFloat(e.target.value) : e.target.value);
+        state[key] = val;
+        if (lbl) lbl.textContent = formatter(val);
+        render();
+      });
+    }
+
+    bindCtrl("inputText", "text");
+    bindCtrl("selectFont", "fontFamily");
+    bindCtrl("rngTextCurve", "textCurve", "lblTextCurve", v => v === 0 ? "0° (Flat across equator)" : (v > 0 ? `+${v}° (Dome Arch)` : `${v}° (U-Arc)`));
+    bindCtrl("rngTextSize", "textSize", "lblTextSize", v => `${v}px`);
+    bindCtrl("rngLetterSpacing", "letterSpacing", "lblLetterSpacing", v => `${v}px`);
+    bindCtrl("rngTextX", "textX", "lblTextX");
+    bindCtrl("rngTextY", "textY", "lblTextY");
+
+    bindCtrl("rngLogoScale", "logoScale", "lblLogoScale", v => v.toFixed(2));
+    bindCtrl("rngLogoX", "logoX", "lblLogoX");
+    bindCtrl("rngLogoY", "logoY", "lblLogoY");
+    bindCtrl("rngLogoRot", "logoRot", "lblLogoRot", v => `${v}°`);
+
+    bindCtrl("rngGridX", "gridX", "lblGridX");
+    bindCtrl("rngGridY", "gridY", "lblGridY");
+    bindCtrl("rngWarpStrength", "gridWarp", "lblWarpStrength");
+    bindCtrl("rngGridRings", "gridRings", "lblGridRings");
+    bindCtrl("rngGridSpokes", "gridSpokes", "lblGridSpokes");
+    bindCtrl("rngGridWeight", "gridWeight", "lblGridWeight", v => `${v}px`);
+    bindCtrl("rngGridAngle", "gridAngle", "lblGridAngle", v => `${v}°`);
+
+    bindCtrl("inputBgColor", "bgColor", "lblBgColor");
+    bindCtrl("inputGridColor", "gridColor", "lblGridColor");
+    bindCtrl("inputTextColor", "textColor", "lblTextColor");
+    bindCtrl("inputBorderColor", "borderColor", "lblBorderColor");
+    bindCtrl("rngBorderWidth", "borderWidth", "lblBorderWidth", v => `${v}px`);
+    bindCtrl("chkRimText", "showRimText");
+    bindCtrl("inputRimText", "rimText");
+
+    // Palette preset shortcuts
+    document.getElementById("presetOriginal").addEventListener("click", () => {
+      state.bgColor = "#FFFFFF";
+      state.gridColor = "#000000";
+      state.textColor = "#05336B";
+      state.borderColor = "#05336B";
+      updateColorInputs();
+      render();
+    });
+
+    document.getElementById("presetDeepSpace").addEventListener("click", () => {
+      state.bgColor = "#020B1A";
+      state.gridColor = "#38BDF8";
+      state.textColor = "#FFFFFF";
+      state.borderColor = "#0284C7";
+      updateColorInputs();
+      render();
+    });
+
+    document.getElementById("presetWormholePink").addEventListener("click", () => {
+      state.bgColor = "#030712";
+      state.gridColor = "#EC4899";
+      state.textColor = "#FBBF24";
+      state.borderColor = "#BE185D";
+      updateColorInputs();
+      render();
+    });
+
+    document.getElementById("presetOrbitalGold").addEventListener("click", () => {
+      state.bgColor = "#0B132B";
+      state.gridColor = "#FBBF24";
+      state.textColor = "#38BDF8";
+      state.borderColor = "#FBBF24";
+      updateColorInputs();
+      render();
+    });
+
+    function updateColorInputs() {
+      document.getElementById("inputBgColor").value = state.bgColor;
+      document.getElementById("lblBgColor").textContent = state.bgColor;
+      document.getElementById("inputGridColor").value = state.gridColor;
+      document.getElementById("lblGridColor").textContent = state.gridColor;
+      document.getElementById("inputTextColor").value = state.textColor;
+      document.getElementById("lblTextColor").textContent = state.textColor;
+      document.getElementById("inputBorderColor").value = state.borderColor;
+      document.getElementById("lblBorderColor").textContent = state.borderColor;
+    }
+
+    // ================= DIVERSE RANDOM GENERATION ENGINE =================
+    document.getElementById("btnNewPatch").addEventListener("click", () => {
+      // 1. Spacetime Topology Randomization
+      const topologies = ["funnel", "lensing", "hyperbolic", "frame-drag"];
+      state.gridTopology = topologies[Math.floor(Math.random() * topologies.length)];
+
+      // 2. Off-Center Coordinates (guaranteed non-centered)
+      const focalZones = [
+        { x: [620, 780], y: [240, 380] }, // Upper-Right
+        { x: [220, 380], y: [240, 380] }, // Upper-Left
+        { x: [640, 780], y: [620, 760] }, // Lower-Right
+        { x: [220, 360], y: [620, 760] }  // Lower-Left
+      ];
+      const zone = focalZones[Math.floor(Math.random() * focalZones.length)];
+      state.gridX = Math.floor(zone.x[0] + Math.random() * (zone.x[1] - zone.x[0]));
+      state.gridY = Math.floor(zone.y[0] + Math.random() * (zone.y[1] - zone.y[0]));
+      state.gridWarp = 35 + Math.floor(Math.random() * 55);
+      state.gridRings = 16 + Math.floor(Math.random() * 16);
+      state.gridSpokes = 18 + Math.floor(Math.random() * 20);
+      state.gridWeight = +(1.4 + Math.random() * 1.6).toFixed(1);
+      state.gridAngle = -45 + Math.floor(Math.random() * 90);
+
+      // 3. Font Family Randomization
+      state.fontFamily = GENERATIVE_FONTS[Math.floor(Math.random() * GENERATIVE_FONTS.length)];
+
+      // 4. Color Theme Randomization
+      const theme = GENERATIVE_COLOR_THEMES[Math.floor(Math.random() * GENERATIVE_COLOR_THEMES.length)];
+      state.bgColor = theme.bg;
+      state.gridColor = theme.grid;
+      state.textColor = theme.text;
+      state.borderColor = theme.border;
+
+      // 5. Curvature Randomization
+      state.textCurve = Math.floor(-35 + Math.random() * 80);
+
+      syncUI();
+      render();
+    });
+
+    // ================= RESET TO CANONICAL ORIGINAL =================
+    document.getElementById("btnResetOriginal").addEventListener("click", () => {
+      state = JSON.parse(JSON.stringify(CANONICAL_ORIGINAL));
+      state.hasLogo = false;
+      state.logoSrc = null;
+      document.getElementById("inputLogoFile").value = "";
+      document.getElementById("logoActiveNotice").classList.add("hidden");
+      document.getElementById("logoControlsContainer").classList.add("opacity-50", "pointer-events-none");
+      syncUI();
+      render();
+    });
+
+    function syncUI() {
+      document.getElementById("inputText").value = state.text;
+      document.getElementById("selectFont").value = state.fontFamily;
+      document.getElementById("rngTextCurve").value = state.textCurve;
+      document.getElementById("lblTextCurve").textContent = state.textCurve === 0 ? "0° (Flat across equator)" : `${state.textCurve}°`;
+      document.getElementById("rngTextSize").value = state.textSize;
+      document.getElementById("lblTextSize").textContent = `${state.textSize}px`;
+      document.getElementById("rngLetterSpacing").value = state.letterSpacing;
+      document.getElementById("lblLetterSpacing").textContent = `${state.letterSpacing}px`;
+      document.getElementById("rngTextX").value = state.textX;
+      document.getElementById("lblTextX").textContent = Math.round(state.textX);
+      document.getElementById("rngTextY").value = state.textY;
+      document.getElementById("lblTextY").textContent = Math.round(state.textY);
+
+      document.getElementById("rngLogoScale").value = state.logoScale;
+      document.getElementById("lblLogoScale").textContent = state.logoScale.toFixed(2);
+      document.getElementById("rngLogoX").value = state.logoX;
+      document.getElementById("lblLogoX").textContent = Math.round(state.logoX);
+      document.getElementById("rngLogoY").value = state.logoY;
+      document.getElementById("lblLogoY").textContent = Math.round(state.logoY);
+      document.getElementById("rngLogoRot").value = state.logoRot;
+      document.getElementById("lblLogoRot").textContent = `${state.logoRot}°`;
+
+      document.getElementById("rngGridX").value = state.gridX;
+      document.getElementById("lblGridX").textContent = Math.round(state.gridX);
+      document.getElementById("rngGridY").value = state.gridY;
+      document.getElementById("lblGridY").textContent = Math.round(state.gridY);
+      document.getElementById("rngWarpStrength").value = state.gridWarp;
+      document.getElementById("lblWarpStrength").textContent = state.gridWarp;
+      document.getElementById("rngGridRings").value = state.gridRings;
+      document.getElementById("lblGridRings").textContent = state.gridRings;
+      document.getElementById("rngGridSpokes").value = state.gridSpokes;
+      document.getElementById("lblGridSpokes").textContent = state.gridSpokes;
+      document.getElementById("rngGridWeight").value = state.gridWeight;
+      document.getElementById("lblGridWeight").textContent = `${state.gridWeight}px`;
+      document.getElementById("rngGridAngle").value = state.gridAngle;
+      document.getElementById("lblGridAngle").textContent = `${state.gridAngle}°`;
+
+      updateColorInputs();
+
+      document.querySelectorAll(".topo-btn").forEach(b => {
+        if (b.dataset.topology === state.gridTopology) {
+          b.className = "topo-btn py-2 px-2.5 rounded-lg border-2 border-blue-500 bg-blue-950/50 text-left font-semibold text-white";
+        } else {
+          b.className = "topo-btn py-2 px-2.5 rounded-lg border border-slate-700 bg-slate-950 text-left font-semibold text-slate-300";
+        }
+      });
+
+      setLogoMode(state.logoMode);
+    }
+
+    function hexToRgbRatio(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      const num = parseInt(hex, 16);
+      return {
+        r: ((num >> 16) & 255) / 255,
+        g: ((num >> 8) & 255) / 255,
+        b: (num & 255) / 255
+      };
+    }
+
+    function updateFilters() {
+      const rgb = hexToRgbRatio(state.textColor);
+      document.getElementById("logoFloodColor").setAttribute("flood-color", state.textColor);
+      document.getElementById("logoMatrix").setAttribute("values", `
+        0 0 0 0 ${rgb.r.toFixed(4)}
+        0 0 0 0 ${rgb.g.toFixed(4)}
+        0 0 0 0 ${rgb.b.toFixed(4)}
+        0 0 0 1 0
+      `);
+    }
+
+    // ================= DRAWING FUNCTIONS =================
+
+    // 1. Spacetime Grid Drawing (NO solid background, pure grid)
+    function drawSpacetimeGrid() {
+      spacetimeGridLayer.innerHTML = "";
+      const gx = state.gridX;
+      const gy = state.gridY;
+      const warp = state.gridWarp / 50.0;
+      const strokeW = state.gridWeight;
+      const gColor = state.gridColor;
+
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("transform", `rotate(${state.gridAngle} ${gx} ${gy})`);
+
+      if (state.gridTopology === "funnel") {
+        // Gravitational Funnel / Wormhole Throat
+        const rings = state.gridRings;
+        for (let i = 1; i <= rings; i++) {
+          const t = i / rings;
+          const rx = 16 + Math.pow(t, 2.1) * 620;
+          const ry = (16 + Math.pow(t, 2.1) * 620) * (0.64 + 0.28 * Math.sin(t * Math.PI));
+          const el = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+          el.setAttribute("cx", gx);
+          el.setAttribute("cy", gy);
+          el.setAttribute("rx", rx.toFixed(1));
+          el.setAttribute("ry", ry.toFixed(1));
+          el.setAttribute("fill", "none");
+          el.setAttribute("stroke", gColor);
+          el.setAttribute("stroke-width", strokeW);
+          el.setAttribute("opacity", (0.95 - t * 0.15).toFixed(2));
+          g.appendChild(el);
+        }
+
+        const spokes = state.gridSpokes;
+        for (let s = 0; s < spokes; s++) {
+          const baseAngle = (s / spokes) * Math.PI * 2;
+          let d = "";
+          const steps = 36;
+          for (let step = 0; step <= steps; step++) {
+            const t = step / steps;
+            const dist = 16 + Math.pow(t, 1.85) * 640;
+            const swirl = (1 - t) * 0.32 * warp;
+            const angle = baseAngle + swirl;
+            const x = gx + Math.cos(angle) * dist;
+            const y = gy + Math.sin(angle) * dist * 0.72;
+            d += (step === 0 ? "M" : "L") + ` ${x.toFixed(1)},${y.toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+
+      } else if (state.gridTopology === "lensing") {
+        // Gravitational Lensing Around Off-Center Mass
+        const radius = 135 * (warp * 0.85);
+        const lats = state.gridRings;
+        for (let i = 0; i <= lats; i++) {
+          const t = (i / lats) * 2 - 1;
+          const yBase = 500 + t * 440;
+          let d = "";
+          const steps = 52;
+          for (let s = 0; s <= steps; s++) {
+            const u = (s / steps) * 2 - 1;
+            const x = 500 + u * 460;
+            const dx = x - gx;
+            const dy = yBase - gy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            let xc = x;
+            let yc = yBase;
+            if (dist < radius * 2.8) {
+              const f = Math.exp(-Math.pow(dist / (radius * 1.4), 2)) * 85 * warp;
+              const angle = Math.atan2(dy, dx);
+              xc += Math.cos(angle) * f * 0.45;
+              yc += Math.sin(angle) * f * 1.30;
+            }
+            d += (s === 0 ? "M" : "L") + ` ${xc.toFixed(1)},${yc.toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+
+        const lons = state.gridSpokes;
+        for (let j = 0; j <= lons; j++) {
+          const t = (j / lons) * 2 - 1;
+          const xBase = 500 + t * 440;
+          let d = "";
+          const steps = 52;
+          for (let s = 0; s <= steps; s++) {
+            const u = (s / steps) * 2 - 1;
+            const y = 500 + u * 460;
+            const dx = xBase - gx;
+            const dy = y - gy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            let xc = xBase;
+            let yc = y;
+            if (dist < radius * 2.8) {
+              const f = Math.exp(-Math.pow(dist / (radius * 1.4), 2)) * 85 * warp;
+              const angle = Math.atan2(dy, dx);
+              xc += Math.cos(angle) * f * 1.30;
+              yc += Math.sin(angle) * f * 0.45;
+            }
+            d += (s === 0 ? "M" : "L") + ` ${xc.toFixed(1)},${yc.toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+
+      } else if (state.gridTopology === "hyperbolic") {
+        // Perspective Hyperbolic Mesh
+        const lats = state.gridRings;
+        for (let i = 0; i <= lats; i++) {
+          const t = i / lats;
+          const yBase = 80 + Math.pow(t, 1.45) * 820;
+          let d = "";
+          const steps = 48;
+          for (let s = 0; s <= steps; s++) {
+            const u = (s / steps) * 2 - 1;
+            const x = 500 + u * (380 + t * 220);
+            const dx = x - gx;
+            const dy = yBase - gy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const dip = Math.exp(-dist / (240 * warp)) * 140 * warp;
+            d += (s === 0 ? "M" : "L") + ` ${x.toFixed(1)},${(yBase + dip).toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+
+        const lons = state.gridSpokes;
+        for (let j = 0; j <= lons; j++) {
+          const u = (j / lons) * 2 - 1;
+          let d = "";
+          const steps = 42;
+          for (let s = 0; s <= steps; s++) {
+            const t = s / steps;
+            const yBase = 80 + Math.pow(t, 1.45) * 820;
+            const xBase = 500 + u * (380 + t * 220);
+            const dx = xBase - gx;
+            const dy = yBase - gy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const dip = Math.exp(-dist / (240 * warp)) * 140 * warp;
+            const pullX = (gx - xBase) * Math.exp(-dist / (260 * warp)) * 0.45;
+            d += (s === 0 ? "M" : "L") + ` ${(xBase + pullX).toFixed(1)},${(yBase + dip).toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+
+      } else {
+        // Kerr Rotational Vortex / Frame Dragging
+        const rings = state.gridRings;
+        for (let i = 1; i <= rings; i++) {
+          const t = i / rings;
+          const radius = 24 + Math.pow(t, 1.65) * 560;
+          const el = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+          el.setAttribute("cx", gx);
+          el.setAttribute("cy", gy);
+          el.setAttribute("rx", radius.toFixed(1));
+          el.setAttribute("ry", (radius * 0.88).toFixed(1));
+          el.setAttribute("fill", "none");
+          el.setAttribute("stroke", gColor);
+          el.setAttribute("stroke-width", strokeW);
+          g.appendChild(el);
+        }
+
+        const spokes = state.gridSpokes;
+        for (let s = 0; s < spokes; s++) {
+          const baseAngle = (s / spokes) * Math.PI * 2;
+          let d = "";
+          const steps = 40;
+          for (let st = 0; st <= steps; st++) {
+            const t = st / steps;
+            const dist = 24 + Math.pow(t, 1.65) * 570;
+            const theta = baseAngle + (1 - t) * 1.5 * warp;
+            const x = gx + Math.cos(theta) * dist;
+            const y = gy + Math.sin(theta) * dist * 0.88;
+            d += (st === 0 ? "M" : "L") + ` ${x.toFixed(1)},${y.toFixed(1)}`;
+          }
+          const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          p.setAttribute("d", d);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", gColor);
+          p.setAttribute("stroke-width", strokeW);
+          g.appendChild(p);
+        }
+      }
+
+      spacetimeGridLayer.appendChild(g);
+
+      // Position Drag Crosshair for Gravity Well
+      document.getElementById("gravRing").setAttribute("cx", gx);
+      document.getElementById("gravRing").setAttribute("cy", gy);
+      document.getElementById("gravRing").setAttribute("stroke", state.textColor);
+      document.getElementById("gravCenter").setAttribute("cx", gx);
+      document.getElementById("gravCenter").setAttribute("cy", gy);
+      document.getElementById("gravCenter").setAttribute("fill", state.textColor);
+      document.getElementById("gravLineH").setAttribute("x1", gx - 20);
+      document.getElementById("gravLineH").setAttribute("x2", gx + 20);
+      document.getElementById("gravLineH").setAttribute("y1", gy);
+      document.getElementById("gravLineH").setAttribute("y2", gy);
+      document.getElementById("gravLineH").setAttribute("stroke", state.textColor);
+      document.getElementById("gravLineV").setAttribute("x1", gx);
+      document.getElementById("gravLineV").setAttribute("x2", gx);
+      document.getElementById("gravLineV").setAttribute("y1", gy - 20);
+      document.getElementById("gravLineV").setAttribute("y2", gy + 20);
+      document.getElementById("gravLineV").setAttribute("stroke", state.textColor);
+    }
+
+    // 2. Logo Layer (ONLY renders if user has uploaded a custom file)
+    function drawLogoLayer() {
+      logoLayer.innerHTML = "";
+      if (!state.hasLogo || !state.logoSrc) return;
+
+      updateFilters();
+      const lx = state.logoX;
+      const ly = state.logoY;
+      const scale = state.logoScale;
+      const rot = state.logoRot;
+      const flip = state.logoFlipped ? -1 : 1;
+
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("transform", `translate(${lx}, ${ly}) rotate(${rot}) scale(${scale * flip}, ${scale}) translate(-250, -250)`);
+
+      const img = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      img.setAttribute("href", state.logoSrc);
+      img.setAttribute("width", "500");
+      img.setAttribute("height", "500");
+      img.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+      if (state.logoMode === "outline") {
+        img.setAttribute("filter", "url(#logoOutlineFilter)");
+      } else if (state.logoMode === "tint") {
+        img.setAttribute("filter", "url(#logoTintFilter)");
+      }
+
+      g.appendChild(img);
+      logoLayer.appendChild(g);
+    }
+
+    // 3. BARUCH Typography (Equatorial & Continuously Curved)
+    function drawTypography() {
+      typographyLayer.innerHTML = "";
+      const text = state.text.toUpperCase();
+      if (!text) return;
+
+      const len = text.length;
+      const size = state.textSize;
+      const spacing = state.letterSpacing;
+      const cx = state.textX;
+      const cy = state.textY;
+      const curve = state.textCurve;
+      const tColor = state.textColor;
+      const font = state.fontFamily;
+
+      const charWidth = size * 0.70 + spacing;
+      const totalWidth = len * charWidth - spacing;
+      const startX = cx - totalWidth / 2;
+
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+      for (let i = 0; i < len; i++) {
+        const char = text[i];
+        const charCenterX = startX + i * charWidth + charWidth / 2;
+        const normX = totalWidth === 0 ? 0 : ((charCenterX - cx) / (totalWidth / 2 || 1));
+        
+        // Exact mathematical arc: 0 is completely flat across the equator
+        const yOffset = -curve * (1 - Math.pow(normX, 2)) * 1.7;
+        const charY = cy + yOffset;
+        const rot = curve !== 0 ? (normX * curve * 0.52) : 0;
+
+        const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        t.textContent = char;
+        t.setAttribute("x", charCenterX);
+        t.setAttribute("y", charY + size * 0.35);
+        t.setAttribute("text-anchor", "middle");
+        t.setAttribute("font-family", font);
+        t.setAttribute("font-size", size);
+        t.setAttribute("font-weight", "900");
+
+        if (state.textSolid) {
+          t.setAttribute("fill", tColor);
+          t.setAttribute("stroke", tColor);
+          t.setAttribute("stroke-width", "2");
+        } else {
+          t.setAttribute("fill", "none");
+          t.setAttribute("stroke", tColor);
+          t.setAttribute("stroke-width", "5.5");
+        }
+
+        t.setAttribute("stroke-linejoin", "round");
+        t.setAttribute("stroke-linecap", "round");
+
+        if (rot !== 0) {
+          t.setAttribute("transform", `rotate(${rot.toFixed(1)} ${charCenterX} ${charY})`);
+        }
+
+        g.appendChild(t);
+      }
+
+      typographyLayer.appendChild(g);
+    }
+
+    // 4. Outer Boundary Frame & Orbital Rim Text
+    function drawOuterFrame() {
+      outerBorderLayer.innerHTML = "";
+      const cx = 500, cy = 500, r = 425;
+      const bw = state.borderWidth;
+      const borderColor = state.borderColor;
+
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("cx", cx);
+      c.setAttribute("cy", cy);
+      c.setAttribute("r", r);
+      c.setAttribute("fill", "none");
+      c.setAttribute("stroke", borderColor);
+      c.setAttribute("stroke-width", bw);
+      outerBorderLayer.appendChild(c);
+
+      const inner = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      inner.setAttribute("cx", cx);
+      inner.setAttribute("cy", cy);
+      inner.setAttribute("r", r - bw / 2 - 2);
+      inner.setAttribute("fill", "none");
+      inner.setAttribute("stroke", borderColor);
+      inner.setAttribute("stroke-width", "1.5");
+      outerBorderLayer.appendChild(inner);
+
+      if (state.showRimText && state.rimText.trim() !== "") {
+        const rimRadius = r + bw / 2 + 18;
+        const pathId = "patchRimPath";
+        let pathDef = document.getElementById(pathId);
+        if (!pathDef) {
+          pathDef = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          pathDef.setAttribute("id", pathId);
+          patchSvg.querySelector("defs").appendChild(pathDef);
+        }
+        pathDef.setAttribute("d", `M ${cx - rimRadius} ${cy} A ${rimRadius} ${rimRadius} 0 0 0 ${cx + rimRadius} ${cy}`);
+
+        const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textEl.setAttribute("font-family", "'Space Grotesk', sans-serif");
+        textEl.setAttribute("font-size", "22");
+        textEl.setAttribute("font-weight", "800");
+        textEl.setAttribute("letter-spacing", "4.5");
+        textEl.setAttribute("fill", borderColor);
+
+        const textPath = document.createElementNS("http://www.w3.org/2000/svg", "textPath");
+        textPath.setAttribute("href", `#${pathId}`);
+        textPath.setAttribute("startOffset", "50%");
+        textPath.setAttribute("text-anchor", "middle");
+        textPath.textContent = state.rimText;
+
+        textEl.appendChild(textPath);
+        outerBorderLayer.appendChild(textEl);
+      }
+    }
+
+    // Master Render Call
+    function render() {
+      patchSvg.style.backgroundColor = state.bgColor;
+      drawSpacetimeGrid();
+      drawLogoLayer();
+      drawTypography();
+      drawOuterFrame();
+    }
+
+    // ================= DIRECT ON-CANVAS DRAGGING =================
+    function getSvgPoint(e) {
+      const p = patchSvg.createSVGPoint();
+      p.x = e.clientX;
+      p.y = e.clientY;
+      return p.matrixTransform(patchSvg.getScreenCTM().inverse());
+    }
+
+    function initInteractiveDragging() {
+      typographyLayer.addEventListener("mousedown", (e) => startCanvasDrag("text", e));
+      typographyLayer.addEventListener("touchstart", (e) => startCanvasDrag("text", e.touches[0]), { passive: false });
+
+      logoLayer.addEventListener("mousedown", (e) => startCanvasDrag("logo", e));
+      logoLayer.addEventListener("touchstart", (e) => startCanvasDrag("logo", e.touches[0]), { passive: false });
+
+      gravityCrosshair.addEventListener("mousedown", (e) => startCanvasDrag("grid", e));
+      gravityCrosshair.addEventListener("touchstart", (e) => startCanvasDrag("grid", e.touches[0]), { passive: false });
+
+      window.addEventListener("mousemove", onCanvasDrag);
+      window.addEventListener("touchmove", (e) => {
+        if (activeDragTarget) {
+          e.preventDefault();
+          onCanvasDrag(e.touches[0]);
+        }
+      }, { passive: false });
+
+      window.addEventListener("mouseup", endCanvasDrag);
+      window.addEventListener("touchend", endCanvasDrag);
+    }
+
+    function startCanvasDrag(target, e) {
+      activeDragTarget = target;
+      const pt = getSvgPoint(e);
+      dragStartPointer = { x: pt.x, y: pt.y };
+
+      if (target === "text") dragElementOrigin = { x: state.textX, y: state.textY };
+      else if (target === "logo") dragElementOrigin = { x: state.logoX, y: state.logoY };
+      else if (target === "grid") dragElementOrigin = { x: state.gridX, y: state.gridY };
+    }
+
+    function onCanvasDrag(e) {
+      if (!activeDragTarget) return;
+      const pt = getSvgPoint(e);
+      const dx = pt.x - dragStartPointer.x;
+      const dy = pt.y - dragStartPointer.y;
+
+      if (activeDragTarget === "text") {
+        state.textX = Math.round(Math.max(250, Math.min(750, dragElementOrigin.x + dx)));
+        state.textY = Math.round(Math.max(250, Math.min(750, dragElementOrigin.y + dy)));
+        document.getElementById("rngTextX").value = state.textX;
+        document.getElementById("lblTextX").textContent = state.textX;
+        document.getElementById("rngTextY").value = state.textY;
+        document.getElementById("lblTextY").textContent = state.textY;
+      } else if (activeDragTarget === "logo") {
+        state.logoX = Math.round(Math.max(200, Math.min(800, dragElementOrigin.x + dx)));
+        state.logoY = Math.round(Math.max(300, Math.min(850, dragElementOrigin.y + dy)));
+        document.getElementById("rngLogoX").value = state.logoX;
+        document.getElementById("lblLogoX").textContent = state.logoX;
+        document.getElementById("rngLogoY").value = state.logoY;
+        document.getElementById("lblLogoY").textContent = state.logoY;
+      } else if (activeDragTarget === "grid") {
+        state.gridX = Math.round(Math.max(150, Math.min(850, dragElementOrigin.x + dx)));
+        state.gridY = Math.round(Math.max(150, Math.min(850, dragElementOrigin.y + dy)));
+        document.getElementById("rngGridX").value = state.gridX;
+        document.getElementById("lblGridX").textContent = state.gridX;
+        document.getElementById("rngGridY").value = state.gridY;
+        document.getElementById("lblGridY").textContent = state.gridY;
+      }
+      render();
+    }
+
+    function endCanvasDrag() {
+      activeDragTarget = null;
+    }
+
+    // ================= 1000 x 1000 PNG EXPORT (3.5" x 3.5" 1:1) =================
+    document.getElementById("btnExport").addEventListener("click", () => {
+      gravityCrosshair.style.display = "none";
+
+      const svgData = new XMLSerializer().serializeToString(patchSvg);
+      const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const URL = window.URL || window.webkitURL || window;
+      const blobURL = URL.createObjectURL(svgBlob);
+
+      const canvas = document.getElementById("exportCanvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+
+      img.onload = () => {
+        ctx.clearRect(0, 0, 1000, 1000);
+        ctx.fillStyle = state.bgColor;
+        ctx.fillRect(0, 0, 1000, 1000);
+        ctx.drawImage(img, 0, 0, 1000, 1000);
+
+        const pngUrl = canvas.toDataURL("image/png");
+        const a = document.createElement("a");
+        a.download = `Baruch-SSEP-MissionPatch-${Date.now()}.png`;
+        a.href = pngUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(blobURL);
+        gravityCrosshair.style.display = "";
+      };
+
+      img.src = blobURL;
+    });
+
+    window.onload = () => {
+      initInteractiveDragging();
+      syncUI();
+      render();
+    };
+  </script>
+</body>
+</html>
