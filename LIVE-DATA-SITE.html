@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyper-Affect Pinterest Trend Stream Poster Studio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&family=UnifrakturCook:wght@700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+    :root {
+      --bg-dark: #08080a;
+      --panel-bg: #111116;
+      --panel-border: #1f1f28;
+      --accent: #ff2a2a;
+      --accent-toxic: #eaff00;
+      --text-main: #f0f0f5;
+      --text-muted: #8b8b99;
+      --input-bg: #181822;
+      --input-border: #2c2c3b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .app-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 450px;
+      min-width: 450px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 18px 100px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--input-border);
+      border-radius: 3px;
+    }
+
+    .app-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e60023;
+    }
+
+    .control-group {
+      background: #0d0d12;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .group-title {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 4px;
+      margin-bottom: 2px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-main);
+      gap: 4px;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .val-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent-toxic);
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    textarea {
+      font-family: 'Space Mono', monospace;
+      resize: vertical;
+      font-size: 0.68rem;
+      line-height: 1.35;
+    }
+
+    .btn-toggle-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-toggle-group button {
+      flex: 1;
+      padding: 6px 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid var(--panel-border);
+      background: #1c1c24;
+      color: #fff;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+    }
+
+    .btn-toggle-group button.active {
+      background: #e60023;
+      color: #fff;
+      border-color: #e60023;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: var(--input-border);
+      height: 4px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-toxic);
+      cursor: pointer;
+    }
+
+    .btn-action {
+      background: #1c1c28;
+      color: #fff;
+      border: 1px solid var(--panel-border);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .btn-action:hover {
+      border-color: #e60023;
+      color: #e60023;
+    }
+
+    .button-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 450px;
+      background: rgba(17, 17, 22, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--panel-border);
+      padding: 12px 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .button-dock button {
+      padding: 9px 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-random { background: #eaff00; color: #000; }
+    .btn-back { background: #3b284c; color: #e9ffff; border: 1px solid #6b3d8f; }
+    .btn-revert { background: #2b2b36; color: #fff; border: 1px solid var(--panel-border); }
+    .btn-export { background: var(--accent); color: #fff; }
+
+    .viewport {
+      flex: 1;
+      background: #030305;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .poster-frame {
+      height: 95vh;
+      max-height: 1200px;
+      aspect-ratio: 900 / 1200;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95);
+      background: #000;
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #posterSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .interactive-element {
+      cursor: grab;
+      user-select: none;
+    }
+
+    .interactive-element:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <div>
+        <h1 class="app-title">Pinterest Trend Stream</h1>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">1-Minute Alternating Image Stream</div>
+        <div class="label-row">
+          <span style="font-size:0.7rem; font-weight:600;">Next Trend Switch</span>
+          <span class="val-display" id="valCountdown">60s</span>
+        </div>
+        <div class="label-row">
+          <span style="font-size:0.7rem; font-weight:600;">Current Trend Search</span>
+          <span class="val-display" id="valCurrentSearch" style="color:#ff3355;">CYBERPUNK RAVE</span>
+        </div>
+        <div class="label-row">
+          <span style="font-size:0.7rem; font-weight:600;">Active Cycle Phase</span>
+          <span class="val-display" id="valPhaseIndicator" style="color:#eaff00;">ALTERNATING SET A</span>
+        </div>
+        <div class="label-row">
+          <span style="font-size:0.7rem; font-weight:600;">Unique Visual Pool</span>
+          <span class="val-display" id="valPoolRemaining">--</span>
+        </div>
+        <label>
+          Stream Status
+          <div class="btn-toggle-group">
+            <button id="btnStreamOn" class="active">Active (60s)</button>
+            <button id="btnStreamOff">Paused</button>
+          </div>
+        </label>
+        <label>
+          Image Filter Mode
+          <select id="selectImgMode">
+            <option value="raw">Raw Photographic</option>
+            <option value="graded" selected>Graded Duotone Glitch</option>
+            <option value="acid">Full Acid Displacement</option>
+          </select>
+        </label>
+        <button id="btnForceCycle" class="btn-action">Force Cycle Next Search Now</button>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Procedural Rip Archetype & Layers</div>
+        <label>Rip Archetype</label>
+        <select id="selectRipArchetype">
+          <option value="diagonal">Diagonal Slashes</option>
+          <option value="horizontal">Horizontal Tears</option>
+          <option value="vTear">V-Notch Bite</option>
+          <option value="peeledPatch">Peeled Center Window</option>
+        </select>
+        <div class="btn-toggle-group">
+          <button id="btnRipCount0">0</button>
+          <button id="btnRipCount1">1 Rip</button>
+          <button id="btnRipCount2" class="active">2 Rips</button>
+        </div>
+        <label>
+          <div class="label-row">
+            <span>Primary Tear Depth</span>
+            <span class="val-display" id="valRipY1">590px</span>
+          </div>
+          <input type="range" id="rangeRipY1" min="150" max="850" value="590">
+        </label>
+        <label>
+          <div class="label-row">
+            <span>Secondary Tear Depth</span>
+            <span class="val-display" id="valRipY2">750px</span>
+          </div>
+          <input type="range" id="rangeRipY2" min="300" max="1050" value="750">
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Interactive Typography</div>
+        <label>
+          Headline
+          <input type="text" id="inputHeadline" value="CYBERPUNK RAVE">
+        </label>
+        <label>
+          Subline
+          <input type="text" id="inputSubline" value="PINTEREST TREND ENGINE">
+        </label>
+        <label>
+          Listing Stream
+          <textarea id="inputDates" rows="4"></textarea>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="group-title">Distortion & Sheen</div>
+        <label>
+          <div class="label-row">
+            <span>Thermal Warp Scale</span>
+            <span class="val-display" id="valWarp">45</span>
+          </div>
+          <input type="range" id="rangeWarp" min="0" max="100" value="45">
+        </label>
+        <label>
+          <div class="label-row">
+            <span>Gloss Reflection</span>
+            <span class="val-display" id="valGloss">65%</span>
+          </div>
+          <input type="range" id="rangeGloss" min="0" max="100" value="65">
+        </label>
+      </div>
+    </aside>
+
+    <div class="button-dock">
+      <button class="btn-random" id="btnRandomize">Random</button>
+      <button class="btn-back" id="btnLastGen">Back</button>
+      <button class="btn-revert" id="btnRevert">Reset</button>
+      <button class="btn-export" id="btnExport">Export</button>
+    </div>
+
+    <main class="viewport">
+      <div class="poster-frame">
+        <svg id="posterSvg" viewBox="0 0 900 1200" width="900" height="1200" xmlns="http://www.w3.org/2000/svg">
+          <defs id="svgDefs">
+            <style>
+              .f-headline { font-family: 'Bebas Neue', sans-serif; font-weight: 400; }
+              .f-gothic { font-family: 'UnifrakturCook', cursive; font-weight: 700; }
+              .f-sans { font-family: 'Inter', sans-serif; }
+              .f-bold-sans { font-family: 'Inter', sans-serif; font-weight: 800; }
+              .f-mono { font-family: 'Space Mono', monospace; }
+            </style>
+
+            <filter id="thermalFilter" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" id="turbFilter" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="45" xChannelSelector="R" yChannelSelector="G" result="warped" id="dispFilter" />
+              <feColorMatrix type="matrix" in="warped" id="colorMatrixFilter"
+                values="-1.5  1.2  0.8  0.0  0.1
+                         0.6 -1.8  1.4  0.0  0.2
+                         1.8  0.4 -1.6  0.0  0.1
+                         0.0  0.0  0.0  1.0  0.0" />
+            </filter>
+
+            <filter id="underneathFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="uNoise" />
+              <feDisplacementMap in="SourceGraphic" in2="uNoise" scale="35" result="uWarp" />
+              <feColorMatrix type="matrix" in="uWarp" id="underneathMatrix"
+                values=" 2.0 -0.5 -0.5  0.0  0.1
+                        -0.5  0.2  1.8  0.0  0.1
+                         1.2 -1.5  0.5  0.0  0.2
+                         0.0  0.0  0.0  1.0  0.0" />
+            </filter>
+
+            <filter id="ripShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+              <feOffset dx="-2" dy="7" result="offset" />
+              <feFlood flood-color="#000000" flood-opacity="0.92" />
+              <feComposite in2="offset" operator="in" />
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <linearGradient id="glossGradTop" x1="0" y1="0" x2="0.6" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+              <stop offset="35%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="glossGradBottom" x1="1" y1="1" x2="0.3" y2="0">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+              <stop offset="40%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+
+            <!-- Original Poster Icons -->
+            <g id="asset-orig-star">
+              <polygon points="0,-28 8,-9 28,-9 12,3 18,23 0,11 -18,23 -12,3 -28,-9 -8,-9" fill="none" stroke="currentColor" stroke-width="2.5" />
+              <circle cx="0" cy="0" r="7" fill="currentColor" opacity="0.8" />
+              <text class="f-bold-sans" font-size="10" font-weight="900" fill="currentColor" text-anchor="middle" y="38" letter-spacing="0.5">UNITED</text>
+              <text class="f-bold-sans" font-size="10" font-weight="900" fill="currentColor" text-anchor="middle" y="49" letter-spacing="0.5">STATES</text>
+            </g>
+
+            <g id="asset-orig-capsule">
+              <rect x="-24" y="-55" width="48" height="110" rx="24" fill="none" stroke="currentColor" stroke-width="4.5" />
+              <ellipse cx="0" cy="-35" rx="14" ry="5" fill="none" stroke="currentColor" stroke-width="3" />
+              <line x1="0" y1="-26" x2="0" y2="42" stroke="currentColor" stroke-width="4" />
+              <path d="M-15 -20 C-6 -20 -6 0 -6 38" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+              <path d="M15 -20 C6 -20 6 0 6 38" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            </g>
+
+            <g id="asset-orig-christ">
+              <g transform="rotate(90) scale(1, 0.95)">
+                <text class="f-gothic" font-size="62" fill="currentColor" text-anchor="middle" letter-spacing="4">CHRIST</text>
+                <line x1="-120" y1="-22" x2="120" y2="12" stroke="#000000" stroke-width="3.5" />
+                <line x1="-100" y1="-8" x2="140" y2="26" stroke="#000000" stroke-width="3.5" />
+              </g>
+            </g>
+
+            <g id="asset-orig-evan">
+              <g transform="rotate(90) scale(1, 0.95)">
+                <text class="f-gothic" font-size="62" fill="currentColor" text-anchor="middle" letter-spacing="4">EVAN</text>
+                <line x1="-90" y1="-22" x2="90" y2="12" stroke="#000000" stroke-width="3.5" />
+                <line x1="-70" y1="-8" x2="110" y2="26" stroke="#000000" stroke-width="3.5" />
+              </g>
+            </g>
+
+            <g id="asset-orig-hook">
+              <g transform="rotate(-40) scale(0.9)">
+                <rect x="-16" y="-36" width="32" height="72" rx="16" fill="none" stroke="currentColor" stroke-width="4.5" />
+                <line x1="-16" y1="0" x2="16" y2="0" stroke="currentColor" stroke-width="4.5" />
+                <circle cx="8" cy="12" r="7.5" fill="currentColor" />
+              </g>
+            </g>
+
+            <g id="asset-orig-cherries">
+              <g transform="scale(1.15)">
+                <path d="M-14 -8 Q-7 -18 0 -8 Q7 -18 14 -8 Q7 2 0 -8 Q-7 2 -14 -8 Z" fill="currentColor" opacity="0.8" />
+                <path d="M-7 -6 Q-9 6 -11 12" stroke="currentColor" stroke-width="2.5" fill="none" />
+                <path d="M7 -6 Q9 6 11 12" stroke="currentColor" stroke-width="2.5" fill="none" />
+                <circle cx="-11" cy="18" r="11" fill="currentColor" />
+                <circle cx="11" cy="18" r="11" fill="currentColor" />
+                <ellipse cx="-1" cy="13" rx="2" ry="4" transform="rotate(25 -1 13)" fill="#ffffff" />
+              </g>
+            </g>
+
+            <g id="asset-orig-flag">
+              <g transform="scale(0.85)">
+                <rect x="-30" y="-36" width="22" height="22" fill="currentColor" />
+                <circle cx="-19" cy="-25" r="5" fill="#000000" />
+                <line x1="-3" y1="-32" x2="30" y2="-32" stroke="currentColor" stroke-width="5" />
+                <line x1="-3" y1="-19" x2="30" y2="-19" stroke="currentColor" stroke-width="5" />
+                <line x1="-30" y1="-5" x2="30" y2="-5" stroke="currentColor" stroke-width="5" />
+                <line x1="-30" y1="8" x2="30" y2="8" stroke="currentColor" stroke-width="5" />
+                <text class="f-bold-sans" font-size="11" font-weight="900" fill="currentColor" text-anchor="middle" y="24" letter-spacing="1">TRANCE</text>
+                <text class="f-bold-sans" font-size="11" font-weight="900" fill="currentColor" text-anchor="middle" y="35" letter-spacing="1">NATION</text>
+              </g>
+            </g>
+
+            <g id="asset-orig-cross">
+              <path d="M-8 -26 H8 V-8 H26 V8 H8 V26 H-8 V8 H-26 V-8 H-8 Z" fill="currentColor" />
+            </g>
+
+            <g id="asset-orig-spoke">
+              <circle cx="0" cy="0" r="28" fill="none" stroke="currentColor" stroke-width="4.5" />
+              <circle cx="0" cy="0" r="24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/>
+              <line x1="0" y1="-28" x2="0" y2="28" stroke="currentColor" stroke-width="3" />
+              <line x1="-24.2" y1="-14" x2="24.2" y2="14" stroke="currentColor" stroke-width="3" />
+              <line x1="-24.2" y1="14" x2="24.2" y2="-14" stroke="currentColor" stroke-width="3" />
+            </g>
+
+            <!-- Modern Graphic & Rave Icons -->
+            <g id="asset-new-hazard">
+              <polygon points="0,-28 26,18 -26,18" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+              <circle cx="0" cy="12" r="2.5" fill="currentColor"/>
+              <line x1="0" y1="-10" x2="0" y2="6" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+            </g>
+
+            <g id="asset-new-sunburst">
+              <circle cx="0" cy="0" r="12" fill="currentColor"/>
+              <g stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                <line x1="0" y1="-28" x2="0" y2="-17"/>
+                <line x1="0" y1="17" x2="0" y2="28"/>
+                <line x1="-28" y1="0" x2="-17" y2="0"/>
+                <line x1="17" y1="0" x2="28" y2="0"/>
+                <line x1="-20" y1="-20" x2="-12" y2="-12"/>
+                <line x1="12" y1="12" x2="20" y2="20"/>
+                <line x1="-20" y1="20" x2="-12" y2="12"/>
+                <line x1="12" y1="-12" x2="20" y2="-20"/>
+              </g>
+            </g>
+
+            <g id="asset-new-barcode">
+              <g fill="currentColor">
+                <rect x="-24" y="-20" width="4" height="40"/>
+                <rect x="-17" y="-20" width="2" height="40"/>
+                <rect x="-12" y="-20" width="6" height="40"/>
+                <rect x="-3" y="-20" width="3" height="40"/>
+                <rect x="3" y="-20" width="2" height="40"/>
+                <rect x="8" y="-20" width="5" height="40"/>
+                <rect x="16" y="-20" width="2" height="40"/>
+                <rect x="21" y="-20" width="4" height="40"/>
+              </g>
+            </g>
+
+            <g id="asset-new-orbit">
+              <ellipse cx="0" cy="0" rx="26" ry="10" fill="none" stroke="currentColor" stroke-width="3" transform="rotate(-25)"/>
+              <circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="0" cy="0" r="4" fill="currentColor"/>
+            </g>
+
+            <g id="asset-new-crosshair">
+              <circle cx="0" cy="0" r="24" fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="0" cy="0" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="-30" y1="0" x2="-12" y2="0" stroke="currentColor" stroke-width="3"/>
+              <line x1="12" y1="0" x2="30" y2="0" stroke="currentColor" stroke-width="3"/>
+              <line x1="0" y1="-30" x2="0" y2="-12" stroke="currentColor" stroke-width="3"/>
+              <line x1="0" y1="12" x2="0" y2="30" stroke="currentColor" stroke-width="3"/>
+            </g>
+
+            <g id="asset-new-spiral">
+              <path d="M0,0 Q6,-6 10,0 Q16,8 6,16 Q-8,20 -16,6 Q-22,-10 0,-20 Q22,-24 26,0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </g>
+
+            <g id="asset-new-pill-cluster">
+              <rect x="-24" y="-12" width="48" height="24" rx="12" fill="none" stroke="currentColor" stroke-width="3"/>
+              <line x1="0" y1="-12" x2="0" y2="12" stroke="currentColor" stroke-width="3"/>
+              <circle cx="-12" cy="0" r="4" fill="currentColor"/>
+              <circle cx="12" cy="0" r="4" fill="currentColor"/>
+            </g>
+
+            <g id="asset-new-skull-grid">
+              <rect x="-16" y="-18" width="32" height="24" rx="6" fill="none" stroke="currentColor" stroke-width="3.5"/>
+              <rect x="-8" y="6" width="16" height="12" fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="-7" cy="-6" r="3.5" fill="currentColor"/>
+              <circle cx="7" cy="-6" r="3.5" fill="currentColor"/>
+              <line x1="-3" y1="10" x2="-3" y2="18" stroke="currentColor" stroke-width="2"/>
+              <line x1="3" y1="10" x2="3" y2="18" stroke="currentColor" stroke-width="2"/>
+            </g>
+
+            <g id="asset-new-cyber-diamond">
+              <polygon points="0,-26 22,0 0,26 -22,0" fill="none" stroke="currentColor" stroke-width="3.5"/>
+              <polygon points="0,-14 12,0 0,14 -12,0" fill="currentColor"/>
+            </g>
+
+            <g id="asset-new-radar">
+              <path d="M-24,24 A34,34 0 0,1 24,-24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M-16,16 A22,22 0 0,1 16,-16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M-8,8 A10,10 0 0,1 8,-8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="-24" cy="24" r="3" fill="currentColor"/>
+            </g>
+
+            <clipPath id="centerClip">
+              <rect x="162" y="0" width="576" height="1200" />
+            </clipPath>
+
+            <clipPath id="tornTopLayerClip">
+              <path id="topLayerClipPath" d="M162 0 L738 0 L738 1200 L162 1200 Z" />
+            </clipPath>
+
+            <clipPath id="tornUnderwearClip">
+              <path id="innerLayerClipPath" d="M162 0 L738 0 L738 1200 L162 1200 Z" />
+            </clipPath>
+          </defs>
+
+          <rect width="900" height="1200" fill="#050508" />
+
+          <!-- ================= CENTER DISPLAY FIELD ================= -->
+          <g id="center-display-field" clip-path="url(#centerClip)">
+            
+            <!-- LAYER 3: DEEP BACKGROUND STOCK IMAGE -->
+            <g id="deepBackgroundLayer">
+              <image id="stockDeep" x="162" y="0" width="576" height="1200" preserveAspectRatio="xMidYMid slice" crossOrigin="anonymous" />
+              <rect id="deepTint" x="162" y="0" width="576" height="1200" fill="#041226" opacity="0.45" mix-blend-mode="multiply" />
+            </g>
+
+            <!-- LAYER 2: MIDDLE TORN STOCK IMAGE -->
+            <g id="underneathPosterLayer" clip-path="url(#tornUnderwearClip)" filter="url(#ripShadow)">
+              <g id="underFilterGroup" filter="url(#underneathFilter)">
+                <image id="stockMid" x="162" y="0" width="576" height="1200" preserveAspectRatio="xMidYMid slice" crossOrigin="anonymous" />
+              </g>
+              <rect id="midTint" x="162" y="0" width="576" height="1200" fill="#ff0055" opacity="0.25" mix-blend-mode="color-burn" />
+            </g>
+
+            <!-- LAYER 1: TOP TORN STOCK IMAGE -->
+            <g id="topRippedPosterLayer" clip-path="url(#tornTopLayerClip)" filter="url(#ripShadow)">
+              <g id="topFilterGroup" filter="url(#thermalFilter)">
+                <image id="stockTop" x="162" y="0" width="576" height="1200" preserveAspectRatio="xMidYMid slice" crossOrigin="anonymous" />
+              </g>
+              <g id="glossLayer" opacity="0.65">
+                <rect x="162" y="0" width="576" height="500" fill="url(#glossGradTop)" />
+                <rect x="162" y="700" width="576" height="500" fill="url(#glossGradBottom)" />
+              </g>
+            </g>
+
+            <path id="ripEdgeHighlight" d="" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.95" />
+            <path id="innerEdgeHighlight" d="" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.85" />
+
+            <!-- ================= TYPOGRAPHY & QUADRANTS ================= -->
+            <g id="centerTypography">
+              <g id="groupArtist" class="interactive-element" transform="translate(185, 385)">
+                <text class="f-gothic" font-size="64" fill="#000000" letter-spacing="3" x="4" y="2">EVAN</text>
+                <text class="f-gothic" font-size="64" fill="#e9ffff" letter-spacing="3" x="0" y="0" id="txtArtistEvan">EVAN</text>
+                <text class="f-gothic" font-size="64" fill="#000000" letter-spacing="3" x="4" y="62">CHRIST</text>
+                <text class="f-gothic" font-size="64" fill="#e9ffff" letter-spacing="3" x="0" y="60" id="txtArtistChrist">CHRIST</text>
+                <text class="f-sans" font-size="16" font-weight="700" fill="#ffffff" x="4" y="98" id="txtSubline">PINTEREST TREND ENGINE</text>
+              </g>
+
+              <g id="groupHeadline1" class="interactive-element" transform="translate(714, 45)">
+                <text class="f-headline" font-size="124" fill="#ff2a2a" text-anchor="end" letter-spacing="1">
+                  <tspan x="0" y="60" id="txtHead1">CYBER</tspan>
+                  <tspan x="0" y="155" id="txtHead2">PUNK</tspan>
+                  <tspan x="0" y="250" id="txtHead3">RAVE</tspan>
+                </text>
+              </g>
+
+              <g id="tourDatesContainer" class="interactive-element" transform="translate(430, 720)">
+              </g>
+
+              <g id="groupTourInfo" class="interactive-element" transform="translate(182, 560) rotate(-90)">
+                <text class="f-mono" font-size="12" font-weight="700" fill="#00e5ff" letter-spacing="3" id="txtStockMeta">PINTEREST TREND ENGINE: 60S TICK</text>
+              </g>
+            </g>
+          </g>
+
+          <line x1="162" y1="0" x2="162" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+          <line x1="738" y1="0" x2="738" y2="1200" stroke="#ffffff" stroke-width="2.5" />
+
+          <!-- ================= SIDEBARS ================= -->
+          <g id="sidebar-left">
+            <rect x="0" y="0" width="162" height="1200" fill="#000000" />
+            <g id="leftSlot0" class="interactive-element" transform="translate(81, 100)"></g>
+            <g id="leftSlot1" class="interactive-element" transform="translate(81, 300)"></g>
+            <g id="leftSlot2" class="interactive-element" transform="translate(81, 560)"></g>
+            <g id="leftSlot3" class="interactive-element" transform="translate(81, 930)"></g>
+          </g>
+
+          <g id="sidebar-right">
+            <rect x="738" y="0" width="162" height="1200" fill="#000000" />
+            <g id="rightSlot0" class="interactive-element" transform="translate(819, 80)"></g>
+            <g id="rightSlot1" class="interactive-element" transform="translate(819, 270)"></g>
+            <g id="rightSlot2" class="interactive-element" transform="translate(819, 480)"></g>
+            <g id="rightSlot3" class="interactive-element" transform="translate(819, 680)"></g>
+            <g id="rightSlot4" class="interactive-element" transform="translate(819, 870)"></g>
+            <g id="rightSlot5" class="interactive-element" transform="translate(819, 1070)"></g>
+          </g>
+        </svg>
+      </div>
+    </main>
+  </div>
+
+  <canvas id="analysisCanvas" width="100" height="200" style="display: none;"></canvas>
+
+  <script>
+    const PINTEREST_TRENDS_STREAM = [
+      { query: 'CYBERPUNK RAVE', keyword: 'cyberpunk', desc: 'NEON MATRIX' },
+      { query: 'ACID GRAPHICS', keyword: 'acid', desc: 'BRUTAL PRINT' },
+      { query: 'Y2K FUTURISM', keyword: 'y2k', desc: 'METALLIC CHROME' },
+      { query: 'BRUTALIST ARCH', keyword: 'brutalism', desc: 'CONCRETE MONOLITH' },
+      { query: 'GLITCH AESTHETIC', keyword: 'glitch', desc: 'ANALOG NOISE' },
+      { query: 'DARK BAUHAUS', keyword: 'bauhaus', desc: 'PRIMARY GEOMETRY' },
+      { query: 'JAPAN RAVE POSTER', keyword: 'tokyo', desc: 'TYPOGRAPHIC NOISE' },
+      { query: 'VINTAGE ANIME TECH', keyword: 'mecha', desc: 'CELL SHADED' },
+      { query: 'LIMINAL SPACES', keyword: 'liminal', desc: 'EMPTY CORRIDORS' },
+      { query: 'INDUSTRIAL RAVE', keyword: 'industrial', desc: 'STROBE DISTORTION' }
+    ];
+
+    let trendIndex = 0;
+
+    // Split into two alternating thematic image categories: Set A (Architectural / Synthetic) & Set B (Organic / Atmospheric)
+    const SET_A_SYNTHETIC = [
+      { id: 22, title: 'Subway Brick', cat: 'URBAN' },
+      { id: 25, title: 'Studio Hardware', cat: 'TECH' },
+      { id: 36, title: 'Chassis Fender', cat: 'MOTOR' },
+      { id: 39, title: 'Vinyl Groove', cat: 'AUDIO' },
+      { id: 48, title: 'Terminal Screen', cat: 'CODE' },
+      { id: 49, title: 'Highrise Grid', cat: 'METROPOLIS' },
+      { id: 55, title: 'Stone Alley', cat: 'CITY' },
+      { id: 57, title: 'Angled Glass', cat: 'FACADE' },
+      { id: 60, title: 'Circuit Lead', cat: 'HARDWARE' },
+      { id: 64, title: 'Crosswalk Lines', cat: 'ASPHALT' },
+      { id: 68, title: 'Steel Junction', cat: 'RAILWAY' },
+      { id: 70, title: 'Underground Platform', cat: 'TRANSIT' },
+      { id: 76, title: 'Bridge Girder', cat: 'INFRA' },
+      { id: 82, title: 'Strobe Flood', cat: 'STAGE' },
+      { id: 88, title: 'Concrete Span', cat: 'BRUTAL' },
+      { id: 96, title: 'Freeway Streak', cat: 'SPEED' },
+      { id: 102, title: 'Prism Refraction', cat: 'GLASS' },
+      { id: 116, title: 'Cathode Tube', cat: 'NEON' },
+      { id: 124, title: 'Pressure Conduit', cat: 'VALVE' }
+    ];
+
+    const SET_B_ORGANIC = [
+      { id: 10, title: 'Forest Canopy', cat: 'NATURE' },
+      { id: 11, title: 'Alpine Peak', cat: 'LANDSCAPE' },
+      { id: 12, title: 'Ocean Breakers', cat: 'WATER' },
+      { id: 13, title: 'Pacific Dune', cat: 'DESERT' },
+      { id: 14, title: 'Deep Horizon', cat: 'SEASCAPE' },
+      { id: 15, title: 'Glacial Falls', cat: 'WATER' },
+      { id: 16, title: 'Fjord Cliff', cat: 'GEOLOGY' },
+      { id: 17, title: 'Red Sandstone', cat: 'CANYON' },
+      { id: 18, title: 'Misty Highlands', cat: 'ATMOSPHERE' },
+      { id: 19, title: 'Spruce Forest', cat: 'WOODS' },
+      { id: 24, title: 'Printed Book', cat: 'ARCHIVE' },
+      { id: 26, title: 'Conifer Needles', cat: 'BOTANICAL' },
+      { id: 27, title: 'Pacific Crest', cat: 'SURF' },
+      { id: 28, title: 'Granite Pass', cat: 'ALPINE' },
+      { id: 29, title: 'Coastline Rocks', cat: 'TEXTURE' },
+      { id: 37, title: 'Liquid Bubbles', cat: 'FLUID' },
+      { id: 43, title: 'Brass Needle', cat: 'NAV' },
+      { id: 54, title: 'Ridge Clouds', cat: 'SUMMIT' },
+      { id: 58, title: 'Pine Scales', cat: 'ORGANIC' },
+      { id: 84, title: 'Solar Gradient', cat: 'SKY' },
+      { id: 106, title: 'Flora Blossom', cat: 'PETAL' },
+      { id: 110, title: 'Optical Bloom', cat: 'LIGHT' },
+      { id: 128, title: 'Storm Cloud', cat: 'FRONT' }
+    ];
+
+    let poolA = [...SET_A_SYNTHETIC].sort(() => Math.random() - 0.5);
+    let poolB = [...SET_B_ORGANIC].sort(() => Math.random() - 0.5);
+    const permanentlyUsedIds = new Set();
+    let currentAlternatingSet = 'A'; // Flips between 'A' and 'B' every cycle
+
+    const ORIGINAL_ICONS = [
+      'asset-orig-star',
+      'asset-orig-capsule',
+      'asset-orig-christ',
+      'asset-orig-evan',
+      'asset-orig-hook',
+      'asset-orig-cherries',
+      'asset-orig-flag',
+      'asset-orig-cross',
+      'asset-orig-spoke'
+    ];
+
+    const RANDOM_NEW_ICONS = [
+      'asset-new-hazard',
+      'asset-new-sunburst',
+      'asset-new-barcode',
+      'asset-new-orbit',
+      'asset-new-crosshair',
+      'asset-new-spiral',
+      'asset-new-pill-cluster',
+      'asset-new-skull-grid',
+      'asset-new-cyber-diamond',
+      'asset-new-radar'
+    ];
+
+    const defaultState = {
+      ripArchetype: 'diagonal',
+      ripCount: 2,
+      ripY1: 590,
+      ripY2: 750,
+      ripRough: 7,
+      warp: 45,
+      gloss: 65,
+      imgMode: 'graded',
+      streamActive: true,
+      secondsRemaining: 60,
+      alternatingPhase: 'SET A (SYNTHETIC)',
+      currentSearch: PINTEREST_TRENDS_STREAM[0],
+      currentImages: {
+        top: null,
+        mid: null,
+        deep: null
+      },
+      assignedAssets: {
+        left: ['asset-orig-star', 'asset-new-hazard', 'asset-new-sunburst', 'asset-new-orbit'],
+        right: ['asset-new-crosshair', 'asset-new-barcode', 'asset-new-spiral', 'asset-new-pill-cluster', 'asset-new-skull-grid', 'asset-new-cyber-diamond']
+      },
+      palette: {
+        accent: '#eaff00',
+        headline: '#ff2a2a',
+        subtext: '#ffffff',
+        meta: '#00e5ff'
+      },
+      listingLines: [],
+      pos: {
+        artist: { x: 185, y: 385 },
+        head: { x: 714, y: 45 },
+        dates: { x: 430, y: 720 },
+        tourInfo: { x: 182, y: 560 }
+      },
+      sidePos: {
+        left: [
+          { x: 81, y: 100 },
+          { x: 81, y: 300 },
+          { x: 81, y: 560 },
+          { x: 81, y: 930 }
+        ],
+        right: [
+          { x: 819, y: 80 },
+          { x: 819, y: 270 },
+          { x: 819, y: 480 },
+          { x: 819, y: 680 },
+          { x: 819, y: 870 },
+          { x: 819, y: 1070 }
+        ]
+      }
+    };
+
+    let state = JSON.parse(JSON.stringify(defaultState));
+    let historyStack = [];
+
+    function saveStateToHistory() {
+      historyStack.push(JSON.parse(JSON.stringify(state)));
+      if (historyStack.length > 50) historyStack.shift();
+    }
+
+    const svg = document.getElementById('posterSvg');
+    const stockTop = document.getElementById('stockTop');
+    const stockMid = document.getElementById('stockMid');
+    const stockDeep = document.getElementById('stockDeep');
+    const topFilterGroup = document.getElementById('topFilterGroup');
+    const underFilterGroup = document.getElementById('underFilterGroup');
+    const deepTint = document.getElementById('deepTint');
+    const midTint = document.getElementById('midTint');
+    const valCountdown = document.getElementById('valCountdown');
+    const valCurrentSearch = document.getElementById('valCurrentSearch');
+    const valPhaseIndicator = document.getElementById('valPhaseIndicator');
+    const valPoolRemaining = document.getElementById('valPoolRemaining');
+    const topLayerClipPath = document.getElementById('topLayerClipPath');
+    const innerLayerClipPath = document.getElementById('innerLayerClipPath');
+    const ripEdgeHighlight = document.getElementById('ripEdgeHighlight');
+    const innerEdgeHighlight = document.getElementById('innerEdgeHighlight');
+    const dispFilter = document.getElementById('dispFilter');
+    const glossLayer = document.getElementById('glossLayer');
+    const tourDatesContainer = document.getElementById('tourDatesContainer');
+    const txtStockMeta = document.getElementById('txtStockMeta');
+    const inputDates = document.getElementById('inputDates');
+    const inputHeadline = document.getElementById('inputHeadline');
+
+    // Strict Alternating Retrieval: Pulls strictly from poolA on odd turns, poolB on even turns
+    function getNextAlternatingStockItem(activeSet) {
+      const activePool = (activeSet === 'A') ? poolA : poolB;
+      if (activePool.length === 0) {
+        valPoolRemaining.textContent = "0 (Exhausted)";
+        return null;
+      }
+      const item = activePool.pop();
+      permanentlyUsedIds.add(item.id);
+      valPoolRemaining.textContent = `${poolA.length + poolB.length} left`;
+      return item;
+    }
+
+    function extractColorPaletteFromImage(url, callback) {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
+      img.onload = () => {
+        try {
+          const cvs = document.getElementById('analysisCanvas');
+          const ctx = cvs.getContext('2d');
+          ctx.drawImage(img, 0, 0, 100, 200);
+          const data = ctx.getImageData(0, 0, 100, 200).data;
+
+          let rTotal = 0, gTotal = 0, bTotal = 0;
+          const pixelCount = data.length / 4;
+          for (let i = 0; i < data.length; i += 16) {
+            rTotal += data[i];
+            gTotal += data[i + 1];
+            bTotal += data[i + 2];
+          }
+          const samples = pixelCount / 4;
+          const avgR = Math.round(rTotal / samples);
+          const avgG = Math.round(gTotal / samples);
+          const avgB = Math.round(bTotal / samples);
+
+          const compR = 255 - avgR;
+          const compG = 255 - avgG;
+          const compB = 255 - avgB;
+
+          const accent = `rgb(${Math.min(255, compR + 50)}, ${Math.min(255, compG + 60)}, 40)`;
+          const headline = `rgb(255, ${Math.min(180, avgG)}, ${Math.min(180, avgB)})`;
+          const subtext = `rgb(${Math.max(220, avgR)}, 255, 255)`;
+          const meta = `rgb(0, ${Math.max(190, compG)}, 255)`;
+
+          callback({ accent, headline, subtext, meta });
+        } catch (e) {
+          const hue = Math.floor(Math.random() * 360);
+          callback({
+            accent: `hsl(${hue}, 100%, 55%)`,
+            headline: `hsl(${(hue + 180) % 360}, 90%, 55%)`,
+            subtext: '#ffffff',
+            meta: `hsl(${(hue + 90) % 360}, 100%, 65%)`
+          });
+        }
+      };
+      img.onerror = () => {
+        const hue = Math.floor(Math.random() * 360);
+        callback({
+          accent: `hsl(${hue}, 100%, 55%)`,
+          headline: `hsl(${(hue + 180) % 360}, 90%, 55%)`,
+          subtext: '#ffffff',
+          meta: `hsl(${(hue + 90) % 360}, 100%, 65%)`
+        });
+      };
+    }
+
+    function generateStreamAssetDistribution() {
+      const chosenOriginalIcon = ORIGINAL_ICONS[Math.floor(Math.random() * ORIGINAL_ICONS.length)];
+      const totalSlots = 10;
+      const originalSlotIndex = Math.floor(Math.random() * totalSlots);
+
+      const shuffledNewIcons = [...RANDOM_NEW_ICONS].sort(() => Math.random() - 0.5);
+
+      const allSlots = [];
+      let newIdx = 0;
+      for (let i = 0; i < totalSlots; i++) {
+        if (i === originalSlotIndex) {
+          allSlots.push(chosenOriginalIcon);
+        } else {
+          allSlots.push(shuffledNewIcons[newIdx % shuffledNewIcons.length]);
+          newIdx++;
+        }
+      }
+
+      return {
+        left: allSlots.slice(0, 4),
+        right: allSlots.slice(4, 10)
+      };
+    }
+
+    function randomizeRipParameters() {
+      const archetypes = ['diagonal', 'horizontal', 'vTear', 'peeledPatch'];
+      state.ripArchetype = archetypes[Math.floor(Math.random() * archetypes.length)];
+      state.ripCount = Math.random() > 0.15 ? 2 : 1;
+      state.ripY1 = Math.floor(Math.random() * 380) + 260;
+      state.ripY2 = state.ripY1 + Math.floor(Math.random() * 260) + 120;
+      state.ripRough = Math.floor(Math.random() * 9) + 4;
+
+      document.getElementById('selectRipArchetype').value = state.ripArchetype;
+      document.getElementById('rangeRipY1').value = state.ripY1;
+      document.getElementById('rangeRipY2').value = state.ripY2;
+      document.getElementById('valRipY1').textContent = `${state.ripY1}px`;
+      document.getElementById('valRipY2').textContent = `${state.ripY2}px`;
+      [btnRipCount0, btnRipCount1, btnRipCount2].forEach((btn, idx) => {
+        btn.classList.toggle('active', state.ripCount === idx);
+      });
+    }
+
+    function buildListingStreamText(trend, topItem, midItem, deepItem, phaseName) {
+      const time = new Date();
+      const formatTime = (offsetSec) => {
+        const d = new Date(time.getTime() - offsetSec * 1000);
+        return d.toTimeString().split(' ')[0].slice(0, 5);
+      };
+
+      const lines = [
+        `${formatTime(0)} | ${phaseName} | L1: ${topItem.title.toUpperCase()}`,
+        `${formatTime(60)} | PIN-02 | L2: ${midItem.title.toUpperCase()} (${midItem.cat})`,
+        `${formatTime(120)} | PIN-03 | L3: ${deepItem.title.toUpperCase()}`,
+        `${formatTime(180)} | SYNC | #${trend.keyword.toUpperCase()} +${Math.floor(Math.random()*400 + 120)}%`
+      ];
+
+      return lines;
+    }
+
+    function cycleStreamState(pushHistory = true) {
+      if (pushHistory) saveStateToHistory();
+
+      // Alternating Flip Logic
+      currentAlternatingSet = (currentAlternatingSet === 'A') ? 'B' : 'A';
+      const phaseName = (currentAlternatingSet === 'A') ? 'SET A (SYNTHETIC)' : 'SET B (ORGANIC)';
+      state.alternatingPhase = phaseName;
+      valPhaseIndicator.textContent = phaseName;
+      valPhaseIndicator.style.color = (currentAlternatingSet === 'A') ? '#00e5ff' : '#eaff00';
+
+      // Cycle Pinterest Trends
+      trendIndex = (trendIndex + 1) % PINTEREST_TRENDS_STREAM.length;
+      state.currentSearch = PINTEREST_TRENDS_STREAM[trendIndex];
+      valCurrentSearch.textContent = state.currentSearch.query;
+      inputHeadline.value = state.currentSearch.query;
+
+      // Pull from the alternating active set
+      const itemTop = getNextAlternatingStockItem(currentAlternatingSet);
+      const itemMid = getNextAlternatingStockItem(currentAlternatingSet);
+      const itemDeep = getNextAlternatingStockItem(currentAlternatingSet);
+
+      if (itemTop && itemMid && itemDeep) {
+        state.currentImages.top = `https://picsum.photos/id/${itemTop.id}/600/1200`;
+        state.currentImages.mid = `https://picsum.photos/id/${itemMid.id}/600/1200`;
+        state.currentImages.deep = `https://picsum.photos/id/${itemDeep.id}/600/1200`;
+
+        state.listingLines = buildListingStreamText(state.currentSearch, itemTop, itemMid, itemDeep, phaseName);
+        inputDates.value = state.listingLines.join('\n');
+      }
+
+      state.assignedAssets = generateStreamAssetDistribution();
+      randomizeRipParameters();
+
+      extractColorPaletteFromImage(state.currentImages.top, (palette) => {
+        state.palette = palette;
+        const timeStamp = new Date().toLocaleTimeString();
+        txtStockMeta.textContent = `PINTEREST STREAM: ${phaseName} - ${state.currentSearch.query} (${timeStamp})`;
+        updatePoster();
+      });
+    }
+
+    function applyFilterMode() {
+      if (state.imgMode === 'raw') {
+        topFilterGroup.removeAttribute('filter');
+        underFilterGroup.removeAttribute('filter');
+        deepTint.setAttribute('opacity', '0.05');
+        midTint.setAttribute('opacity', '0.05');
+      } else if (state.imgMode === 'graded') {
+        topFilterGroup.setAttribute('filter', 'url(#thermalFilter)');
+        underFilterGroup.setAttribute('filter', 'url(#underneathFilter)');
+        deepTint.setAttribute('opacity', '0.45');
+        midTint.setAttribute('opacity', '0.25');
+        dispFilter.setAttribute('scale', 15);
+      } else if (state.imgMode === 'acid') {
+        topFilterGroup.setAttribute('filter', 'url(#thermalFilter)');
+        underFilterGroup.setAttribute('filter', 'url(#underneathFilter)');
+        deepTint.setAttribute('opacity', '0.6');
+        midTint.setAttribute('opacity', '0.4');
+        dispFilter.setAttribute('scale', state.warp);
+      }
+    }
+
+    function generateRipSegment(x1, y1, x2, y2, rough, steps = 18) {
+      const dx = (x2 - x1) / steps;
+      const dy = (y2 - y1) / steps;
+      const pts = [`M ${x1} ${y1}`];
+      let currX = x1, currY = y1;
+      for (let i = 1; i <= steps; i++) {
+        const targetX = x1 + (dx * i);
+        const targetY = y1 + (dy * i);
+        const normalX = -dy / Math.hypot(dx, dy);
+        const normalY = dx / Math.hypot(dx, dy);
+        const offset = (Math.random() - 0.5) * (rough * 12);
+        currX = targetX + (normalX * offset);
+        currY = targetY + (normalY * offset);
+        const cx = currX - (dx / 2) + ((Math.random() - 0.5) * 6);
+        const cy = currY - (dy / 2) + ((Math.random() - 0.5) * 6);
+        pts.push(`Q ${cx} ${cy} ${currX} ${currY}`);
+      }
+      return pts.join(' ');
+    }
+
+    function updateRipPath() {
+      const arch = state.ripArchetype;
+      const r = state.ripRough;
+
+      if (state.ripCount === 0) {
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        ripEdgeHighlight.setAttribute('display', 'none');
+        innerEdgeHighlight.setAttribute('display', 'none');
+        return;
+      }
+
+      if (arch === 'diagonal') {
+        const line1 = generateRipSegment(162, state.ripY1 - 80, 738, state.ripY1 + 100, r);
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line1.replace('M 162', 'L 162')} Z`);
+        ripEdgeHighlight.setAttribute('d', line1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2 + 60, 738, state.ripY2 - 80, r);
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'horizontal') {
+        const line1 = generateRipSegment(162, state.ripY1, 738, state.ripY1, r);
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line1.replace('M 162', 'L 162')} Z`);
+        ripEdgeHighlight.setAttribute('d', line1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2, 738, state.ripY2, r);
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'vTear') {
+        const apexX = 450 + (Math.random() - 0.5) * 60;
+        const line1 = `${generateRipSegment(162, state.ripY1 - 100, apexX, state.ripY1 + 120, r, 10)} ${generateRipSegment(apexX, state.ripY1 + 120, 738, state.ripY1 - 80, r, 10).replace(/^M [0-9.]+ [0-9.]+ /, '')}`;
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line1.replace('M 162', 'L 162')} Z`);
+        ripEdgeHighlight.setAttribute('d', line1);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+
+        if (state.ripCount >= 2) {
+          const line2 = generateRipSegment(162, state.ripY2 + 50, 738, state.ripY2 - 50, r);
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 ${line2.replace('M 162', 'L 162')} Z`);
+          innerEdgeHighlight.setAttribute('d', line2);
+          innerEdgeHighlight.setAttribute('display', 'inline');
+        } else {
+          innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+          innerEdgeHighlight.setAttribute('display', 'none');
+        }
+      } else if (arch === 'peeledPatch') {
+        const cx = 450 + (Math.random() - 0.5) * 40;
+        const cy = (state.ripY1 + state.ripY2) / 2;
+        const rx = 180 + (Math.random() - 0.5) * 50;
+        const ry = 190 + (Math.random() - 0.5) * 50;
+        const p1 = generateRipSegment(cx - rx, cy - ry, cx + rx, cy - ry, r, 8);
+        const p2 = generateRipSegment(cx + rx, cy - ry, cx + rx, cy + ry, r, 8);
+        const p3 = generateRipSegment(cx + rx, cy + ry, cx - rx, cy + ry, r, 8);
+        const p4 = generateRipSegment(cx - rx, cy + ry, cx - rx, cy - ry, r, 8);
+        const patch = `${p1} ${p2.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p3.replace(/^M [0-9.]+ [0-9.]+ /, '')} ${p4.replace(/^M [0-9.]+ [0-9.]+ /, '')} Z`;
+        topLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z ${patch}`);
+        ripEdgeHighlight.setAttribute('d', patch);
+        ripEdgeHighlight.setAttribute('display', 'inline');
+        innerLayerClipPath.setAttribute('d', `M 162 0 L 738 0 L 738 1200 L 162 1200 Z`);
+        innerEdgeHighlight.setAttribute('display', 'none');
+      }
+    }
+
+    function renderDates() {
+      const lines = (state.listingLines.length > 0 ? state.listingLines : inputDates.value.trim().split('\n'));
+      tourDatesContainer.innerHTML = '';
+      lines.forEach((line, index) => {
+        const parts = line.split('|').map(s => s.trim());
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(0, ${index * 42})`);
+
+        const tDate = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tDate.setAttribute('class', 'f-mono');
+        tDate.setAttribute('font-size', '13');
+        tDate.setAttribute('fill', state.palette.accent);
+        tDate.setAttribute('x', '0');
+        tDate.setAttribute('y', '20');
+        tDate.textContent = parts[0] || '';
+        g.appendChild(tDate);
+
+        const tCity = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tCity.setAttribute('class', 'f-bold-sans');
+        tCity.setAttribute('font-size', '17');
+        tCity.setAttribute('fill', state.palette.subtext);
+        tCity.setAttribute('x', '65');
+        tCity.setAttribute('y', '21');
+        tCity.textContent = parts[1] || '';
+        g.appendChild(tCity);
+
+        if (parts[2]) {
+          const tVenue = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          tVenue.setAttribute('class', 'f-mono');
+          tVenue.setAttribute('font-size', '11');
+          tVenue.setAttribute('fill', state.palette.headline);
+          tVenue.setAttribute('x', '135');
+          tVenue.setAttribute('y', '20');
+          tVenue.setAttribute('letter-spacing', '0.5');
+          tVenue.textContent = parts[2];
+          g.appendChild(tVenue);
+        }
+        tourDatesContainer.appendChild(g);
+      });
+    }
+
+    function renderSideAssets() {
+      for (let i = 0; i < 4; i++) {
+        const lSlot = document.getElementById(`leftSlot${i}`);
+        lSlot.innerHTML = `<use href="#${state.assignedAssets.left[i]}" fill="${state.palette.accent}" color="${state.palette.accent}"/>`;
+      }
+      for (let i = 0; i < 6; i++) {
+        const rSlot = document.getElementById(`rightSlot${i}`);
+        rSlot.innerHTML = `<use href="#${state.assignedAssets.right[i]}" fill="${state.palette.accent}" color="${state.palette.accent}"/>`;
+      }
+    }
+
+    function updatePositions() {
+      document.getElementById('groupArtist').setAttribute('transform', `translate(${state.pos.artist.x}, ${state.pos.artist.y})`);
+      document.getElementById('groupHeadline1').setAttribute('transform', `translate(${state.pos.head.x}, ${state.pos.head.y})`);
+      document.getElementById('tourDatesContainer').setAttribute('transform', `translate(${state.pos.dates.x}, ${state.pos.dates.y})`);
+      document.getElementById('groupTourInfo').setAttribute('transform', `translate(${state.pos.tourInfo.x}, ${state.pos.tourInfo.y}) rotate(-90)`);
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`leftSlot${i}`).setAttribute('transform', `translate(${state.sidePos.left[i].x}, ${state.sidePos.left[i].y})`);
+      }
+      for (let i = 0; i < 6; i++) {
+        document.getElementById(`rightSlot${i}`).setAttribute('transform', `translate(${state.sidePos.right[i].x}, ${state.sidePos.right[i].y})`);
+      }
+    }
+
+    function updatePoster() {
+      const words = inputHeadline.value.trim().split(' ');
+      document.getElementById('txtHead1').textContent = words[0] || '';
+      document.getElementById('txtHead2').textContent = words[1] || '';
+      document.getElementById('txtHead3').textContent = words.slice(2).join(' ') || '';
+      document.getElementById('txtSubline').textContent = document.getElementById('inputSubline').value;
+
+      const txtHead = document.querySelector('#groupHeadline1 text');
+      if (txtHead) txtHead.setAttribute('fill', state.palette.headline);
+
+      document.getElementById('txtArtistEvan').setAttribute('fill', state.palette.subtext);
+      document.getElementById('txtArtistChrist').setAttribute('fill', state.palette.subtext);
+      document.getElementById('txtSubline').setAttribute('fill', state.palette.accent);
+      txtStockMeta.setAttribute('fill', state.palette.meta);
+
+      stockTop.setAttribute('href', state.currentImages.top);
+      stockMid.setAttribute('href', state.currentImages.mid);
+      stockDeep.setAttribute('href', state.currentImages.deep);
+
+      dispFilter.setAttribute('scale', state.warp);
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+
+      renderSideAssets();
+      applyFilterMode();
+      updateRipPath();
+      updatePositions();
+      renderDates();
+    }
+
+    let activeDrag = null;
+    let dragOffset = { x: 0, y: 0 };
+
+    function makeDraggable(elementId, type, key, index = null) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.addEventListener('mousedown', (e) => {
+        saveStateToHistory();
+        activeDrag = { elementId, type, key, index, el };
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+        if (type === 'pos') {
+          dragOffset.x = svgP.x - state.pos[key].x;
+          dragOffset.y = svgP.y - state.pos[key].y;
+        } else if (type === 'side') {
+          dragOffset.x = svgP.x - state.sidePos[key][index].x;
+          dragOffset.y = svgP.y - state.sidePos[key][index].y;
+        }
+        e.preventDefault();
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (!activeDrag) return;
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+      if (activeDrag.type === 'pos') {
+        state.pos[activeDrag.key].x = Math.round(svgP.x - dragOffset.x);
+        state.pos[activeDrag.key].y = Math.round(svgP.y - dragOffset.y);
+        updatePositions();
+      } else if (activeDrag.type === 'side') {
+        state.sidePos[activeDrag.key][activeDrag.index].x = Math.round(svgP.x - dragOffset.x);
+        state.sidePos[activeDrag.key][activeDrag.index].y = Math.round(svgP.y - dragOffset.y);
+        updatePositions();
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      activeDrag = null;
+    });
+
+    makeDraggable('groupArtist', 'pos', 'artist');
+    makeDraggable('groupHeadline1', 'pos', 'head');
+    makeDraggable('tourDatesContainer', 'pos', 'dates');
+    makeDraggable('groupTourInfo', 'pos', 'tourInfo');
+
+    for (let i = 0; i < 4; i++) makeDraggable(`leftSlot${i}`, 'side', 'left', i);
+    for (let i = 0; i < 6; i++) makeDraggable(`rightSlot${i}`, 'side', 'right', i);
+
+    setInterval(() => {
+      if (!state.streamActive) return;
+      state.secondsRemaining--;
+      if (state.secondsRemaining <= 0) {
+        cycleStreamState(true);
+        state.secondsRemaining = 60;
+      }
+      valCountdown.textContent = `${state.secondsRemaining}s`;
+    }, 1000);
+
+    document.getElementById('btnForceCycle').addEventListener('click', () => {
+      cycleStreamState(true);
+      state.secondsRemaining = 60;
+      valCountdown.textContent = `${state.secondsRemaining}s`;
+    });
+
+    document.getElementById('btnStreamOn').addEventListener('click', () => {
+      state.streamActive = true;
+      document.getElementById('btnStreamOn').classList.add('active');
+      document.getElementById('btnStreamOff').classList.remove('active');
+    });
+
+    document.getElementById('btnStreamOff').addEventListener('click', () => {
+      state.streamActive = false;
+      document.getElementById('btnStreamOff').classList.add('active');
+      document.getElementById('btnStreamOn').classList.remove('active');
+    });
+
+    document.getElementById('selectImgMode').addEventListener('change', (e) => {
+      saveStateToHistory();
+      state.imgMode = e.target.value;
+      applyFilterMode();
+    });
+
+    document.getElementById('selectRipArchetype').addEventListener('change', (e) => {
+      saveStateToHistory();
+      state.ripArchetype = e.target.value;
+      updateRipPath();
+    });
+
+    const btnRipCount0 = document.getElementById('btnRipCount0');
+    const btnRipCount1 = document.getElementById('btnRipCount1');
+    const btnRipCount2 = document.getElementById('btnRipCount2');
+
+    btnRipCount0.addEventListener('click', () => { saveStateToHistory(); state.ripCount = 0; updateRipPath(); });
+    btnRipCount1.addEventListener('click', () => { saveStateToHistory(); state.ripCount = 1; updateRipPath(); });
+    btnRipCount2.addEventListener('click', () => { saveStateToHistory(); state.ripCount = 2; updateRipPath(); });
+
+    document.getElementById('rangeRipY1').addEventListener('input', (e) => {
+      state.ripY1 = parseInt(e.target.value);
+      document.getElementById('valRipY1').textContent = `${state.ripY1}px`;
+      updateRipPath();
+    });
+
+    document.getElementById('rangeRipY2').addEventListener('input', (e) => {
+      state.ripY2 = parseInt(e.target.value);
+      document.getElementById('valRipY2').textContent = `${state.ripY2}px`;
+      updateRipPath();
+    });
+
+    document.getElementById('rangeWarp').addEventListener('input', (e) => {
+      state.warp = e.target.value;
+      document.getElementById('valWarp').textContent = state.warp;
+      dispFilter.setAttribute('scale', state.warp);
+    });
+
+    document.getElementById('rangeGloss').addEventListener('input', (e) => {
+      state.gloss = parseInt(e.target.value);
+      document.getElementById('valGloss').textContent = `${state.gloss}%`;
+      glossLayer.setAttribute('opacity', state.gloss / 100);
+    });
+
+    inputHeadline.addEventListener('input', updatePoster);
+    document.getElementById('inputSubline').addEventListener('input', updatePoster);
+    inputDates.addEventListener('input', (e) => {
+      state.listingLines = e.target.value.trim().split('\n');
+      renderDates();
+    });
+
+    document.getElementById('btnRandomize').addEventListener('click', () => {
+      saveStateToHistory();
+      randomizeRipParameters();
+      state.warp = Math.floor(Math.random() * 55) + 25;
+      document.getElementById('rangeWarp').value = state.warp;
+      document.getElementById('valWarp').textContent = state.warp;
+
+      cycleStreamState(false);
+      state.secondsRemaining = 60;
+      updatePoster();
+    });
+
+    document.getElementById('btnLastGen').addEventListener('click', () => {
+      if (historyStack.length > 0) {
+        state = historyStack.pop();
+        document.getElementById('selectRipArchetype').value = state.ripArchetype;
+        document.getElementById('selectImgMode').value = state.imgMode;
+        document.getElementById('rangeRipY1').value = state.ripY1;
+        document.getElementById('rangeRipY2').value = state.ripY2;
+        document.getElementById('valRipY1').textContent = `${state.ripY1}px`;
+        document.getElementById('valRipY2').textContent = `${state.ripY2}px`;
+        document.getElementById('rangeWarp').value = state.warp;
+        document.getElementById('valWarp').textContent = state.warp;
+        valCurrentSearch.textContent = state.currentSearch.query;
+        valPhaseIndicator.textContent = state.alternatingPhase;
+        inputHeadline.value = state.currentSearch.query;
+        inputDates.value = state.listingLines.join('\n');
+        state.secondsRemaining = 60;
+        updatePoster();
+      }
+    });
+
+    document.getElementById('btnRevert').addEventListener('click', () => {
+      saveStateToHistory();
+      state = JSON.parse(JSON.stringify(defaultState));
+      document.getElementById('selectRipArchetype').value = state.ripArchetype;
+      document.getElementById('selectImgMode').value = state.imgMode;
+      document.getElementById('rangeRipY1').value = state.ripY1;
+      document.getElementById('rangeRipY2').value = state.ripY2;
+      document.getElementById('valRipY1').textContent = '590px';
+      document.getElementById('valRipY2').textContent = '750px';
+      document.getElementById('rangeWarp').value = state.warp;
+      document.getElementById('valWarp').textContent = '45';
+      updatePoster();
+    });
+
+    document.getElementById('btnExport').addEventListener('click', () => {
+      const serializer = new XMLSerializer();
+      const source = '<?xml version="1.0" standalone="no"?>\r\n' + serializer.serializeToString(document.getElementById('posterSvg'));
+      const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `pinterest_trend_poster_${Date.now()}.svg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    cycleStreamState(false);
+  </script>
+</body>
+</html>
