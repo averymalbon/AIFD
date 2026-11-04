@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Essence of Denim: Raw Heritage — Portfolio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Emily's Candy for display/headings, and Yuji / Yu Mincho fallbacks for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Emily's+Candy&family=Orbitron:wght@600;800;900&family=Yuji+Syuku&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #8AD4CE;
+      --text-color: #030001;
+      --accent-color: #F7608F;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Yu Gothic', 'Yu Mincho', 'Yuji Syuku', 'Hiragino Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      letter-spacing: 0.01em;
+      position: relative;
+    }
+
+    /* Headings strictly in Emily's Candy with specified sizes & letter spacing */
+    .heading-font {
+      font-family: "Emily's Candy", cursive;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+    }
+
+    .heading-primary {
+      font-size: 2rem;
+      line-height: 1.25;
+    }
+
+    .heading-secondary {
+      font-size: 1.25rem;
+      line-height: 1.35;
+    }
+
+    .section-label {
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Star animation canvas layer */
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.38;
+    }
+
+    /* Content container */
+    .site-wrapper {
+      position: relative;
+      z-index: 10;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    @media (min-width: 1024px) {
+      .site-wrapper {
+        padding: 32px;
+      }
+    }
+
+    /* Assignment Lift Buttons */
+    .assignment-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background-color: transparent;
+      border: 1.5px solid var(--accent-color);
+      border-radius: 16px;
+      color: var(--text-color);
+      padding: 14px 20px;
+      text-decoration: none;
+      transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms ease, border-color 250ms ease;
+    }
+    .assignment-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(247, 96, 143, 0.28);
+      border-color: var(--accent-color);
+    }
+    .assignment-btn:focus-visible {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 3px;
+    }
+
+    /* Dior-inspired focus behavior across assignment items: fade non-hovered */
+    .assignment-container:hover .assignment-item {
+      opacity: 0.35;
+      transition: opacity 250ms ease;
+    }
+    .assignment-container .assignment-item:hover {
+      opacity: 1 !important;
+      transition: opacity 250ms ease;
+    }
+    .assignment-item {
+      transition: opacity 250ms ease;
+    }
+
+    /* &WALSH subtle artwork-title hover reveal */
+    .hover-reveal-label {
+      color: var(--accent-color);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity 250ms ease, transform 250ms ease;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .assignment-btn:hover .hover-reveal-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Loading Experience: Rotating branded mark bottom-right */
+    #loading-indicator {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      pointer-events: none;
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+    .spin-fast {
+      animation: spin 3s linear infinite;
+    }
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Custom borders using accent */
+    .border-accent {
+      border-color: var(--accent-color);
+    }
+
+    /* Hero section min height 60vh */
+    .hero-container {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Subtle Drifting Stars Canvas -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- &WALSH Inspired Bottom-Right Rotating Loading Indicator -->
+  <div id="loading-indicator" class="flex items-center gap-2 bg-[#8AD4CE]/90 px-3 py-2 rounded-full border border-[#F7608F] shadow-md backdrop-blur-sm">
+    <svg class="spin-fast w-5 h-5 text-[#F7608F]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-dasharray="14 14" stroke-linecap="round"></circle>
+      <circle cx="12" cy="12" r="3" fill="#F7608F"></circle>
+    </svg>
+    <span class="text-[0.78rem] tracking-wider font-semibold text-[#030001]">DIESEL 2026</span>
+  </div>
+
+  <div class="site-wrapper">
+
+    <!-- Top of Homepage: Name & Site Header -->
+    <header class="w-full pb-8 mb-6 border-b border-[#F7608F]/30 flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-2">
+      <div>
+        <h1 class="heading-font heading-primary">Studio Portfolio</h1>
+        <p class="text-xs uppercase tracking-widest text-[#030001]/75 mt-1">Creative Direction &bull; Denim Campaign Fall 2026</p>
+      </div>
+      <div class="text-right">
+        <span class="inline-block px-3 py-1 text-xs border border-[#F7608F] rounded-full text-[#030001] bg-[#F7608F]/10 font-medium">
+          Orientation Guide &bull; Verified Build
+        </span>
+      </div>
+    </header>
+
+    <!-- Main Grid: Strict 2-column layout on Desktop and Mobile -->
+    <main class="grid grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+
+      <!-- Column 1 & 2 Span: Dominant Hero Image (At least 60% viewport height) -->
+      <section class="col-span-2 hero-container my-4 py-6 px-4 rounded-3xl bg-[#8AD4CE]/50 border border-[#F7608F]/40 backdrop-blur-[2px] shadow-sm">
+        <div class="w-full flex flex-col items-center justify-center text-center">
+          
+          <!-- Dominant Hero Visual: Uploaded Diesel Fall 2026 Logomark (LOGOMARK.jpeg) -->
+          <div class="relative w-full max-w-[480px] aspect-square flex items-center justify-center p-2">
+            <img 
+              src="LOGOMARK.jpeg" 
+              alt="Diesel Fall 2026 The Essence of Denim Living Logomark" 
+              class="w-full h-full object-contain rounded-full shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
+              onerror="this.onerror=null; this.classList.add('hidden'); document.getElementById('hero-logomark-fallback').classList.remove('hidden');"
+            />
+
+            <!-- Embedded High-Fidelity SVG Fallback in case local file path is inaccessible in iframe preview -->
+            <div id="hero-logomark-fallback" class="hidden w-full h-full">
+              <svg viewBox="0 0 500 500" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="denimRadial" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#1e3a6a"/>
+                    <stop offset="65%" stop-color="#0c1d3b"/>
+                    <stop offset="100%" stop-color="#060e1e"/>
+                  </radialGradient>
+                  <linearGradient id="twillSteel" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4a5d4e"/>
+                    <stop offset="50%" stop-color="#2d382d"/>
+                    <stop offset="100%" stop-color="#1c241d"/>
+                  </linearGradient>
+                  <linearGradient id="denimStrap" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7297ca"/>
+                    <stop offset="50%" stop-color="#496fa4"/>
+                    <stop offset="100%" stop-color="#2a456c"/>
+                  </linearGradient>
+                  <filter id="emboss">
+                    <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.6"/>
+                  </filter>
+                </defs>
+
+                <circle cx="250" cy="250" r="235" fill="#091540" stroke="#3D518C" stroke-width="4"/>
+                <circle cx="250" cy="250" r="225" fill="url(#denimRadial)"/>
+                <circle cx="250" cy="250" r="220" fill="none" stroke="#A9BCD0" stroke-dasharray="6,4" stroke-width="2"/>
+                <circle cx="250" cy="250" r="198" fill="none" stroke="#A9BCD0" stroke-dasharray="5,4" stroke-width="1.8"/>
+
+                <g fill="#A9BCD0" stroke="#091540" stroke-width="1.5">
+                  <circle cx="250" cy="34" r="5"/>
+                  <circle cx="403" cy="98" r="5"/>
+                  <circle cx="466" cy="250" r="5"/>
+                  <circle cx="403" cy="402" r="5"/>
+                  <circle cx="250" cy="466" r="5"/>
+                  <circle cx="97" cy="402" r="5"/>
+                  <circle cx="34" cy="250" r="5"/>
+                  <circle cx="97" cy="98" r="5"/>
+                </g>
+
+                <path id="curveTop" d="M 70 250 A 180 180 0 0 1 430 250" fill="none"/>
+                <path id="curveBottom" d="M 430 250 A 180 180 0 0 1 70 250" fill="none"/>
+                
+                <text font-family="'Orbitron', sans-serif" font-weight="900" font-size="42" fill="#F7F4F3" letter-spacing="4" filter="url(#emboss)">
+                  <textPath href="#curveTop" startOffset="50%" text-anchor="middle">DIESEL</textPath>
+                </text>
+                <text font-family="'Orbitron', sans-serif" font-weight="700" font-size="19" fill="#F7F4F3" letter-spacing="2" filter="url(#emboss)">
+                  <textPath href="#curveBottom" startOffset="50%" text-anchor="middle">&bull; ESSENCE OF DENIM LIVING &bull;</textPath>
+                </text>
+
+                <circle cx="250" cy="250" r="162" fill="none" stroke="#292E1E" stroke-width="8"/>
+                <circle cx="250" cy="250" r="156" fill="none" stroke="#A9BCD0" stroke-dasharray="4,4" stroke-width="2"/>
+
+                <g filter="url(#emboss)">
+                  <path d="M 135 155 L 225 155 C 295 155 330 190 330 250 C 330 310 295 345 225 345 L 135 345 Z" fill="url(#twillSteel)" stroke="#292E1E" stroke-width="5"/>
+                  <path d="M 180 200 L 220 200 C 255 200 275 218 275 250 C 275 282 255 300 220 300 L 180 300 Z" fill="#091540" stroke="#3D518C" stroke-width="3"/>
+                  <path d="M 142 162 L 222 162 C 285 162 320 195 320 250 C 320 305 285 338 222 338 L 142 338 Z" fill="none" stroke="#A9BCD0" stroke-dasharray="3,3" stroke-width="1.5"/>
+                  <circle cx="147" cy="170" r="4.5" fill="#C5D3E8" stroke="#1c241d"/>
+                  <circle cx="147" cy="330" r="4.5" fill="#C5D3E8" stroke="#1c241d"/>
+                  <circle cx="190" cy="170" r="4" fill="#C5D3E8" stroke="#1c241d"/>
+                  <circle cx="190" cy="330" r="4" fill="#C5D3E8" stroke="#1c241d"/>
+                  <path d="M 205 345 L 360 155 L 395 180 L 240 370 Z" fill="url(#denimStrap)" stroke="#091540" stroke-width="3"/>
+                  <path d="M 212 342 L 362 160" stroke="#F7F4F3" stroke-dasharray="4,3" stroke-width="2"/>
+                  <path d="M 233 365 L 388 183" stroke="#F7F4F3" stroke-dasharray="4,3" stroke-width="2"/>
+                  <circle cx="370" cy="170" r="4" fill="#C5D3E8" stroke="#091540"/>
+                  <circle cx="230" cy="355" r="4" fill="#C5D3E8" stroke="#091540"/>
+                  <circle cx="340" cy="285" r="38" fill="none" stroke="#3D518C" stroke-width="16"/>
+                  <circle cx="340" cy="285" r="38" fill="none" stroke="#A9BCD0" stroke-dasharray="4,3" stroke-width="2"/>
+                  <circle cx="320" cy="285" r="3" fill="#C5D3E8"/>
+                  <circle cx="360" cy="285" r="3" fill="#C5D3E8"/>
+                  <circle cx="340" cy="265" r="3" fill="#C5D3E8"/>
+                  <circle cx="340" cy="305" r="3" fill="#C5D3E8"/>
+                </g>
+
+                <path d="M 285 145 C 285 125 300 115 300 115 C 300 115 315 125 315 145 C 315 160 300 165 300 165 C 300 165 285 160 285 145 Z" fill="#292E1E" stroke="#A9BCD0" stroke-width="1"/>
+                <path d="M 370 190 C 370 175 385 168 385 168 C 385 168 396 178 396 192 C 396 205 384 210 384 210 C 384 210 370 202 370 190 Z" fill="#292E1E" stroke="#A9BCD0" stroke-width="1"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-6 max-w-xl">
+            <span class="heading-font section-label text-[#F7608F] block mb-1">Dominant Visual Element</span>
+            <h2 class="heading-font heading-secondary text-[#030001]">Diesel Fall 2026 Archive Logomark</h2>
+            <p class="text-sm mt-2 text-[#030001]/80 max-w-md mx-auto">
+              Provided archival emblem: LOGOMARK.jpeg grounding iconic fits (D-Strukt, D-Went, D-Husu) in an industrial denim reality.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Assignment Links Section with Dior-inspired fade and &WALSH descriptor hover reveal -->
+      <section class="col-span-2 my-2">
+        <div class="flex items-baseline justify-between mb-4 border-b border-[#F7608F]/20 pb-2">
+          <h2 class="heading-font heading-secondary">Project Deliverables & Assignments</h2>
+          <span class="heading-font section-label text-[#F7608F]">Interactive Index</span>
+        </div>
+
+        <!-- Dior Fade Container -->
+        <div class="assignment-container grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+          
+          <!-- Assignment 1 -->
+          <div class="assignment-item">
+            <a href="#campaign-brief" class="assignment-btn">
+              <span class="font-medium text-sm sm:text-base">01. Creative Brief & Fits</span>
+              <span class="hover-reveal-label hidden sm:inline-block">D-Strukt &bull; D-Went &bull; D-Husu &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Assignment 2 -->
+          <div class="assignment-item">
+            <a href="#color-system" class="assignment-btn">
+              <span class="font-medium text-sm sm:text-base">02. Denim Color Palette</span>
+              <span class="hover-reveal-label hidden sm:inline-block">5 Swatch Spec &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Assignment 3 -->
+          <div class="assignment-item">
+            <a href="#moodboard-section" class="assignment-btn">
+              <span class="font-medium text-sm sm:text-base">03. Archival Moodboard</span>
+              <span class="hover-reveal-label hidden sm:inline-block">Industrial Twill &bull; Rivets &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Assignment 4 -->
+          <div class="assignment-item">
+            <a href="#typography-study" class="assignment-btn">
+              <span class="font-medium text-sm sm:text-base">04. Font References</span>
+              <span class="hover-reveal-label hidden sm:inline-block">Orbitron &bull; Billy Argel &bull; Logo &rarr;</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Campaign Name & Creative Brief (Provided verbatim) -->
+      <section id="campaign-brief" class="col-span-2 pt-8 pb-4">
+        <div class="bg-white/40 border border-[#F7608F]/50 rounded-2xl p-6 md:p-8 backdrop-blur-sm">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-3 h-3 rounded-full bg-[#F7608F]"></span>
+            <span class="heading-font section-label text-[#F7608F]">Campaign Name</span>
+          </div>
+          <h2 class="heading-font heading-primary mb-4 text-[#030001]">The Essence of Denim: Raw Heritage</h2>
+          
+          <div class="border-t border-[#F7608F]/30 pt-4 mt-2">
+            <h3 class="heading-font heading-secondary mb-2 text-[#030001]">Creative Brief</h3>
+            <p class="text-sm md:text-base leading-relaxed text-[#030001]/95 text-justify">
+              The Diesel Fall 2026 Denim campaign, "The Essence of Denim: Raw Heritage," returns to the core identity of the brand—grounding iconic fits (D-Strukt, D-Went, D-Husu) in an industrial, raw, and utilitarian reality. Blending heavy twill textures, archival rivets, and weathered washes, the collection bridges late-90s subcultural attitude with modern silhouette tailoring. Visualized through deep indigo, dusk shadows, and muted charcoal earth tones, the campaign positions Diesel denim not just as everyday wear, but as an enduring uniform of resilience and unapologetic self-expression.
+            </p>
+          </div>
+
+          <!-- Highlights: Iconic Fits -->
+          <div class="grid grid-cols-2 gap-3 mt-6 pt-4 border-t border-[#F7608F]/20 text-xs sm:text-sm">
+            <div class="p-3 bg-[#8AD4CE]/30 rounded-xl border border-[#F7608F]/30">
+              <span class="font-bold block text-[#030001]">019 D-STRUKT & 1981 D-WENT</span>
+              <span class="text-[#030001]/75">Slim tapered & vintage archival straight fits with button waistbands.</span>
+            </div>
+            <div class="p-3 bg-[#8AD4CE]/30 rounded-xl border border-[#F7608F]/30">
+              <span class="font-bold block text-[#030001]">D-HUSU BOOTCUT</span>
+              <span class="text-[#030001]/75">Distinctive attitude &bull; Bootcut leg with slim waist geometry.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Color Palette (Provided Screenshot 2026-11-03 at 10.58.41 PM.png) -->
+      <section id="color-system" class="col-span-2 pt-6">
+        <div class="flex items-baseline justify-between mb-4 border-b border-[#F7608F]/20 pb-2">
+          <h2 class="heading-font heading-secondary">Official Campaign Color Palette</h2>
+          <span class="heading-font section-label text-[#F7608F]">Extracted Specs</span>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          
+          <!-- Swatch 1 -->
+          <div class="flex flex-col rounded-2xl overflow-hidden border border-[#F7608F]/40 shadow-sm bg-white/20">
+            <div class="h-28 w-full" style="background-color: #292E1E;"></div>
+            <div class="p-3 bg-white/60 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold block text-[#030001]">Charcoal Brown</span>
+                <span class="text-xs font-mono tracking-wider text-[#030001]/70">#292E1E</span>
+              </div>
+              <span class="text-[0.65rem] text-[#F7608F] font-bold mt-2">EARTHEN SHADOWS</span>
+            </div>
+          </div>
+
+          <!-- Swatch 2 -->
+          <div class="flex flex-col rounded-2xl overflow-hidden border border-[#F7608F]/40 shadow-sm bg-white/20">
+            <div class="h-28 w-full" style="background-color: #F7F4F3;"></div>
+            <div class="p-3 bg-white/60 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold block text-[#030001]">White Smoke</span>
+                <span class="text-xs font-mono tracking-wider text-[#030001]/70">#F7F4F3</span>
+              </div>
+              <span class="text-[0.65rem] text-[#F7608F] font-bold mt-2">WEATHERED WEAVE</span>
+            </div>
+          </div>
+
+          <!-- Swatch 3 -->
+          <div class="flex flex-col rounded-2xl overflow-hidden border border-[#F7608F]/40 shadow-sm bg-white/20">
+            <div class="h-28 w-full" style="background-color: #091540;"></div>
+            <div class="p-3 bg-white/60 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold block text-[#030001]">Deep Navy</span>
+                <span class="text-xs font-mono tracking-wider text-[#030001]/70">#091540</span>
+              </div>
+              <span class="text-[0.65rem] text-[#F7608F] font-bold mt-2">RAW TWILL CORE</span>
+            </div>
+          </div>
+
+          <!-- Swatch 4 -->
+          <div class="flex flex-col rounded-2xl overflow-hidden border border-[#F7608F]/40 shadow-sm bg-white/20">
+            <div class="h-28 w-full" style="background-color: #3D518C;"></div>
+            <div class="p-3 bg-white/60 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold block text-[#030001]">Dusk Blue</span>
+                <span class="text-xs font-mono tracking-wider text-[#030001]/70">#3D518C</span>
+              </div>
+              <span class="text-[0.65rem] text-[#F7608F] font-bold mt-2">DUSK SHADOWS</span>
+            </div>
+          </div>
+
+          <!-- Swatch 5 -->
+          <div class="col-span-2 md:col-span-1 flex flex-col rounded-2xl overflow-hidden border border-[#F7608F]/40 shadow-sm bg-white/20">
+            <div class="h-28 w-full" style="background-color: #A9BCD0;"></div>
+            <div class="p-3 bg-white/60 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-semibold block text-[#030001]">Powder Blue</span>
+                <span class="text-xs font-mono tracking-wider text-[#030001]/70">#A9BCD0</span>
+              </div>
+              <span class="text-[0.65rem] text-[#F7608F] font-bold mt-2">RIVET & WASH ACCENT</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Moodboard Representation (Referencing MOODBOARD.pdf) -->
+      <section id="moodboard-section" class="col-span-2 pt-6">
+        <div class="flex items-baseline justify-between mb-4 border-b border-[#F7608F]/20 pb-2">
+          <h2 class="heading-font heading-secondary">Archival Moodboard Reference</h2>
+          <span class="heading-font section-label text-[#F7608F]">MOODBOARD.pdf Spec</span>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#091540] text-[#F7F4F3] border-2 border-[#F7608F] relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl font-black font-mono select-none">
+            DIESEL
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 relative z-10">
+            
+            <!-- Direct PDF Moodboard Viewport / Embed -->
+            <div class="col-span-2 md:col-span-1 rounded-xl overflow-hidden border border-[#3D518C] bg-black/40 min-h-[300px] flex flex-col justify-between p-2">
+              <div class="text-[0.7rem] uppercase tracking-wider text-[#A9BCD0] px-2 py-1 flex justify-between border-b border-[#3D518C]/40">
+                <span>MOODBOARD.pdf</span>
+                <span class="text-[#F7608F]">Archival Source File</span>
+              </div>
+              <div class="my-auto flex items-center justify-center p-2">
+                <object data="MOODBOARD.pdf" type="application/pdf" class="w-full h-64 rounded shadow">
+                  <embed src="MOODBOARD.pdf" type="application/pdf" class="w-full h-64 rounded" />
+                </object>
+              </div>
+              <div class="px-2 py-1 text-[0.68rem] text-[#A9BCD0]/80">
+                019 D-STRUKT &bull; 1981 D-WENT &bull; D-HUSU BOOTCUT
+              </div>
+            </div>
+
+            <!-- Moodboard Details Card matching exact contents of MOODBOARD.pdf -->
+            <div class="col-span-2 md:col-span-1 flex flex-col justify-between p-4 bg-[#292E1E]/80 rounded-xl border border-[#3D518C]/80">
+              <div>
+                <div class="flex justify-between items-start mb-3">
+                  <span class="text-[0.7rem] uppercase tracking-widest text-[#F7608F] font-bold">RAW HERITAGE ARCHIVE</span>
+                  <span class="text-[0.65rem] px-2 py-0.5 bg-[#3D518C] rounded text-white">FALL 2026</span>
+                </div>
+                <h3 class="heading-font text-2xl text-[#8AD4CE] mb-1">FOR SUCCESSFUL LIVING</h3>
+                <p class="text-xs text-[#A9BCD0] leading-relaxed mb-4">
+                  Direct sheet breakdown: Straight button waistband tailored silhouettes, distinctive attitude fits, with heavy 14.5oz utilitarian denim.
+                </p>
+
+                <div class="space-y-2 border-t border-[#3D518C]/60 pt-3 text-xs">
+                  <div class="flex justify-between items-center py-1 border-b border-[#3D518C]/30">
+                    <span class="font-mono text-[#F7608F]">019</span>
+                    <span class="font-bold text-white">D-STRUKT SLIM WAIST</span>
+                    <span class="text-[#A9BCD0]">FOR HIM</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-[#3D518C]/30">
+                    <span class="font-mono text-[#F7608F]">1981</span>
+                    <span class="font-bold text-white">D-WENT STRAIGHT</span>
+                    <span class="text-[#A9BCD0]">UNISEX</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1">
+                    <span class="font-mono text-[#F7608F]">2026</span>
+                    <span class="font-bold text-white">D-HUSU BOOTCUT</span>
+                    <span class="text-[#A9BCD0]">FOR HER</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-[#3D518C]/60 flex justify-between text-[0.7rem] text-[#A9BCD0]">
+                <span>THE ESSENCE OF DENIM</span>
+                <span class="text-[#F7608F]">AUTHENTIC BLUEPRINT</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: 3 Font References Provided -->
+      <section id="typography-study" class="col-span-2 pt-6 pb-12">
+        <div class="flex items-baseline justify-between mb-4 border-b border-[#F7608F]/20 pb-2">
+          <h2 class="heading-font heading-secondary">Campaign Typographic Reference Study</h2>
+          <span class="heading-font section-label text-[#F7608F]">3 Provided References</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 md:gap-6">
+          
+          <!-- Font Reference 1: Orbitron by Matt McInerney (Screenshot 2026-11-03 at 11.23.20 PM.png) -->
+          <div class="bg-white/40 border border-[#F7608F]/40 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-[#F7608F]">Reference Photo 01</span>
+                <span class="text-xs text-[#030001]/60 font-mono">Google Fonts</span>
+              </div>
+              <h3 class="text-xl font-bold font-['Orbitron'] text-[#030001] tracking-wide">Orbitron</h3>
+              <p class="text-xs text-[#030001]/70 mb-3">Designed by Matt McInerney &bull; Geometric Variable Display</p>
+              <div class="p-4 bg-[#030001] text-[#F7F4F3] rounded-xl font-['Orbitron'] tracking-wider">
+                <p class="text-lg md:text-xl font-bold uppercase leading-tight">
+                  Whereas disregard and contempt for
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F7608F]/20 text-xs text-[#030001]/80">
+              Utilized for geometric industrial stamps, archival fit codes, and peripheral denim specs.
+            </div>
+          </div>
+
+          <!-- Font Reference 2: Classic Diesel Red Block Logo (Diesel-Logo.png) -->
+          <div class="bg-white/40 border border-[#F7608F]/40 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-[#F7608F]">Reference Photo 02</span>
+                <span class="text-xs text-[#030001]/60 font-mono">Heritage Identity</span>
+              </div>
+              <h3 class="text-xl font-bold text-[#030001]">Diesel Bold Block Badge</h3>
+              <p class="text-xs text-[#030001]/70 mb-3">Heavy Condensed Grotesque in Crimson Block</p>
+              
+              <!-- Faithful reproduction of the provided Diesel-Logo.png -->
+              <div class="p-3 bg-[#E00613] rounded-xl flex items-center justify-center shadow-md">
+                <span class="text-white font-black tracking-tight text-4xl sm:text-5xl font-sans" style="font-stretch: ultra-condensed; transform: scaleY(1.15);">
+                  DIESEL
+                </span>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F7608F]/20 text-xs text-[#030001]/80">
+              Archival primary brandmark for "For Successful Living" campaign continuity and patch badges.
+            </div>
+          </div>
+
+          <!-- Font Reference 3: Diesel Italic / Distressed Font by Billy Argel (56841d70-5ea0-4cd1-aa6b-df3c4d444c97.jpg) -->
+          <div class="col-span-2 bg-white/40 border border-[#F7608F]/40 rounded-2xl p-5 shadow-sm">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-[#F7608F]">Reference Photo 03</span>
+              <span class="text-xs text-[#030001]/60 font-mono">Billy Argel Fonts &reg;</span>
+            </div>
+            <h3 class="text-xl font-bold text-[#030001]">Diesel Italic &amp; Bold Weathered Twill</h3>
+            <p class="text-xs text-[#030001]/70 mb-4">
+              "Diesel by Billy Argel Fonts &reg;" &bull; Bold &amp; Bold Italic with weathered texture simulating raw denim twill wash wear.
+            </p>
+
+            <div class="p-6 bg-[#3D518C]/20 border border-[#3D518C]/40 rounded-xl relative overflow-hidden flex flex-col items-center justify-center text-center">
+              <span class="text-xs tracking-widest text-[#091540] uppercase font-bold mb-2">BILLY ARGEL PRESENTS</span>
+              
+              <!-- Textured Distressed Headline Simulation -->
+              <div class="text-3xl sm:text-5xl font-black italic tracking-tighter text-[#091540] drop-shadow-sm select-none" style="font-family: 'Impact', sans-serif; letter-spacing: -0.03em;">
+                DIESEL
+              </div>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#292E1E] mt-1">BOLD &amp; BOLD ITALIC</span>
+              <div class="mt-4 text-xs font-mono text-[#091540]/80 tracking-wide border-t border-[#3D518C]/30 pt-2 w-full">
+                THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG &bull; ARCHIVAL WASH TEXTURE
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer: Clean contemporary portfolio aesthetic with Dior restraint -->
+    <footer class="pt-8 pb-12 border-t border-[#F7608F]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#030001]/75">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#F7608F]"></span>
+        <span>Orientation Style Guide Source of Truth &bull; Single Page Build</span>
+      </div>
+      <div>
+        <span>Background: <code class="text-[#030001] font-mono font-bold">#8AD4CE</code> &bull; Accent: <code class="text-[#F7608F] font-mono font-bold">#F7608F</code></span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Drifting Star Background Animation & &WALSH Loading Lifecycle Script -->
+  <script>
+    // --- 1. Drifting Star Background (Continuous, subtle, slow, low opacity) ---
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = 0;
+    let height = 0;
+    const stars = [];
+    const NUM_STARS = 65;
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    class Star {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * width;
+        this.y = init ? Math.random() * height : -10;
+        this.size = Math.random() * 2.2 + 0.8;
+        this.speedY = Math.random() * 0.22 + 0.08; // slow movement
+        this.speedX = (Math.random() - 0.5) * 0.08;
+        this.alpha = Math.random() * 0.45 + 0.2;
+        this.isAccent = Math.random() > 0.7; // Occasional subtle accent star (#F7608F)
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+
+        if (this.y > height + 10 || this.x < -10 || this.x > width + 10) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.isAccent ? '#F7608F' : '#030001';
+        ctx.globalAlpha = this.alpha;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function initStars() {
+      resizeCanvas();
+      stars.length = 0;
+      for (let i = 0; i < NUM_STARS; i++) {
+        stars.push(new Star());
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < stars.length; i++) {
+        stars[i].update();
+        stars[i].draw();
+      }
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+    });
+
+    // --- 2. &WALSH Inspired Rotating Loading Experience ---
+    window.addEventListener('load', () => {
+      initStars();
+      animateStars();
+
+      // Fade away loading indicator once ready (after smooth initial spin)
+      const loader = document.getElementById('loading-indicator');
+      setTimeout(() => {
+        if (loader) {
+          loader.style.opacity = '0';
+          loader.style.transform = 'translateY(10px) scale(0.9)';
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 600);
+        }
+      }, 900);
+    });
+  </script>
+</body>
+</html>
