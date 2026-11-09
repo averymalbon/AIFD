@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIESEL: THE ESSENCE OF DENIM — Dynamic Hero Studio</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: '#292E1E',
+            whitesmoke: '#F7F4F3',
+            deepnavy: '#091540',
+            duskblue: '#3D518C',
+            powderblue: '#A9BCD0',
+            stitchgold: '#e3b873',
+            stitchgolddark: '#c9a859'
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace'],
+            editorial: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #040816;
+      color: #F7F4F3;
+      overflow-x: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+      user-select: none;
+    }
+
+    .perspective-stage {
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+
+    .emblem-card {
+      transition: transform 0.08s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* Stitches */
+    .stitch-dash {
+      stroke-dasharray: 6 5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.85));
+    }
+    .stitch-double {
+      stroke-dasharray: 9 4 3 4;
+    }
+
+    /* Rivet Hardware Finishes */
+    .rivet-brass {
+      background: radial-gradient(circle at 35% 35%, #fff2b2, #e3b873 45%, #8c6314 85%, #3a2603 100%);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.85), 0 3px 6px rgba(0,0,0,0.8);
+      border: 1px solid #78530b;
+    }
+    .rivet-gunmetal {
+      background: radial-gradient(circle at 35% 35%, #cbd5e1, #475569 50%, #1e293b 85%, #020617 100%);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.7), 0 3px 6px rgba(0,0,0,0.9);
+      border: 1px solid #0f172a;
+    }
+    .rivet-chrome {
+      background: radial-gradient(circle at 35% 35%, #ffffff, #e2e8f0 45%, #64748b 85%, #334155 100%);
+      box-shadow: inset 0 1px 3px rgba(255,255,255,1), 0 3px 6px rgba(0,0,0,0.75);
+      border: 1px solid #94a3b8;
+    }
+    .rivet-copper {
+      background: radial-gradient(circle at 35% 35%, #fed7aa, #ea580c 55%, #7c2d12 85%, #431407 100%);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 3px 6px rgba(0,0,0,0.8);
+      border: 1px solid #9a3412;
+    }
+
+    /* Dynamic Glare */
+    .specular-glare {
+      pointer-events: none;
+      background: radial-gradient(circle 320px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.45), transparent 75%);
+      mix-blend-mode: overlay;
+    }
+
+    #warpCanvas, #particleCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    #distressCanvas {
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(169, 188, 208, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(169, 188, 208, 0.05) 1px, transparent 1px);
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker 26s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    .glass-panel {
+      background: rgba(9, 21, 64, 0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(169, 188, 208, 0.2);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+    }
+
+    .kinetic-letter {
+      display: inline-block;
+      transition: transform 0.12s ease-out, color 0.18s ease;
+      will-change: transform;
+    }
+
+    input[type=range] {
+      accent-color: #A9BCD0;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#040816] flex flex-col justify-between relative selection:bg-powderblue selection:text-deepnavy">
+
+  <!-- Interactive Warp & Weft Thread Matrix Canvas -->
+  <canvas id="warpCanvas" class="z-0 opacity-45"></canvas>
+  <!-- Particle Fiber Lint Canvas -->
+  <canvas id="particleCanvas" class="z-30"></canvas>
+
+  <!-- Ambient Dynamic Lighting Blobs -->
+  <div id="ambientGlow1" class="fixed -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-[#091540] blur-[130px] pointer-events-none opacity-80 transition-all duration-700"></div>
+  <div id="ambientGlow2" class="fixed -bottom-32 -right-32 w-[34rem] h-[34rem] rounded-full bg-[#3D518C] blur-[160px] pointer-events-none opacity-50 transition-all duration-700"></div>
+  <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+
+  <!-- STUDIO TOP BAR -->
+  <header class="relative z-30 px-6 lg:px-12 py-4 flex items-center justify-between border-b border-powderblue/15 backdrop-blur-md">
+    <div class="flex items-center gap-3.5">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-whitesmoke to-powderblue flex items-center justify-center text-deepnavy font-black tracking-tighter text-xl font-display shadow-lg shadow-powderblue/25">
+        D
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] uppercase tracking-[0.25em] text-powderblue/80 font-mono">DIESEL STUDIO · FALL 2026</span>
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        </div>
+        <h2 class="text-xs sm:text-sm tracking-widest font-bold uppercase text-whitesmoke">THE ESSENCE OF DENIM — HERO GENERATOR</h2>
+      </div>
+    </div>
+
+    <!-- Live Telemetry -->
+    <div class="hidden lg:flex items-center gap-8 text-xs font-mono text-powderblue/60 tracking-wider">
+      <span>REF: D-STRUKT / D-WENT</span>
+      <span>ART 3041 · ARCHIVE NYC</span>
+      <span id="canvasStats" class="text-powderblue">WARP: 3/1 RHT · INDIGO 14.5oz RIGID</span>
+    </div>
+
+    <!-- Primary Quick Actions -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button id="brushModeToggle" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-powderblue bg-deepnavy/70 hover:bg-duskblue/40 border border-powderblue/25 transition flex items-center gap-1.5" title="Toggle Laser Distress scrubbing on click/drag">
+        <i data-lucide="spray-can" class="w-3.5 h-3.5 text-powderblue"></i>
+        <span id="brushModeLabel">Laser: ON</span>
+      </button>
+
+      <button id="resetWearBtn" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-powderblue bg-deepnavy/70 hover:bg-duskblue/40 border border-powderblue/25 transition flex items-center gap-1.5" title="Clear distressed scratches">
+        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Clear Distress</span>
+      </button>
+
+      <button id="exportHeroBtn" class="px-4 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider bg-gradient-to-r from-powderblue to-whitesmoke hover:from-white hover:to-powderblue text-deepnavy font-bold shadow-lg shadow-powderblue/20 hover:shadow-powderblue/40 transition flex items-center gap-2">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        <span>Export Hero (PNG)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CANVAS & 3D STAGE -->
+  <main class="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-6 max-w-7xl mx-auto w-full">
+    
+    <!-- Meta Headline Ticker -->
+    <div class="w-full flex justify-between items-baseline mb-2 text-[11px] tracking-[0.3em] font-mono text-powderblue/70 px-2 uppercase">
+      <span>CAMPAIGN // FALL 2026</span>
+      <span class="hidden sm:inline animate-pulse">PHYSICAL 3D TILT · CLOTH WEAVE REPEL ACTIVE</span>
+      <span>FOR SUCCESSFUL LIVING</span>
+    </div>
+
+    <!-- Magnetic Kinetic Headline -->
+    <div id="headlineContainer" class="text-center w-full mb-5">
+      <h1 id="kineticHeading" class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-display tracking-tight text-whitesmoke uppercase leading-none drop-shadow-2xl">
+        <!-- Injected via JavaScript for per-letter magnetic response -->
+      </h1>
+      <p class="text-[11px] sm:text-xs md:text-sm font-mono tracking-[0.25em] uppercase text-powderblue/75 mt-2.5">
+        DIESEL — THE ESSENCE OF DENIM · FALL 2026 · ICONIC FITS & DISTINCTIVE WAISTBAND
+      </p>
+    </div>
+
+    <!-- 3D PERSPECTIVE EMBLEM STAGE -->
+    <div id="interactiveStage" class="perspective-stage relative w-full flex items-center justify-center py-2">
+      
+      <!-- Interactive Wrapper -->
+      <div id="emblemWrapper" class="relative group cursor-crosshair">
+        
+        <!-- 3D Tilting Patch Card -->
+        <div id="emblemCard" class="emblem-card relative w-[310px] h-[310px] sm:w-[410px] sm:h-[410px] md:w-[460px] md:h-[460px] rounded-full p-2 sm:p-3 shadow-[0_28px_70px_-15px_rgba(0,0,0,0.95)] flex items-center justify-center">
+          
+          <!-- Outer Raw Frayed Thread Border -->
+          <div class="absolute inset-0 rounded-full border-4 border-dashed border-[#e3b873]/50 pointer-events-none scale-[1.015]"></div>
+          <div class="absolute inset-1 rounded-full border border-powderblue/30 pointer-events-none"></div>
+
+          <!-- Base Denim Twill Disc -->
+          <div id="denimDisc" class="absolute inset-0 rounded-full bg-[#091540] overflow-hidden shadow-inner transition-colors duration-500">
+            
+            <!-- Real Diagonal 3/1 Right-Hand Twill Weave Texture -->
+            <div class="absolute inset-0 opacity-45 mix-blend-overlay" style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 2px, transparent 2px, transparent 5px);"></div>
+            <div class="absolute inset-0 opacity-30 mix-blend-soft-light" style="background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.45) 0px, rgba(0,0,0,0.45) 1px, transparent 1px, transparent 4px);"></div>
+
+            <!-- ======================================================== -->
+            <!-- 1. AUTHENTIC BASE LOGOMARK (DEFAULT ASSET)              -->
+            <!-- Faithfully recreates the Diesel circular denim crest:   -->
+            <!-- - "DIESEL", "2026", "FALL 2026", "THE ESSENCE OF DENIM"  -->
+            <!-- - Dimensional stitched "D" monogram, rivets & leaves    -->
+            <!-- ======================================================== -->
+            <div id="defaultEmblemLayer" class="relative z-10 w-full h-full flex items-center justify-center pointer-events-none transition-transform duration-200">
+              <svg id="basePatchSvg" class="w-full h-full drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)]" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Circular Stitch Rings -->
+                <circle cx="250" cy="250" r="236" fill="none" stroke="#292e1e" stroke-width="8" opacity="0.5" />
+                <circle id="outerStitchWhite" class="stitch-dash" cx="250" cy="250" r="232" fill="none" stroke="#F7F4F3" stroke-width="2.6" opacity="0.9" />
+                <circle id="outerStitchGold" class="stitch-dash stitch-double" cx="250" cy="250" r="218" fill="none" stroke="#e3b873" stroke-width="2.2" opacity="0.95" />
+
+                <!-- Arch Typography Path Definitions -->
+                <path id="textCircleTop" d="M 60,250 A 190,190 0 0,1 440,250" fill="none" />
+                <path id="textCircleBottom" d="M 440,250 A 190,190 0 0,1 60,250" fill="none" />
+                <path id="textCircleSubBottom" d="M 410,250 A 160,160 0 0,1 90,250" fill="none" />
+                <path id="textCircleLeft" d="M 80,180 A 185,185 0 0,0 80,320" fill="none" />
+                <path id="textCircleRight" d="M 420,180 A 185,185 0 0,1 420,320" fill="none" />
+
+                <!-- TOP ARCH: DIESEL -->
+                <text fill="#F7F4F3" font-family="'Syne', sans-serif" font-weight="900" font-size="44" letter-spacing="12" class="drop-shadow-md select-none">
+                  <textPath href="#textCircleTop" startOffset="50%" text-anchor="middle">
+                    DIESEL
+                  </textPath>
+                </text>
+
+                <!-- BOTTOM ARCH: THE ESSENCE OF DENIM LIVING -->
+                <text fill="#F7F4F3" font-family="'Space Grotesk', monospace" font-weight="700" font-size="19" letter-spacing="7" class="select-none">
+                  <textPath href="#textCircleBottom" startOffset="50%" text-anchor="middle">
+                    • THE ESSENCE OF DENIM LIVING •
+                  </textPath>
+                </text>
+
+                <!-- SUB BOTTOM ARCH: FALL 2026 -->
+                <text fill="#A9BCD0" font-family="'Space Grotesk', monospace" font-weight="700" font-size="16" letter-spacing="6" class="select-none">
+                  <textPath href="#textCircleSubBottom" startOffset="50%" text-anchor="middle">
+                    FALL 2026
+                  </textPath>
+                </text>
+
+                <!-- SIDE LABELS: 2026 & FALL -->
+                <text fill="#A9BCD0" font-family="'Space Grotesk', monospace" font-weight="700" font-size="15" letter-spacing="3" transform="rotate(-75 110 240)">
+                  2026
+                </text>
+                <text fill="#A9BCD0" font-family="'Space Grotesk', monospace" font-weight="700" font-size="15" letter-spacing="3" transform="rotate(75 390 240)">
+                  FALL
+                </text>
+
+                <!-- Inner Circular Inset Border -->
+                <circle cx="250" cy="250" r="156" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" />
+                <circle id="innerStitchGold" class="stitch-dash" cx="250" cy="250" r="150" fill="none" stroke="#e3b873" stroke-width="2.2" opacity="0.95" />
+                <circle cx="250" cy="250" r="144" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="2.5" />
+
+                <!-- CENTRAL DIMENSIONAL "D" MONOGRAM & EMBROIDERY MOTIF -->
+                <g id="lettermarkGroup" transform="translate(14, 8)">
+                  <!-- Drop shadow under "D" -->
+                  <path d="M120 120 H200 C270 120 305 160 305 235 C305 310 270 350 200 350 H120 V120 Z" fill="#000000" opacity="0.55" transform="translate(8, 8)"/>
+
+                  <!-- Outer Heavy Stitched Dark Brown-Charcoal Patch -->
+                  <path d="M120 120 H200 C270 120 305 160 305 235 C305 310 270 350 200 350 H120 V120 Z" fill="#292E1E" stroke="#e3b873" stroke-width="4" stroke-dasharray="8 6"/>
+
+                  <!-- Inner Inlaid Denim Twill Fill -->
+                  <path id="dInnerTwill" d="M134 134 H196 C255 134 288 168 288 235 C288 302 255 336 196 336 H134 V134 Z" fill="#3D518C" />
+                  <path d="M134 134 H196 C255 134 288 168 288 235 C288 302 255 336 196 336 H134 V134 Z" fill="none" stroke="#F7F4F3" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/>
+
+                  <!-- Hollow Center of "D" -->
+                  <path d="M165 170 H195 C228 170 250 195 250 235 C250 275 228 300 195 300 H165 V170 Z" fill="#091540" stroke="#e3b873" stroke-width="2.5" stroke-dasharray="6 4"/>
+
+                  <!-- Diagonal Denim Strap / Slash Across the D -->
+                  <path d="M110 325 L310 145" stroke="#091540" stroke-width="20" stroke-linecap="round" opacity="0.7" />
+                  <path d="M110 325 L310 145" stroke="#A9BCD0" stroke-width="15" stroke-linecap="round" />
+                  <path d="M110 325 L310 145" stroke="#F7F4F3" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round" />
+
+                  <!-- Studded Rivets along D Structure -->
+                  <circle cx="135" cy="135" r="7" fill="#A9BCD0" stroke="#292E1E" stroke-width="2"/>
+                  <circle cx="135" cy="335" r="7" fill="#A9BCD0" stroke="#292E1E" stroke-width="2"/>
+                  <circle cx="200" cy="135" r="7" fill="#A9BCD0" stroke="#292E1E" stroke-width="2"/>
+                  <circle cx="200" cy="335" r="7" fill="#A9BCD0" stroke="#292E1E" stroke-width="2"/>
+                  <circle cx="295" cy="235" r="7" fill="#A9BCD0" stroke="#292E1E" stroke-width="2"/>
+
+                  <!-- Botanic Denim Leaf / Foliage Accents -->
+                  <g fill="#292E1E" stroke="#e3b873" stroke-width="1.8">
+                    <path d="M295 165 C315 155 320 178 308 190 C295 185 288 172 295 165 Z"/>
+                    <path d="M312 195 C330 188 335 210 322 222 C310 216 304 205 312 195 Z"/>
+                    <path d="M260 125 C265 105 285 110 280 128 C272 128 265 120 260 125 Z"/>
+                  </g>
+                </g>
+              </svg>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- 2. CUSTOM USER ASSET CONTAINER                           -->
+            <!-- When an image is dropped/uploaded, the default logo is  -->
+            <!-- COMPLETELY HIDDEN, replaced seamlessly within the disc.   -->
+            <!-- Can extend to the full circular edge or scale freely.    -->
+            <!-- ======================================================== -->
+            <div id="customAssetWrapper" class="absolute inset-0 z-20 hidden items-center justify-center overflow-hidden rounded-full">
+              <div class="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center">
+                <img id="customAssetImg" src="" alt="Custom Denim Crest Asset" class="w-full h-full object-cover transition-transform duration-150 pointer-events-none" />
+                <!-- Denim Twill Blend Overlay -->
+                <div id="customDenimOverlay" class="absolute inset-0 bg-[#091540]/30 mix-blend-color-burn pointer-events-none transition-colors duration-500"></div>
+                <div class="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/20 mix-blend-overlay pointer-events-none"></div>
+                <!-- Outer Perimeter Stitches Pressed on Top of Custom Asset -->
+                <div id="customStitchRing" class="absolute inset-1.5 rounded-full border-2 border-dashed border-[#e3b873]/90 pointer-events-none shadow-sm"></div>
+                <div id="customStitchOuterRing" class="absolute inset-3 rounded-full border border-dashed border-[#F7F4F3]/70 pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- 3. Scratch & Laser Wear Canvas Layer -->
+            <canvas id="distressCanvas" class="absolute inset-0 w-full h-full z-25"></canvas>
+
+            <!-- 4. Dynamic Specular Lighting Sheen (Moves with cursor) -->
+            <div id="specularGlare" class="absolute inset-0 specular-glare z-30"></div>
+          </div>
+
+          <!-- HARDWARE RIVETS (Layered above custom asset by default at z-40) -->
+          <div id="rivetsContainer" class="absolute inset-0 pointer-events-none z-40 transition-opacity duration-300">
+            <div class="rivet rivet-brass absolute top-2.5 left-1/2 -translate-x-1/2 w-4 sm:w-5 h-4 sm:h-5 rounded-full flex items-center justify-center shadow-md transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-black/60"></span>
+            </div>
+            <div class="rivet rivet-brass absolute bottom-2.5 left-1/2 -translate-x-1/2 w-4 sm:w-5 h-4 sm:h-5 rounded-full flex items-center justify-center shadow-md transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-black/60"></span>
+            </div>
+            <div class="rivet rivet-brass absolute left-2.5 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 rounded-full flex items-center justify-center shadow-md transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-black/60"></span>
+            </div>
+            <div class="rivet rivet-brass absolute right-2.5 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 rounded-full flex items-center justify-center shadow-md transition-all duration-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-black/60"></span>
+            </div>
+
+            <!-- Diagonals -->
+            <div class="rivet rivet-brass absolute top-10 left-10 w-3.5 sm:w-4 h-3.5 sm:h-4 rounded-full shadow-md transition-all duration-300"></div>
+            <div class="rivet rivet-brass absolute top-10 right-10 w-3.5 sm:w-4 h-3.5 sm:h-4 rounded-full shadow-md transition-all duration-300"></div>
+            <div class="rivet rivet-brass absolute bottom-10 left-10 w-3.5 sm:w-4 h-3.5 sm:h-4 rounded-full shadow-md transition-all duration-300"></div>
+            <div class="rivet rivet-brass absolute bottom-10 right-10 w-3.5 sm:w-4 h-3.5 sm:h-4 rounded-full shadow-md transition-all duration-300"></div>
+          </div>
+
+          <!-- DROP-ZONE ACTIVE FEEDBACK OVERLAY -->
+          <div id="dropzoneHighlight" class="absolute inset-0 rounded-full border-4 border-powderblue bg-deepnavy/90 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-2 opacity-0 pointer-events-none transition-all duration-200">
+            <i data-lucide="upload-cloud" class="w-12 h-12 text-powderblue animate-bounce"></i>
+            <span class="text-xs font-mono font-bold tracking-widest text-whitesmoke uppercase">Drop Custom Crest Image</span>
+            <span class="text-[10px] font-mono text-powderblue/80">Original Diesel patch will be completely replaced</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Active Asset Indicator Bar -->
+    <div id="activeAssetStatus" class="mt-2 text-xs font-mono tracking-widest text-emerald-400 uppercase hidden items-center gap-1.5">
+      <i data-lucide="check-circle" class="w-4 h-4"></i>
+      <span>CUSTOM CREST APPLIED · BASE LOGOMARK INVISIBLE</span>
+      <button id="revertDefaultInline" class="text-powderblue underline ml-2 hover:text-white font-bold">Reset to Base Patch</button>
+    </div>
+
+    <!-- Interaction Guide -->
+    <div class="mt-2 flex flex-wrap items-center justify-center gap-3 text-[11px] font-mono tracking-wider text-powderblue/60 uppercase">
+      <span class="flex items-center gap-1.5"><i data-lucide="move" class="w-3.5 h-3.5 text-powderblue"></i> 3D mouse parallax & cloth weave repulsion</span>
+      <span>•</span>
+      <span class="flex items-center gap-1.5"><i data-lucide="brush" class="w-3.5 h-3.5 text-powderblue"></i> Click & drag to scrub laser distress lines</span>
+      <span>•</span>
+      <span class="flex items-center gap-1.5"><i data-lucide="image" class="w-3.5 h-3.5 text-powderblue"></i> Drop or paste any image to swap badge</span>
+    </div>
+
+    <!-- STUDIO TOOL DOCK (GLASSMORPHISM PANEL) -->
+    <div class="w-full max-w-5xl mt-5 glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/25">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+        
+        <!-- Denim Wash Selector -->
+        <div class="md:col-span-4 flex flex-col gap-2.5">
+          <div class="flex justify-between items-center text-xs font-mono tracking-wider text-powderblue/80">
+            <span class="uppercase font-bold flex items-center gap-1.5">
+              <i data-lucide="palette" class="w-3.5 h-3.5"></i> Denim Wash
+            </span>
+            <span id="washNameLabel" class="text-whitesmoke font-bold">RAW INDIGO (01)</span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2">
+            <!-- Raw Indigo -->
+            <button data-wash="raw" class="wash-btn active group relative flex flex-col items-center gap-1 p-1.5 rounded-xl bg-deepnavy border-2 border-powderblue transition-all" title="Raw Rigid Indigo #091540">
+              <div class="w-full h-6 rounded-lg bg-[#091540] border border-powderblue/40 shadow-inner"></div>
+              <span class="text-[10px] font-mono tracking-wider text-whitesmoke">Raw</span>
+            </button>
+
+            <!-- Stonewash -->
+            <button data-wash="stone" class="wash-btn group relative flex flex-col items-center gap-1 p-1.5 rounded-xl bg-[#0b1736] border border-powderblue/20 hover:border-powderblue/60 transition-all" title="Vintage Stonewash #3D518C">
+              <div class="w-full h-6 rounded-lg bg-[#3D518C] border border-powderblue/40 shadow-inner"></div>
+              <span class="text-[10px] font-mono tracking-wider text-powderblue">Stone</span>
+            </button>
+
+            <!-- Acid Bleach -->
+            <button data-wash="powder" class="wash-btn group relative flex flex-col items-center gap-1 p-1.5 rounded-xl bg-[#0b1736] border border-powderblue/20 hover:border-powderblue/60 transition-all" title="Acid Bleach Tint #A9BCD0">
+              <div class="w-full h-6 rounded-lg bg-[#A9BCD0] border border-powderblue/40 shadow-inner"></div>
+              <span class="text-[10px] font-mono tracking-wider text-powderblue">Bleach</span>
+            </button>
+
+            <!-- Charcoal Overdye -->
+            <button data-wash="charcoal" class="wash-btn group relative flex flex-col items-center gap-1 p-1.5 rounded-xl bg-[#0b1736] border border-powderblue/20 hover:border-powderblue/60 transition-all" title="Charcoal Brown Dirty Wash #292E1E">
+              <div class="w-full h-6 rounded-lg bg-[#292E1E] border border-powderblue/40 shadow-inner"></div>
+              <span class="text-[10px] font-mono tracking-wider text-powderblue">Charcoal</span>
+            </button>
+          </div>
+
+          <!-- Hardware Finish Selector -->
+          <div class="mt-2 pt-2 border-t border-powderblue/15 flex items-center justify-between">
+            <span class="text-[11px] font-mono text-powderblue/80 uppercase">Rivet Hardware:</span>
+            <div class="flex items-center gap-2">
+              <button data-hardware="brass" class="hardware-btn active w-5 h-5 rounded-full rivet-brass ring-2 ring-powderblue" title="Brushed Brass"></button>
+              <button data-hardware="gunmetal" class="hardware-btn w-5 h-5 rounded-full rivet-gunmetal border border-white/40" title="Gunmetal Iron"></button>
+              <button data-hardware="chrome" class="hardware-btn w-5 h-5 rounded-full rivet-chrome border border-white/40" title="Polished Chrome"></button>
+              <button data-hardware="copper" class="hardware-btn w-5 h-5 rounded-full rivet-copper border border-white/40" title="Antique Copper"></button>
+            </div>
+          </div>
+
+          <!-- Rivet Overlay Position Toggle -->
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[11px] font-mono text-powderblue/75 uppercase">Rivets Over Image:</span>
+            <button id="toggleRivetOverlayBtn" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-powderblue/20 hover:bg-powderblue/30 text-powderblue font-bold border border-powderblue/30 transition">
+              LAYER: OVER ASSET
+            </button>
+          </div>
+        </div>
+
+        <!-- Sliders & Interactive Physics -->
+        <div class="md:col-span-4 flex flex-col gap-3 border-t md:border-t-0 md:border-l border-powderblue/15 pt-3 md:pt-0 md:pl-5">
+          <div>
+            <div class="flex justify-between text-xs font-mono text-powderblue/80 mb-1">
+              <span>3D Parallax Tilt</span>
+              <span id="tiltValLabel">28°</span>
+            </div>
+            <input id="tiltSlider" type="range" min="10" max="50" value="28" class="w-full h-1.5 bg-deepnavy rounded-lg cursor-pointer" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-mono text-powderblue/80 mb-1">
+              <span>Laser Distressing Grit</span>
+              <span id="gritValLabel">Medium</span>
+            </div>
+            <input id="gritSlider" type="range" min="10" max="60" value="30" class="w-full h-1.5 bg-deepnavy rounded-lg cursor-pointer" />
+          </div>
+
+          <!-- Custom Asset Tuning (Active when custom image uploaded) -->
+          <div id="assetControlsGroup" class="opacity-40 pointer-events-none transition-opacity flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-powderblue font-bold uppercase">Asset Coverage:</span>
+              <div class="flex items-center gap-1.5">
+                <button id="bleedFitBtn" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-powderblue/15 hover:bg-powderblue/25 text-powderblue border border-powderblue/25">Fit Circle</button>
+                <button id="bleedFillBtn" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-powderblue/25 text-white font-bold border border-powderblue/50">Full Bleed</button>
+              </div>
+            </div>
+            <div class="flex gap-3 items-center">
+              <div class="flex-1">
+                <div class="flex justify-between text-[11px] font-mono text-powderblue/80 mb-1">
+                  <span>Custom Zoom / Scale</span>
+                  <span id="scaleValLabel">100%</span>
+                </div>
+                <input id="scaleSlider" type="range" min="70" max="220" value="100" class="w-full h-1.5 bg-deepnavy rounded-lg cursor-pointer" />
+              </div>
+              <div class="w-24">
+                <div class="text-[11px] font-mono text-powderblue/80 mb-1">Blend</div>
+                <select id="blendSelect" class="w-full bg-deepnavy border border-powderblue/30 rounded text-[11px] font-mono text-whitesmoke py-0.5 px-1 focus:outline-none">
+                  <option value="normal">Normal</option>
+                  <option value="color-burn" selected>Denim Burn</option>
+                  <option value="multiply">Multiply</option>
+                  <option value="screen">Screen</option>
+                  <option value="hard-light">Hard Light</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Uploader & Swapper -->
+        <div class="md:col-span-4 flex flex-col gap-2.5 border-t md:border-t-0 md:border-l border-powderblue/15 pt-3 md:pt-0 md:pl-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-powderblue/80 uppercase font-bold">Badge Asset State</span>
+            <span id="badgeState" class="text-[10px] font-mono px-2 py-0.5 rounded bg-powderblue/10 text-powderblue font-semibold">BASE LOGOMARK</span>
+          </div>
+
+          <label class="cursor-pointer flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl bg-powderblue/15 hover:bg-powderblue/25 border border-powderblue/30 text-whitesmoke text-xs font-mono tracking-wide transition shadow-sm">
+            <i data-lucide="upload" class="w-4 h-4 text-powderblue"></i>
+            <span id="uploadStatusText">Upload Replacement Image</span>
+            <input type="file" id="imageUploader" accept="image/*" class="hidden" />
+          </label>
+
+          <div class="flex gap-2">
+            <button id="pasteClipboardBtn" class="flex-1 py-1.5 rounded-lg bg-deepnavy/70 hover:bg-deepnavy border border-powderblue/25 text-[11px] font-mono text-powderblue hover:text-white transition flex items-center justify-center gap-1.5">
+              <i data-lucide="clipboard" class="w-3.5 h-3.5"></i> Paste Image
+            </button>
+            <button id="clearCustomImageBtn" class="flex-1 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-[11px] font-mono text-red-200 hover:text-white transition flex items-center justify-center gap-1.5 hidden">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset to Base
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- KINETIC FOOTER TICKER -->
+  <footer class="relative z-20 border-t border-powderblue/15 bg-[#040816]/90 backdrop-blur-md overflow-hidden py-3">
+    <div class="animate-marquee flex items-center gap-12 font-mono text-xs uppercase tracking-[0.25em] text-powderblue/70">
+      <span>DIESEL · FOR SUCCESSFUL LIVING</span>
+      <span>★</span>
+      <span>THE ESSENCE OF DENIM · FALL 2026</span>
+      <span>★</span>
+      <span>NYC ARCHIVE // ART 3041</span>
+      <span>★</span>
+      <span>RAW RIGID INDIGO · PUMICE STONEWASH · LASER ABRASION</span>
+      <span>★</span>
+      <span>AUTHENTIC ICONIC FITS · DISTINCTIVE BELT LOOP & STITCH</span>
+      <span>★</span>
+      <span>DIESEL · FOR SUCCESSFUL LIVING</span>
+      <span>★</span>
+      <span>THE ESSENCE OF DENIM · FALL 2026</span>
+      <span>★</span>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Modal -->
+  <div id="toastBox" class="fixed bottom-16 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 glass-panel px-4 py-3 rounded-xl flex items-center gap-3 border border-powderblue/30 text-xs font-mono text-whitesmoke">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMessage">Studio settings loaded.</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    lucide.createIcons();
+
+    // DOM Elements
+    const emblemCard = document.getElementById('emblemCard');
+    const emblemWrapper = document.getElementById('emblemWrapper');
+    const defaultEmblemLayer = document.getElementById('defaultEmblemLayer');
+    const basePatchSvg = document.getElementById('basePatchSvg');
+    const customAssetWrapper = document.getElementById('customAssetWrapper');
+    const customAssetImg = document.getElementById('customAssetImg');
+    const customDenimOverlay = document.getElementById('customDenimOverlay');
+    const specularGlare = document.getElementById('specularGlare');
+    const denimDisc = document.getElementById('denimDisc');
+    const dropzoneHighlight = document.getElementById('dropzoneHighlight');
+    const imageUploader = document.getElementById('imageUploader');
+    const clearCustomImageBtn = document.getElementById('clearCustomImageBtn');
+    const pasteClipboardBtn = document.getElementById('pasteClipboardBtn');
+    const uploadStatusText = document.getElementById('uploadStatusText');
+    const badgeState = document.getElementById('badgeState');
+    const activeAssetStatus = document.getElementById('activeAssetStatus');
+    const revertDefaultInline = document.getElementById('revertDefaultInline');
+    const assetControlsGroup = document.getElementById('assetControlsGroup');
+    const scaleSlider = document.getElementById('scaleSlider');
+    const scaleValLabel = document.getElementById('scaleValLabel');
+    const blendSelect = document.getElementById('blendSelect');
+    const washNameLabel = document.getElementById('washNameLabel');
+    const canvasStats = document.getElementById('canvasStats');
+    const tiltSlider = document.getElementById('tiltSlider');
+    const tiltValLabel = document.getElementById('tiltValLabel');
+    const gritSlider = document.getElementById('gritSlider');
+    const gritValLabel = document.getElementById('gritValLabel');
+    const resetWearBtn = document.getElementById('resetWearBtn');
+    const brushModeToggle = document.getElementById('brushModeToggle');
+    const brushModeLabel = document.getElementById('brushModeLabel');
+    const exportHeroBtn = document.getElementById('exportHeroBtn');
+    const ambientGlow1 = document.getElementById('ambientGlow1');
+    const ambientGlow2 = document.getElementById('ambientGlow2');
+    const toastBox = document.getElementById('toastBox');
+    const toastMessage = document.getElementById('toastMessage');
+    const kineticHeading = document.getElementById('kineticHeading');
+    const dInnerTwill = document.getElementById('dInnerTwill');
+    const rivetsContainer = document.getElementById('rivetsContainer');
+    const toggleRivetOverlayBtn = document.getElementById('toggleRivetOverlayBtn');
+    const bleedFitBtn = document.getElementById('bleedFitBtn');
+    const bleedFillBtn = document.getElementById('bleedFillBtn');
+
+    let laserBrushEnabled = true;
+    let customImageLoaded = false;
+    let customImageSrc = null;
+    let customScale = 1;
+    let maxTilt = 28;
+    let currentWash = 'raw';
+    let rivetsOverImage = true;
+
+    // Toggle Rivets Layer Position
+    toggleRivetOverlayBtn.addEventListener('click', () => {
+      rivetsOverImage = !rivetsOverImage;
+      if (rivetsOverImage) {
+        rivetsContainer.style.zIndex = '40';
+        toggleRivetOverlayBtn.textContent = 'LAYER: OVER ASSET';
+        toggleRivetOverlayBtn.classList.remove('bg-white/10', 'text-white/60');
+        toggleRivetOverlayBtn.classList.add('bg-powderblue/20', 'text-powderblue');
+        showToast('Rivets placed OVER custom asset.');
+      } else {
+        rivetsContainer.style.zIndex = '15';
+        toggleRivetOverlayBtn.textContent = 'LAYER: UNDER ASSET';
+        toggleRivetOverlayBtn.classList.add('bg-white/10', 'text-white/60');
+        toggleRivetOverlayBtn.classList.remove('bg-powderblue/20', 'text-powderblue');
+        showToast('Rivets placed UNDER custom asset.');
+      }
+    });
+
+    // Coverage Presets (Full Bleed vs Fit)
+    bleedFillBtn.addEventListener('click', () => {
+      customScale = 1.0;
+      scaleSlider.value = 100;
+      scaleValLabel.textContent = '100%';
+      customAssetImg.className = 'w-full h-full object-cover transition-transform duration-150 pointer-events-none';
+      customAssetImg.style.transform = 'scale(1)';
+      bleedFillBtn.classList.add('bg-powderblue/25', 'text-white', 'font-bold');
+      bleedFitBtn.classList.remove('bg-powderblue/25', 'text-white', 'font-bold');
+      showToast('Custom asset set to full bleed (covers full disc).');
+    });
+
+    bleedFitBtn.addEventListener('click', () => {
+      customScale = 0.82;
+      scaleSlider.value = 82;
+      scaleValLabel.textContent = '82%';
+      customAssetImg.className = 'w-full h-full object-contain transition-transform duration-150 pointer-events-none';
+      customAssetImg.style.transform = 'scale(0.82)';
+      bleedFitBtn.classList.add('bg-powderblue/25', 'text-white', 'font-bold');
+      bleedFillBtn.classList.remove('bg-powderblue/25', 'text-white', 'font-bold');
+      showToast('Custom asset fitted within inner denim margin.');
+    });
+
+    // 1. MAGNETIC KINETIC TYPOGRAPHY
+    const headlineWords = "THE ESSENCE OF DENIM".split(" ");
+    headlineWords.forEach((word) => {
+      const spanWord = document.createElement("span");
+      spanWord.className = "inline-block whitespace-nowrap mx-1.5 sm:mx-2";
+      word.split("").forEach((char) => {
+        const charSpan = document.createElement("span");
+        charSpan.className = "kinetic-letter";
+        charSpan.textContent = char;
+        spanWord.appendChild(charSpan);
+      });
+      kineticHeading.appendChild(spanWord);
+    });
+
+    const kineticLetters = document.querySelectorAll('.kinetic-letter');
+    window.addEventListener('mousemove', (e) => {
+      kineticLetters.forEach(letter => {
+        const rect = letter.getBoundingClientRect();
+        const letterCenterX = rect.left + rect.width / 2;
+        const letterCenterY = rect.top + rect.height / 2;
+        const dist = Math.hypot(e.clientX - letterCenterX, e.clientY - letterCenterY);
+        const maxDist = 180;
+        if (dist < maxDist) {
+          const power = (1 - dist / maxDist) * 18;
+          const angle = Math.atan2(e.clientY - letterCenterY, e.clientX - letterCenterX);
+          const pushX = -Math.cos(angle) * power;
+          const pushY = -Math.sin(angle) * power;
+          letter.style.transform = `translate(${pushX}px, ${pushY}px) scale(${1 + (power/35)})`;
+          letter.style.color = '#A9BCD0';
+        } else {
+          letter.style.transform = 'translate(0px, 0px) scale(1)';
+          letter.style.color = '';
+        }
+      });
+    });
+
+    // 2. INTERACTIVE WARP & WEFT CLOTH THREAD PHYSICS CANVAS
+    const warpCanvas = document.getElementById('warpCanvas');
+    const wCtx = warpCanvas.getContext('2d');
+    let warpPoints = [];
+    const warpSpacing = 42;
+
+    function initWarpMesh() {
+      warpCanvas.width = window.innerWidth;
+      warpCanvas.height = window.innerHeight;
+      warpPoints = [];
+      const cols = Math.ceil(warpCanvas.width / warpSpacing) + 1;
+      const rows = Math.ceil(warpCanvas.height / warpSpacing) + 1;
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          warpPoints.push({
+            originX: x * warpSpacing,
+            originY: y * warpSpacing,
+            x: x * warpSpacing,
+            y: y * warpSpacing,
+            vx: 0,
+            vy: 0
+          });
+        }
+      }
+    }
+    window.addEventListener('resize', initWarpMesh);
+    initWarpMesh();
+
+    let mouse = { x: -1000, y: -1000 };
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function drawWarpMesh() {
+      wCtx.clearRect(0, 0, warpCanvas.width, warpCanvas.height);
+      wCtx.strokeStyle = 'rgba(169, 188, 208, 0.14)';
+      wCtx.lineWidth = 1;
+
+      const cols = Math.ceil(warpCanvas.width / warpSpacing) + 1;
+      const rows = Math.ceil(warpCanvas.height / warpSpacing) + 1;
+
+      for (let i = 0; i < warpPoints.length; i++) {
+        const p = warpPoints[i];
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < 150) {
+          const force = (1 - dist / 150) * 14;
+          const angle = Math.atan2(dy, dx);
+          p.vx -= Math.cos(angle) * force * 0.45;
+          p.vy -= Math.sin(angle) * force * 0.45;
+        }
+
+        p.vx += (p.originX - p.x) * 0.055;
+        p.vy += (p.originY - p.y) * 0.055;
+        p.vx *= 0.86;
+        p.vy *= 0.86;
+        p.x += p.vx;
+        p.y += p.vy;
+      }
+
+      // Draw horizontal weft threads
+      for (let y = 0; y < rows; y++) {
+        wCtx.beginPath();
+        for (let x = 0; x < cols; x++) {
+          const p = warpPoints[y * cols + x];
+          if (x === 0) wCtx.moveTo(p.x, p.y);
+          else wCtx.lineTo(p.x, p.y);
+        }
+        wCtx.stroke();
+      }
+
+      // Draw vertical warp threads
+      for (let x = 0; x < cols; x++) {
+        wCtx.beginPath();
+        for (let y = 0; y < rows; y++) {
+          const p = warpPoints[y * cols + x];
+          if (y === 0) wCtx.moveTo(p.x, p.y);
+          else wCtx.lineTo(p.x, p.y);
+        }
+        wCtx.stroke();
+      }
+
+      requestAnimationFrame(drawWarpMesh);
+    }
+    drawWarpMesh();
+
+    // 3. DENIM LINT & FIBER SPARK PARTICLE ENGINE
+    const particleCanvas = document.getElementById('particleCanvas');
+    const pCtx = particleCanvas.getContext('2d');
+    let particles = [];
+
+    function resizeParticleCanvas() {
+      particleCanvas.width = window.innerWidth;
+      particleCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeParticleCanvas);
+    resizeParticleCanvas();
+
+    function spawnFiberParticles(x, y) {
+      for (let i = 0; i < 5; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: (Math.random() - 0.5) * 7,
+          vy: (Math.random() - 0.5) * 7 - 1.8,
+          life: 1,
+          decay: Math.random() * 0.04 + 0.02,
+          size: Math.random() * 2.5 + 1.2,
+          color: Math.random() > 0.4 ? '#A9BCD0' : '#F7F4F3'
+        });
+      }
+    }
+
+    function updateParticles() {
+      pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+        pCtx.fillStyle = p.color;
+        pCtx.globalAlpha = p.life;
+        pCtx.fillRect(p.x, p.y, p.size, p.size);
+      }
+      pCtx.globalAlpha = 1;
+      requestAnimationFrame(updateParticles);
+    }
+    updateParticles();
+
+    // 4. LASER DISTRESS / ABRASION SCRUB CANVAS
+    const distressCanvas = document.getElementById('distressCanvas');
+    const dCtx = distressCanvas.getContext('2d');
+    let isDrawingWear = false;
+    let brushRadius = 30;
+
+    function resizeDistressCanvas() {
+      const rect = emblemCard.getBoundingClientRect();
+      distressCanvas.width = rect.width;
+      distressCanvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeDistressCanvas);
+    resizeDistressCanvas();
+
+    function paintLaserDistress(x, y) {
+      dCtx.save();
+      const grad = dCtx.createRadialGradient(x, y, 0, x, y, brushRadius);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
+      grad.addColorStop(0.5, 'rgba(169, 188, 208, 0.32)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      
+      dCtx.fillStyle = grad;
+      dCtx.beginPath();
+      dCtx.arc(x, y, brushRadius, 0, Math.PI * 2);
+      dCtx.fill();
+
+      // Fiber distress specks
+      for (let i = 0; i < 5; i++) {
+        const sx = x + (Math.random() - 0.5) * brushRadius * 1.3;
+        const sy = y + (Math.random() - 0.5) * brushRadius * 1.3;
+        dCtx.fillStyle = 'rgba(247, 244, 243, 0.85)';
+        dCtx.fillRect(sx, sy, 2, 1);
+      }
+      dCtx.restore();
+    }
+
+    // 5. DENIM WASH MODES (STYLE GUIDE PALETTE)
+    const washThemes = {
+      raw: {
+        name: 'RAW RIGID INDIGO (01)',
+        bg: '#091540',
+        glow1: '#091540',
+        glow2: '#3D518C',
+        stats: 'WARP: 3/1 RHT · INDIGO 14.5oz RIGID',
+        dTwillFill: '#3D518C',
+        overlayBlend: '#091540'
+      },
+      stone: {
+        name: 'VINTAGE STONEWASH (02)',
+        bg: '#3D518C',
+        glow1: '#3D518C',
+        glow2: '#A9BCD0',
+        stats: 'WARP: PUMICE WASH · 12.5oz ABRADED',
+        dTwillFill: '#091540',
+        overlayBlend: '#3D518C'
+      },
+      powder: {
+        name: 'ACID BLEACH TINT (03)',
+        bg: '#A9BCD0',
+        glow1: '#A9BCD0',
+        glow2: '#F7F4F3',
+        stats: 'WARP: CHLORINE BLEACHED · 11oz SOFT',
+        dTwillFill: '#292E1E',
+        overlayBlend: '#A9BCD0'
+      },
+      charcoal: {
+        name: 'CHARCOAL OVERDYE (04)',
+        bg: '#292E1E',
+        glow1: '#292E1E',
+        glow2: '#091540',
+        stats: 'WARP: MINERAL PIGMENT · 14.0oz DIRTY TINT',
+        dTwillFill: '#3D518C',
+        overlayBlend: '#292E1E'
+      }
+    };
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastBox.classList.remove('translate-y-24', 'opacity-0');
+      toastBox.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toastBox.classList.add('translate-y-24', 'opacity-0');
+        toastBox.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // 6. 3D GYROSCOPE & MOUSE TILT PHYSICS
+    let targetX = 0, targetY = 0;
+    let currentTiltX = 0, currentTiltY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = emblemCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const isInside = (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height);
+
+      if (isInside) {
+        const mxPercent = (x / rect.width) * 100;
+        const myPercent = (y / rect.height) * 100;
+        specularGlare.style.setProperty('--mx', `${mxPercent}%`);
+        specularGlare.style.setProperty('--my', `${myPercent}%`);
+
+        targetX = -((y / rect.height - 0.5) * 2) * maxTilt;
+        targetY = ((x / rect.width - 0.5) * 2) * maxTilt;
+
+        if (isDrawingWear && laserBrushEnabled) {
+          paintLaserDistress(x, y);
+          spawnFiberParticles(e.clientX, e.clientY);
+        }
+      } else {
+        const winNormX = (e.clientX / window.innerWidth - 0.5) * 2;
+        const winNormY = (e.clientY / window.innerHeight - 0.5) * 2;
+        targetX = -winNormY * (maxTilt * 0.45);
+        targetY = winNormX * (maxTilt * 0.45);
+      }
+    });
+
+    function animateTilt() {
+      currentTiltX += (targetX - currentTiltX) * 0.12;
+      currentTiltY += (targetY - currentTiltY) * 0.12;
+
+      emblemCard.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+      
+      const offsetX = (currentTiltY * 0.45).toFixed(1);
+      const offsetY = (-currentTiltX * 0.45).toFixed(1);
+
+      if (customImageLoaded) {
+        customAssetWrapper.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 35px)`;
+      } else {
+        defaultEmblemLayer.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 30px)`;
+      }
+
+      requestAnimationFrame(animateTilt);
+    }
+    animateTilt();
+
+    // Laser Distress Mouse & Touch Events
+    emblemCard.addEventListener('mousedown', (e) => {
+      if (!laserBrushEnabled) return;
+      isDrawingWear = true;
+      const rect = emblemCard.getBoundingClientRect();
+      paintLaserDistress(e.clientX - rect.left, e.clientY - rect.top);
+      spawnFiberParticles(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('mouseup', () => { isDrawingWear = false; });
+
+    emblemCard.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const rect = emblemCard.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+          if (laserBrushEnabled) {
+            paintLaserDistress(x, y);
+            spawnFiberParticles(touch.clientX, touch.clientY);
+          }
+          targetX = -((y / rect.height - 0.5) * 2) * maxTilt;
+          targetY = ((x / rect.width - 0.5) * 2) * maxTilt;
+        }
+      }
+    }, { passive: true });
+
+    // Brush Toggle & Clear
+    brushModeToggle.addEventListener('click', () => {
+      laserBrushEnabled = !laserBrushEnabled;
+      brushModeLabel.textContent = laserBrushEnabled ? 'Laser: ON' : 'Laser: OFF';
+      brushModeToggle.classList.toggle('text-powderblue', laserBrushEnabled);
+      brushModeToggle.classList.toggle('text-white/40', !laserBrushEnabled);
+      showToast(laserBrushEnabled ? 'Laser distress brush enabled. Click & drag patch.' : 'Laser brush paused.');
+    });
+
+    resetWearBtn.addEventListener('click', () => {
+      dCtx.clearRect(0, 0, distressCanvas.width, distressCanvas.height);
+      showToast('Denim washed clean: distress scratches removed.');
+    });
+
+    // Wash Selection
+    document.querySelectorAll('.wash-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.wash-btn').forEach(b => {
+          b.classList.remove('active', 'border-powderblue', 'bg-deepnavy');
+          b.classList.add('border-powderblue/20', 'bg-[#0b1736]');
+        });
+        btn.classList.add('active', 'border-powderblue', 'bg-deepnavy');
+        btn.classList.remove('border-powderblue/20', 'bg-[#0b1736]');
+
+        const washKey = btn.getAttribute('data-wash');
+        applyWash(washKey);
+      });
+    });
+
+    function applyWash(key) {
+      const theme = washThemes[key];
+      if (!theme) return;
+      currentWash = key;
+
+      washNameLabel.textContent = theme.name;
+      denimDisc.style.backgroundColor = theme.bg;
+      ambientGlow1.style.backgroundColor = theme.glow1;
+      ambientGlow2.style.backgroundColor = theme.glow2;
+      canvasStats.textContent = theme.stats;
+      customDenimOverlay.style.backgroundColor = theme.overlayBlend;
+      if (dInnerTwill) dInnerTwill.setAttribute('fill', theme.dTwillFill);
+
+      showToast(`Wash updated: ${theme.name}`);
+    }
+
+    // Hardware Finish Selector
+    const hardwareFinishes = ['brass', 'gunmetal', 'chrome', 'copper'];
+    document.querySelectorAll('.hardware-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.hardware-btn').forEach(b => {
+          b.classList.remove('active', 'ring-2', 'ring-powderblue');
+          b.classList.add('border', 'border-white/40');
+        });
+        btn.classList.add('active', 'ring-2', 'ring-powderblue');
+        btn.classList.remove('border-white/40');
+
+        const hw = btn.getAttribute('data-hardware');
+        document.querySelectorAll('.rivet').forEach(rivet => {
+          hardwareFinishes.forEach(f => rivet.classList.remove(`rivet-${f}`));
+          rivet.classList.add(`rivet-${hw}`);
+        });
+
+        showToast(`Hardware finish: ${hw.toUpperCase()}`);
+      });
+    });
+
+    // Sliders
+    tiltSlider.addEventListener('input', (e) => {
+      maxTilt = parseInt(e.target.value);
+      tiltValLabel.textContent = `${maxTilt}°`;
+    });
+
+    gritSlider.addEventListener('input', (e) => {
+      brushRadius = parseInt(e.target.value);
+      gritValLabel.textContent = brushRadius > 45 ? 'Heavy Laser' : (brushRadius < 20 ? 'Fine Needle' : 'Medium Pumice');
+    });
+
+    scaleSlider.addEventListener('input', (e) => {
+      customScale = parseInt(e.target.value) / 100;
+      scaleValLabel.textContent = `${parseInt(e.target.value)}%`;
+      customAssetImg.style.transform = `scale(${customScale})`;
+    });
+
+    blendSelect.addEventListener('change', (e) => {
+      customDenimOverlay.style.mixBlendMode = e.target.value;
+    });
+
+    // ========================================================
+    // 7. CRITICAL LOGOMARK REPLACEMENT & COMPLETE CONCEALMENT
+    // ========================================================
+    function applyCustomAsset(dataUrl) {
+      customImageSrc = dataUrl;
+      customAssetImg.src = dataUrl;
+
+      // 1. COMPLETELY HIDE the default logomark
+      defaultEmblemLayer.classList.add('hidden');
+      defaultEmblemLayer.style.display = 'none';
+
+      // 2. SHOW the custom asset within the circular denim frame
+      customAssetWrapper.classList.remove('hidden');
+      customAssetWrapper.style.display = 'flex';
+      customImageLoaded = true;
+
+      // Update UI Controls
+      clearCustomImageBtn.classList.remove('hidden');
+      badgeState.textContent = 'CUSTOM CREST';
+      badgeState.classList.remove('bg-powderblue/10', 'text-powderblue');
+      badgeState.classList.add('bg-emerald-500/20', 'text-emerald-400');
+      uploadStatusText.textContent = 'Change Custom Image';
+      activeAssetStatus.classList.remove('hidden');
+      activeAssetStatus.classList.add('flex');
+      assetControlsGroup.classList.remove('opacity-40', 'pointer-events-none');
+
+      showToast('Custom asset applied. Base patch completely concealed.');
+    }
+
+    function resetToBasePatch() {
+      customImageLoaded = false;
+      customImageSrc = null;
+      customAssetImg.src = '';
+
+      // 1. RESTORE default logomark
+      defaultEmblemLayer.classList.remove('hidden');
+      defaultEmblemLayer.style.display = 'flex';
+
+      // 2. HIDE custom asset container
+      customAssetWrapper.classList.add('hidden');
+      customAssetWrapper.style.display = 'none';
+
+      // Reset UI Controls
+      clearCustomImageBtn.classList.add('hidden');
+      badgeState.textContent = 'BASE LOGOMARK';
+      badgeState.classList.add('bg-powderblue/10', 'text-powderblue');
+      badgeState.classList.remove('bg-emerald-500/20', 'text-emerald-400');
+      uploadStatusText.textContent = 'Upload Replacement Image';
+      activeAssetStatus.classList.add('hidden');
+      activeAssetStatus.classList.remove('flex');
+      assetControlsGroup.classList.add('opacity-40', 'pointer-events-none');
+      imageUploader.value = '';
+
+      showToast('Restored original Diesel Archive base patch.');
+    }
+
+    clearCustomImageBtn.addEventListener('click', resetToBasePatch);
+    revertDefaultInline.addEventListener('click', resetToBasePatch);
+
+    function processImageFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        showToast('Please provide a valid image file (PNG, JPG, WebP).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => applyCustomAsset(e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    imageUploader.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) processImageFile(e.target.files[0]);
+    });
+
+    // Paste from Clipboard
+    pasteClipboardBtn.addEventListener('click', async () => {
+      try {
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          const type = item.types.find(t => t.startsWith('image/'));
+          if (type) {
+            const blob = await item.getType(type);
+            processImageFile(blob);
+            return;
+          }
+        }
+        showToast('No image found on clipboard.');
+      } catch (err) {
+        showToast('Clipboard access unavailable. Drag or upload image file directly.');
+      }
+    });
+
+    // Drag and Drop
+    emblemWrapper.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzoneHighlight.classList.remove('opacity-0', 'pointer-events-none');
+      dropzoneHighlight.classList.add('opacity-100');
+    });
+
+    emblemWrapper.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropzoneHighlight.classList.add('opacity-0', 'pointer-events-none');
+      dropzoneHighlight.classList.remove('opacity-100');
+    });
+
+    emblemWrapper.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzoneHighlight.classList.add('opacity-0', 'pointer-events-none');
+      dropzoneHighlight.classList.remove('opacity-100');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        processImageFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    // 8. HIGH RESOLUTION HERO EXPORT ENGINE (1920x1080 PNG)
+    exportHeroBtn.addEventListener('click', () => {
+      const expCanvas = document.createElement('canvas');
+      const width = 1920;
+      const height = 1080;
+      expCanvas.width = width;
+      expCanvas.height = height;
+      const ctx = expCanvas.getContext('2d');
+      const theme = washThemes[currentWash];
+
+      // Luxury Denim Background Gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+      bgGrad.addColorStop(0, '#040816');
+      bgGrad.addColorStop(1, '#091540');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Grid Pattern
+      ctx.strokeStyle = 'rgba(169, 188, 208, 0.08)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Headline
+      ctx.fillStyle = '#F7F4F3';
+      ctx.font = '900 68px Syne, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('THE ESSENCE OF DENIM', width / 2, 160);
+
+      ctx.fillStyle = '#A9BCD0';
+      ctx.font = '600 20px "Space Grotesk", monospace';
+      ctx.fillText('DIESEL — FOR SUCCESSFUL LIVING · FALL 2026', width / 2, 215);
+
+      // Central Stitched Patch
+      const centerX = width / 2;
+      const centerY = height / 2 + 55;
+      const radius = 310;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = theme.bg;
+      ctx.shadowColor = 'rgba(0,0,0,0.9)';
+      ctx.shadowBlur = 60;
+      ctx.shadowOffsetY = 30;
+      ctx.fill();
+      ctx.restore();
+
+      // Outer Stitches
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius - 14, 0, Math.PI * 2);
+      ctx.setLineDash([10, 7]);
+      ctx.strokeStyle = '#e3b873';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius - 26, 0, Math.PI * 2);
+      ctx.setLineDash([12, 6]);
+      ctx.strokeStyle = '#F7F4F3';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      function finishExport() {
+        // Overlay laser distress scratches
+        ctx.drawImage(distressCanvas, centerX - radius, centerY - radius, radius * 2, radius * 2);
+
+        // Metadata Stamp
+        ctx.fillStyle = 'rgba(169, 188, 208, 0.7)';
+        ctx.font = '500 16px "Space Grotesk", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('DIESEL ARCHIVE NYC // ART 3041', 60, height - 50);
+        ctx.textAlign = 'right';
+        ctx.fillText(`WASH: ${theme.name} · ASSET: ${customImageLoaded ? 'CUSTOM' : 'BASE LOGOMARK'}`, width - 60, height - 50);
+
+        // Download
+        const link = document.createElement('a');
+        link.download = `Diesel-Denim-Hero-${currentWash}-${Date.now()}.png`;
+        link.href = expCanvas.toDataURL('image/png');
+        link.click();
+
+        showToast('High-resolution Hero exported (1920x1080).');
+      }
+
+      if (customImageLoaded && customImageSrc) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          ctx.save();
+          ctx.beginPath();
+          // Full-bleed disc coverage
+          const exportRadius = radius - 4;
+          ctx.arc(centerX, centerY, exportRadius, 0, Math.PI * 2);
+          ctx.clip();
+
+          const drawW = exportRadius * 2 * customScale;
+          const drawH = exportRadius * 2 * customScale;
+          ctx.drawImage(img, centerX - drawW / 2, centerY - drawH / 2, drawW, drawH);
+
+          // Tint overlay
+          ctx.fillStyle = theme.bg;
+          ctx.globalAlpha = 0.22;
+          ctx.fillRect(centerX - exportRadius, centerY - exportRadius, exportRadius * 2, exportRadius * 2);
+          ctx.restore();
+
+          // Border stitches pressed on top of custom asset
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius - 14, 0, Math.PI * 2);
+          ctx.setLineDash([10, 7]);
+          ctx.strokeStyle = '#e3b873';
+          ctx.lineWidth = 4;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius - 26, 0, Math.PI * 2);
+          ctx.setLineDash([12, 6]);
+          ctx.strokeStyle = '#F7F4F3';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // If rivets over image is enabled, paint rivets on export canvas
+          if (rivetsOverImage) {
+            const rivetCoords = [
+              [centerX, centerY - radius + 22],
+              [centerX, centerY + radius - 22],
+              [centerX - radius + 22, centerY],
+              [centerX + radius - 22, centerY],
+              [centerX - radius * 0.65, centerY - radius * 0.65],
+              [centerX + radius * 0.65, centerY - radius * 0.65],
+              [centerX - radius * 0.65, centerY + radius * 0.65],
+              [centerX + radius * 0.65, centerY + radius * 0.65]
+            ];
+            rivetCoords.forEach(([rx, ry]) => {
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(rx, ry, 10, 0, Math.PI * 2);
+              ctx.fillStyle = '#e3b873';
+              ctx.shadowColor = 'rgba(0,0,0,0.8)';
+              ctx.shadowBlur = 6;
+              ctx.fill();
+              ctx.strokeStyle = '#78530b';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              ctx.restore();
+            });
+          }
+
+          finishExport();
+        };
+        img.src = customImageSrc;
+      } else {
+        // Base Patch Lettering on Export
+        ctx.fillStyle = '#F7F4F3';
+        ctx.font = '900 48px Syne, sans-serif';
+        ctx.fillText('DIESEL', centerX, centerY - 140);
+        ctx.font = '700 20px "Space Grotesk", monospace';
+        ctx.fillStyle = '#A9BCD0';
+        ctx.fillText('• THE ESSENCE OF DENIM LIVING •', centerX, centerY + 200);
+
+        // Base D monogram outline
+        ctx.fillStyle = '#292E1E';
+        ctx.font = '900 180px Syne, serif';
+        ctx.fillText('D', centerX, centerY + 65);
+
+        finishExport();
+      }
+    });
+  </script>
+</body>
+</html>
