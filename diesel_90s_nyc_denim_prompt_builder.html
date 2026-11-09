@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIESEL: The Essence of Denim — 90s NYC AI Prompt Builder</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: '#292E1E',
+            whitesmoke: '#F7F4F3',
+            deepnavy: '#091540',
+            duskblue: '#3D518C',
+            powderblue: '#A9BCD0',
+            stitchgold: '#e3b873',
+            stitchgolddark: '#c9a859'
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace'],
+            editorial: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #040816;
+      color: #F7F4F3;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* 3/1 Right-Hand Twill Texture Simulation */
+    .denim-twill-bg {
+      background-image: 
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 4px),
+        repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.35) 0px, rgba(0, 0, 0, 0.35) 1px, transparent 1px, transparent 3px);
+    }
+
+    .stitch-border {
+      border: 1px dashed rgba(227, 184, 115, 0.45);
+    }
+
+    .stitch-border-strong {
+      border: 2px dashed #e3b873;
+    }
+
+    .glass-panel {
+      background: rgba(9, 21, 64, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(169, 188, 208, 0.2);
+    }
+
+    .glass-card {
+      background: rgba(61, 81, 140, 0.18);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(169, 188, 208, 0.16);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #040816;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3D518C;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #A9BCD0;
+    }
+
+    .custom-select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23A9BCD0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25em 1.25em;
+      appearance: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between denim-twill-bg selection:bg-powderblue selection:text-deepnavy">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-[#040816]/90 backdrop-blur-md border-b border-powderblue/20 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-powderblue to-[#091540] flex items-center justify-center border border-stitchgold/50 shadow-md">
+        <span class="font-display font-black text-xl text-whitesmoke">D</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] font-mono tracking-[0.25em] text-stitchgold uppercase font-bold">FALL 2026 CAMPAIGN</span>
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[10px] font-mono text-powderblue/60 hidden sm:inline">NYC 35MM ARCHIVE</span>
+        </div>
+        <h1 class="text-sm sm:text-lg font-bold font-display uppercase tracking-wider text-whitesmoke">
+          THE ESSENCE OF DENIM <span class="text-powderblue font-normal font-mono text-xs">/ PROMPT BUILDER</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Quick Action Navigation -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button id="openBrandSkillsBtn" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider bg-deepnavy/80 hover:bg-duskblue/40 border border-powderblue/30 text-powderblue hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-stitchgold"></i>
+        <span>brand-skills.md</span>
+      </button>
+
+      <button id="randomQuirkBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider bg-stitchgold/20 hover:bg-stitchgold/30 border border-stitchgold/60 text-stitchgold hover:text-white font-bold transition flex items-center gap-1.5 shadow-sm shadow-stitchgold/10">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Surprise Me /</span> NYC Quirk
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN PROMPT WORKSPACE -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+    
+    <!-- LEFT CONTROL COLUMN: CAMPAIGN ATTRIBUTES (7 COLS) -->
+    <div class="lg:col-span-7 flex flex-col gap-5">
+      
+      <!-- Studio Header / Mode Card -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/25 relative overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-powderblue/70">A.I. Target Architecture</span>
+            <h2 class="text-base font-bold text-whitesmoke font-display">GENERATOR CONFIGURATION</h2>
+          </div>
+
+          <div class="flex items-center gap-2 bg-deepnavy/80 p-1 rounded-xl border border-powderblue/25">
+            <button id="modelMjBtn" class="px-3 py-1 text-xs font-mono rounded-lg bg-powderblue text-deepnavy font-bold transition">Midjourney v6.1</button>
+            <button id="modelFluxBtn" class="px-3 py-1 text-xs font-mono rounded-lg text-powderblue/80 hover:text-white transition">Flux.1 / DALL-E 3</button>
+          </div>
+        </div>
+
+        <!-- 1. CAMPAIGN DIMENSIONS / MEDIA RATIO -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-powderblue mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="aspect-ratio" class="w-3.5 h-3.5 text-stitchgold"></i>
+              Media Format & Ratio
+            </label>
+            <select id="formatSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke focus:outline-none focus:border-stitchgold">
+              <option value="billboard">Highway Billboard (16:9 Landscape)</option>
+              <option value="subway-wide" selected>NYC Subway 2-Sheet (2:1 Wide Poster)</option>
+              <option value="subway-pillar">NYC Subway LiveCard (9:16 Vertical Digital)</option>
+              <option value="magazine">Vogue / Dazed 90s Magazine (3:4 Spread)</option>
+              <option value="mupi">Bus Shelter / City Mupi (4:5 Street Poster)</option>
+              <option value="instagram-feed">Instagram Feed Ad (4:5 Vertical Portrait)</option>
+              <option value="instagram-story">Instagram Reel / Story (9:16 Full Screen)</option>
+              <option value="square">Square Vinyl / Archive CD Case (1:1)</option>
+            </select>
+          </div>
+
+          <!-- 2. SHOT TYPE & CAMERA ANGLE -->
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-powderblue mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="camera" class="w-3.5 h-3.5 text-stitchgold"></i>
+              Shot Type & Camera Angle
+            </label>
+            <select id="shotTypeSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke focus:outline-none focus:border-stitchgold">
+              <option value="paparazzi" selected>Paparazzi 35mm flash snapshot (mid-stride, unposed)</option>
+              <option value="low-angle">Low-angle worm's-eye view from NYC concrete pavement</option>
+              <option value="commuter-candid">Unsuspecting subway commuter seated candid shot</option>
+              <option value="waistband-detail">Detailed macro crop on D-waistband button & stitched denim</option>
+              <option value="environmental-wide">Surreal wide-angle street snapshot (distorted perspective)</option>
+              <option value="dutch-blur">Passing rush-hour Dutch angle with slight motion shutter drag</option>
+              <option value="hip-level">Point-and-shoot camera held at hip level (accidental framing)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. DENIM STYLING & APPAREL FIT -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/25">
+        <label class="block text-xs font-mono uppercase tracking-wider text-powderblue mb-2.5 flex items-center justify-between">
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="scissors" class="w-3.5 h-3.5 text-stitchgold"></i>
+            Diesel Denim Garment & Styling
+          </span>
+          <span class="text-[10px] text-stitchgold font-mono">FALL 2026 ARCHIVE</span>
+        </label>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+          <button data-denim="d-strukt" class="denim-btn active p-2.5 rounded-xl border border-powderblue bg-deepnavy text-left transition flex flex-col justify-between">
+            <span class="text-xs font-bold text-whitesmoke">D-STRUKT</span>
+            <span class="text-[10px] font-mono text-powderblue/80">Slim Raw Indigo</span>
+          </button>
+
+          <button data-denim="d-went" class="denim-btn p-2.5 rounded-xl border border-powderblue/25 bg-[#07102e] hover:border-powderblue/60 text-left transition flex flex-col justify-between">
+            <span class="text-xs font-bold text-whitesmoke">D-WENT</span>
+            <span class="text-[10px] font-mono text-powderblue/80">Stonewash Bootcut</span>
+          </button>
+
+          <button data-denim="canadian-tux" class="denim-btn p-2.5 rounded-xl border border-powderblue/25 bg-[#07102e] hover:border-powderblue/60 text-left transition flex flex-col justify-between">
+            <span class="text-xs font-bold text-whitesmoke">Double Denim</span>
+            <span class="text-[10px] font-mono text-powderblue/80">Oversized Trucker</span>
+          </button>
+
+          <button data-denim="waistband-hero" class="denim-btn p-2.5 rounded-xl border border-powderblue/25 bg-[#07102e] hover:border-powderblue/60 text-left transition flex flex-col justify-between">
+            <span class="text-xs font-bold text-whitesmoke">D-Waistband</span>
+            <span class="text-[10px] font-mono text-powderblue/80">Signature Buttons</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-mono uppercase text-powderblue/80 mb-1">Wash Treatment</label>
+            <select id="washSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke">
+              <option value="raw-rigid" selected>Raw rigid unwashed dark indigo denim (stiff fold lines)</option>
+              <option value="stonewash">Vintage 90s pumice stonewash with whiskering on knees</option>
+              <option value="acid-bleached">Acid-bleached marbled pale sky blue denim</option>
+              <option value="dirty-mineral">Dirty tint mineral dye with yellowed distress stains</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono uppercase text-powderblue/80 mb-1">Hardware & Trim Details</label>
+            <select id="hardwareSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke">
+              <option value="brass-rivets" selected>Heavy brass rivets, tobacco gold double contrast stitching</option>
+              <option value="oxidized-iron">Oxidized gunmetal buttons with frayed raw cuffs</option>
+              <option value="leather-crest">Diesel embossed leather back patch with frayed pocket edge</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. AUTHENTIC NEW YORK CITY BACKDROPS -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/25">
+        <label class="block text-xs font-mono uppercase tracking-wider text-powderblue mb-2 flex items-center justify-between">
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-stitchgold"></i>
+            Authentic 1990s New York City Setting
+          </span>
+          <span class="text-[10px] text-powderblue/60 font-mono">MUST BE REAL NYC GRIT</span>
+        </label>
+
+        <select id="locationSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke mb-3">
+          <option value="subway-car" selected>Inside a vintage MTA subway car with graffiti tags and worn orange plastic bucket seats</option>
+          <option value="subway-platform">Tile-walled NYC subway platform with yellow warning strips and buzzing flickering fluorescent lights</option>
+          <option value="bodega-front">Outside a Lower East Side corner bodega with bright neon snack signs, plastic crates, and payphone</option>
+          <option value="times-sq-crosswalk">Dusk crosswalk near 42nd street with towering vintage yellow incandescent billboards and steaming manhole</option>
+          <option value="chinatown-alley">Chinatown alleyway with green fire escapes, neon restaurant signs, and wet reflective asphalt</option>
+          <option value="brooklyn-stoop">Brownstone front stoop in Bed-Stuy with iron railings and pigeons on the sidewalk</option>
+          <option value="staten-ferry">Outdoor windy deck of the Staten Island Ferry with choppy grey harbor water and hazy skyline</option>
+          <option value="central-park-rock">Gargantuan exposed Manhattan schist rock in Central Park overlooking distant midtown towers</option>
+        </select>
+
+        <div class="flex items-center justify-between text-[11px] font-mono text-powderblue/80">
+          <span>Atmospheric Details:</span>
+          <span class="text-stitchgold">Steaming steam grates, wet asphalt, vintage yellow medallion cabs</span>
+        </div>
+      </div>
+
+      <!-- 5. UNPOSED CANDID MOMENT & SURREAL QUIRK ENGINE -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-stitchgold/40 relative">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-xs font-mono uppercase tracking-wider text-stitchgold flex items-center gap-1.5 font-bold">
+            <i data-lucide="smile" class="w-3.5 h-3.5 text-stitchgold"></i>
+            Unposed Candid Moment & Surreal NYC Quirk
+          </label>
+          <span class="text-[10px] font-mono bg-stitchgold/20 text-stitchgold px-2 py-0.5 rounded-full border border-stitchgold/30">
+            OFF-BEAT BRAND ESSENCE
+          </span>
+        </div>
+
+        <p class="text-[11px] text-powderblue/75 mb-3">
+          Diesel’s campaign requires completely unposed, unsuspecting subjects engaged in slightly absurd, strange, or delightfully eccentric activities.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-mono uppercase text-powderblue/80 mb-1">Candid State / Pose</label>
+            <select id="candidPoseSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke">
+              <option value="deadpan-eating" selected>Deadpan expression eating a greasy giant slice of cheese pizza from a paper plate</option>
+              <option value="caught-midstride">Caught mid-stride turning around abruptly as if startled by a loud honking yellow cab</option>
+              <option value="dozing-slump">Slumped sideways asleep on the subway bench oblivious to surrounding commuters</option>
+              <option value="bizarre-stretch">Awkward contorted stretch against a green lamp post waiting for the pedestrian walk sign</option>
+              <option value="upside-down-news">Sitting cross-legged reading an unfolded New York Post newspaper completely upside down</option>
+              <option value="leaning-payphone">Tightly huddled into a metal public payphone kiosk gripping the coiled cord</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-mono uppercase text-powderblue/80 mb-1">Surreal Companion / Quirk</label>
+            <select id="quirkSelect" class="w-full bg-[#040816] custom-select border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke">
+              <option value="pet-goose" selected>Walking an oversized domestic white goose on a frayed denim leash</option>
+              <option value="iguana-shoulder">A giant green iguana resting casually on model's shoulder like a parrot</option>
+              <option value="pigeon-hand">Holding a live city pigeon in hand like an ordinary ice cream cone</option>
+              <option value="twin-boombox">Identical twin standing beside them in matching denim holding a heavy silver cassette boombox</option>
+              <option value="bubblegum-mask">Blowing a giant, face-covering bubblegum sphere in electric neon pink</option>
+              <option value="groceries-baguette">Dropping an overflowing brown paper bag of oranges rolling down wet subway steps</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Extra Subject Details -->
+        <div class="mt-3">
+          <label class="block text-[11px] font-mono uppercase text-powderblue/80 mb-1">Vibrant 90s Contrast Accent</label>
+          <input id="accentPropInput" type="text" value="Bright neon tangerine beanie, bulky Sony Walkman with orange foam headphones" class="w-full bg-[#040816] border border-powderblue/30 rounded-xl px-3 py-2 text-xs font-mono text-whitesmoke focus:border-stitchgold focus:outline-none" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PROMPT OUTPUT & PREVIEW COLUMN (5 COLS) -->
+    <div class="lg:col-span-5 flex flex-col gap-5">
+      
+      <!-- GENERATED POSITIVE PROMPT CARD -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/30 flex flex-col justify-between relative shadow-2xl">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-stitchgold"></span>
+              <span class="text-xs font-mono font-bold uppercase tracking-wider text-whitesmoke">Target AI Image Prompt</span>
+            </div>
+            <span id="ratioBadge" class="text-[10px] font-mono bg-powderblue/20 text-powderblue px-2 py-0.5 rounded border border-powderblue/40">--ar 2:1</span>
+          </div>
+
+          <!-- Prompt Box -->
+          <div class="relative group mt-2">
+            <textarea id="positivePromptOutput" rows="9" readonly class="w-full bg-[#040816]/90 border border-powderblue/30 rounded-xl p-3.5 text-xs font-mono text-whitesmoke/90 leading-relaxed resize-none focus:outline-none focus:border-powderblue selection:bg-stitchgold selection:text-deepnavy"></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2 mt-4 pt-3 border-t border-powderblue/15">
+          <button id="copyPositiveBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-stitchgold to-stitchgolddark hover:from-white hover:to-stitchgold text-deepnavy font-mono font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-lg shadow-stitchgold/20">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span>Copy Main Prompt</span>
+          </button>
+
+          <button id="savePromptBtn" class="py-2.5 px-3 rounded-xl bg-deepnavy/80 hover:bg-duskblue/40 border border-powderblue/30 text-powderblue hover:text-white transition flex items-center justify-center" title="Save to Prompt History">
+            <i data-lucide="bookmark-plus" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- NEGATIVE PROMPT CARD -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-powderblue/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-whitesmoke">Campaign Negative Prompt</span>
+          </div>
+          <span class="text-[10px] font-mono text-red-400/80 uppercase">Keeps off-brand imagery out</span>
+        </div>
+
+        <textarea id="negativePromptOutput" rows="3" readonly class="w-full bg-[#040816]/90 border border-powderblue/20 rounded-xl p-3 text-[11px] font-mono text-powderblue/80 leading-relaxed resize-none focus:outline-none"></textarea>
+
+        <div class="flex justify-end mt-2">
+          <button id="copyNegativeBtn" class="text-xs font-mono text-powderblue hover:text-white flex items-center gap-1.5 py-1 px-2.5 rounded bg-deepnavy/70 border border-powderblue/20 transition">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span>Copy Negative</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROMPT BREAKDOWN / CAMPAIGN VALIDATION CHECKLIST -->
+      <div class="glass-card rounded-2xl p-4 border border-powderblue/20 text-xs font-mono">
+        <div class="text-[10px] font-mono text-stitchgold uppercase tracking-wider mb-2 font-bold flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          Brand Skills Compliance Checklist
+        </div>
+        <ul class="space-y-1.5 text-[11px] text-powderblue/85">
+          <li class="flex items-center gap-2">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span><strong>Camera:</strong> 35mm Point-and-shoot harsh direct flash</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span><strong>Candid:</strong> Unposed, unsuspecting subject (no poser gaze)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span><strong>Palette:</strong> Saturated jewel tones with rich raw indigo denim</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span><strong>Setting:</strong> 100% authentic 1990s New York City environment</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PROMPT HISTORY DRAWER / MINI LOG -->
+      <div class="glass-panel rounded-2xl p-4 border border-powderblue/25 flex-1 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-whitesmoke flex items-center gap-1.5">
+            <i data-lucide="history" class="w-3.5 h-3.5 text-powderblue"></i>
+            Saved Prompt Log (<span id="historyCount">0</span>)
+          </span>
+          <button id="exportHistoryBtn" class="text-[10px] font-mono text-stitchgold hover:underline uppercase">Export .txt</button>
+        </div>
+
+        <div id="historyList" class="space-y-2 overflow-y-auto max-h-48 pr-1 my-1">
+          <div class="text-[11px] font-mono text-powderblue/50 text-center py-4">No saved prompts yet. Click bookmark above to save iterations.</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BRAND SKILLS MODAL DRAWER -->
+  <div id="brandSkillsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-[#091540] border-2 border-stitchgold/60 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-powderblue/20 flex items-center justify-between bg-[#040816]/70">
+        <div class="flex items-center gap-2.5">
+          <div class="w-3 h-3 rounded-full bg-stitchgold"></div>
+          <h3 class="font-display font-bold text-lg text-whitesmoke tracking-wider">brand-skills.md — DIESEL: THE ESSENCE OF DENIM</h3>
+        </div>
+        <button id="closeBrandSkillsBtn" class="text-powderblue hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Markdown Viewer Body -->
+      <div class="p-6 overflow-y-auto font-mono text-xs text-whitesmoke/90 space-y-6 leading-relaxed selection:bg-stitchgold selection:text-deepnavy">
+        
+        <div>
+          <h4 class="text-sm font-bold text-stitchgold uppercase tracking-wider mb-2">1. CAMPAIGN CORE IDENTITY</h4>
+          <p class="text-powderblue/80">
+            <strong>Brand:</strong> DIESEL (Fall 2026)<br/>
+            <strong>Campaign Title:</strong> The Essence of Denim — For Successful Living<br/>
+            <strong>Core Narrative:</strong> Unfiltered, unapologetic 1990s New York City street realism meets eccentric surrealism. Real people caught off-guard in the gritty heartbeat of Manhattan and Brooklyn, clad in timeless Diesel raw indigo and pumice stonewashed denim with signature waistband button hardware.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3.5 rounded-xl bg-deepnavy/60 border border-powderblue/20">
+            <h5 class="text-emerald-400 font-bold uppercase mb-2 flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> WHAT IS ON-BRAND
+            </h5>
+            <ul class="list-disc list-inside space-y-1 text-powderblue/90">
+              <li><strong>1990s Film Aesthetic:</strong> 35mm point-and-shoot camera quality, intense direct flash, rich film grain (Kodak Portra 800 / Fuji Superia).</li>
+              <li><strong>Unstaged & Candid:</strong> Subjects looking away, unaware of the lens, mid-bite, mid-yell, sleeping, or caught mid-stride.</li>
+              <li><strong>Saturated Jewel Tones:</strong> Deep indigo denim against yellow cabs, neon signs, vibrant red winter coats, bright beanies.</li>
+              <li><strong>NYC Street Textures:</strong> Dirty subway tiles, steaming manholes, yellow curbs, brick brownstones, bodega storefronts.</li>
+              <li><strong>Absurdity & Oddity:</strong> Bizarre pets (goose, iguana, pigeon), weird props (boombox, upside down paper), unexpected posture.</li>
+            </ul>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-deepnavy/60 border border-red-500/20">
+            <h5 class="text-red-400 font-bold uppercase mb-2 flex items-center gap-1.5">
+              <i data-lucide="alert-octagon" class="w-4 h-4"></i> WHAT IS OFF-BRAND (FORBIDDEN)
+            </h5>
+            <ul class="list-disc list-inside space-y-1 text-powderblue/90">
+              <li><strong>Clean Studio Backdrops:</strong> Seamless white cycloramas or sanitized modern fashion studios.</li>
+              <li><strong>Posing & Smiling:</strong> Cheerful smile-at-camera Instagram influencer postures or runway poses.</li>
+              <li><strong>Modern Digital Look:</strong> Ultra-smooth HDR, plastic AI skin, bokeh blur, sterile modern LED lighting.</li>
+              <li><strong>Non-NYC Settings:</strong> European castles, generic modern minimalist apartments, beaches, or futuristic cities.</li>
+              <li><strong>Generic Athleisure:</strong> Sweatpants, modern spandex, or synthetic activewear without prominent denim.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-stitchgold uppercase tracking-wider mb-2">2. PHOTOGRAPHY & LIGHTING SPECIFICATIONS</h4>
+          <p class="text-powderblue/80">
+            Images must evoke 1990s counter-culture magazines like <em>The Face</em>, <em>Dazed & Confused</em>, and early Terry Richardson / Juergen Teller / Nan Goldin street reportage. Hard direct ring-flash or on-camera speedlite creating stark shadows behind subjects; deep rich saturation in primary colors; heavy natural analog film grain.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-stitchgold uppercase tracking-wider mb-2">3. KEY ARCHIVE GARMENTS</h4>
+          <p class="text-powderblue/80">
+            • <strong>D-STRUKT:</strong> Slim-straight rigid raw dark indigo denim with distinct coin-pocket diagonal stitch.<br/>
+            • <strong>D-WENT:</strong> Relaxed 90s bootcut stonewash denim with heavy leg whiskering and frayed hems.<br/>
+            • <strong>Iconic Waistband:</strong> Prominent metal tack button fly with "DIESEL FOR SUCCESSFUL LIVING" branding.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 border-t border-powderblue/20 bg-[#040816]/70 flex justify-between items-center">
+        <span class="text-[11px] font-mono text-powderblue/60">Active Document: brand-skills.md (v2.6)</span>
+        <button id="closeBrandSkillsFooterBtn" class="px-4 py-1.5 rounded-xl bg-powderblue text-deepnavy font-bold font-mono text-xs uppercase hover:bg-white transition">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 glass-panel px-4 py-3 rounded-xl flex items-center gap-3 border border-stitchgold text-xs font-mono text-whitesmoke shadow-xl">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg">Prompt copied to clipboard!</span>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // DOM Elements
+    const formatSelect = document.getElementById('formatSelect');
+    const shotTypeSelect = document.getElementById('shotTypeSelect');
+    const locationSelect = document.getElementById('locationSelect');
+    const candidPoseSelect = document.getElementById('candidPoseSelect');
+    const quirkSelect = document.getElementById('quirkSelect');
+    const washSelect = document.getElementById('washSelect');
+    const hardwareSelect = document.getElementById('hardwareSelect');
+    const accentPropInput = document.getElementById('accentPropInput');
+    const positivePromptOutput = document.getElementById('positivePromptOutput');
+    const negativePromptOutput = document.getElementById('negativePromptOutput');
+    const ratioBadge = document.getElementById('ratioBadge');
+    const copyPositiveBtn = document.getElementById('copyPositiveBtn');
+    const copyNegativeBtn = document.getElementById('copyNegativeBtn');
+    const savePromptBtn = document.getElementById('savePromptBtn');
+    const historyList = document.getElementById('historyList');
+    const historyCount = document.getElementById('historyCount');
+    const exportHistoryBtn = document.getElementById('exportHistoryBtn');
+    const randomQuirkBtn = document.getElementById('randomQuirkBtn');
+    const modelMjBtn = document.getElementById('modelMjBtn');
+    const modelFluxBtn = document.getElementById('modelFluxBtn');
+
+    // Modal Elements
+    const brandSkillsModal = document.getElementById('brandSkillsModal');
+    const openBrandSkillsBtn = document.getElementById('openBrandSkillsBtn');
+    const closeBrandSkillsBtn = document.getElementById('closeBrandSkillsBtn');
+    const closeBrandSkillsFooterBtn = document.getElementById('closeBrandSkillsFooterBtn');
+
+    // Toast Elements
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+
+    // State
+    let activeModel = 'mj'; // 'mj' or 'flux'
+    let selectedDenimGarment = 'd-strukt';
+    let promptHistory = [];
+
+    // Aspect Ratio & Platform Map
+    const formatConfig = {
+      'billboard': { ar: '16:9', desc: 'wide highway billboard format' },
+      'subway-wide': { ar: '2:1', desc: 'NYC subway horizontal 2-sheet poster format' },
+      'subway-pillar': { ar: '9:16', desc: 'NYC subway station vertical digital LiveCard screen' },
+      'magazine': { ar: '3:4', desc: '90s editorial magazine full page spread' },
+      'mupi': { ar: '4:5', desc: 'NYC street bus shelter mupi display' },
+      'instagram-feed': { ar: '4:5', desc: 'Instagram feed vertical ad ratio' },
+      'instagram-story': { ar: '9:16', desc: 'Instagram full-screen vertical 9:16 format' },
+      'square': { ar: '1:1', desc: 'square 1:1 vinyl sleeve ratio' }
+    };
+
+    // Denim Details Map
+    const denimConfig = {
+      'd-strukt': 'wearing Diesel D-STRUKT slim-fit raw rigid dark indigo denim jeans with distinctive arched pocket stitching',
+      'd-went': 'wearing vintage Diesel D-WENT relaxed bootcut jeans in pumice stonewash with whiskered thighs and heavy hems',
+      'canadian-tux': 'wearing double Diesel denim: an oversized 90s raw indigo trucker jacket paired with matching rigid denim pants',
+      'waistband-hero': 'prominently showcasing the Diesel denim waistband with iconic engraved tack metal buttons and heavy double belt loops'
+    };
+
+    // Random Presets for "Surprise Me"
+    const randomPresets = [
+      {
+        format: 'subway-wide',
+        shot: 'paparazzi',
+        denim: 'd-strukt',
+        wash: 'raw-rigid',
+        hardware: 'brass-rivets',
+        loc: 'subway-car',
+        pose: 'deadpan-eating',
+        quirk: 'pet-goose',
+        accent: 'Bright neon tangerine beanie and vintage Sony Discman with orange foam headphones'
+      },
+      {
+        format: 'magazine',
+        shot: 'low-angle',
+        denim: 'd-went',
+        wash: 'stonewash',
+        hardware: 'leather-crest',
+        loc: 'bodega-front',
+        pose: 'caught-midstride',
+        quirk: 'iguana-shoulder',
+        accent: 'Electric purple retro windbreaker unzipped over faded graphic tee'
+      },
+      {
+        format: 'instagram-feed',
+        shot: 'commuter-candid',
+        denim: 'canadian-tux',
+        wash: 'dirty-mineral',
+        hardware: 'oxidized-iron',
+        loc: 'subway-platform',
+        pose: 'upside-down-news',
+        quirk: 'pigeon-hand',
+        accent: 'Acid green sunglasses and thick chunky silver chain'
+      },
+      {
+        format: 'mupi',
+        shot: 'environmental-wide',
+        denim: 'waistband-hero',
+        wash: 'acid-bleached',
+        hardware: 'brass-rivets',
+        loc: 'times-sq-crosswalk',
+        pose: 'bizarre-stretch',
+        quirk: 'twin-boombox',
+        accent: 'Fluorescent yellow leather fanny pack strapped diagonally across chest'
+      },
+      {
+        format: 'subway-pillar',
+        shot: 'hip-level',
+        denim: 'd-strukt',
+        wash: 'raw-rigid',
+        hardware: 'brass-rivets',
+        loc: 'brooklyn-stoop',
+        pose: 'leaning-payphone',
+        quirk: 'bubblegum-mask',
+        accent: 'Vibrant cobalt blue bucket hat and retro red high-top sneakers'
+      }
+    ];
+
+    // Core 90s Film & Camera Specification Clauses
+    const filmStockSpec = "authentic 35mm point-and-shoot flash photography, candid 1990s New York City street photography, captured on Kodak Portra 800 with pronounced organic film grain, harsh on-camera direct flash creating stark back-shadows, saturated rich jewel tones, raw unstaged street realism, spontaneous off-guard moment, no posing, no smiling at camera";
+
+    // Standard Negative Prompt
+    const negativePromptText = "modern digital photography, clean studio backdrop, posed model, smiling directly at camera, professional studio softbox lighting, bokeh blur, blurry faces, plastic skin, CGI, airbrushed, 3D render, smooth modern look, Instagram influencer aesthetic, oversaturated artificial HDR, clean European streets, modern cars";
+
+    // Update Prompt Function
+    function generatePrompt() {
+      const formatKey = formatSelect.value;
+      const format = formatConfig[formatKey];
+      const shotText = shotTypeSelect.options[shotTypeSelect.selectedIndex].text;
+      const locationText = locationSelect.value;
+      const poseText = candidPoseSelect.value;
+      const quirkText = quirkSelect.value;
+      const washText = washSelect.value;
+      const hardwareText = hardwareSelect.value;
+      const accent = accentPropInput.value.trim();
+      const denimText = denimConfig[selectedDenimGarment];
+
+      // Update Aspect Ratio Badge
+      ratioBadge.textContent = `--ar ${format.ar}`;
+
+      let finalPositive = "";
+
+      if (activeModel === 'mj') {
+        finalPositive = `${shotText}, ${locationText}, ${poseText}, accompanied by ${quirkText}, ${denimText}, ${washText}, ${hardwareText}, accented with ${accent}, ${filmStockSpec}, shot for Diesel Fall 2026 campaign "The Essence of Denim", framed as ${format.desc} --ar ${format.ar} --style raw --v 6.1 --stylize 125`;
+      } else {
+        // Flux / Natural Language
+        finalPositive = `A genuine 1990s 35mm film photograph taken on the gritty streets of New York City with a point-and-shoot camera and harsh direct flash. The composition is ${shotText} located in ${locationText}. The unsuspecting subject is ${poseText}, wearing ${denimText} in ${washText} featuring ${hardwareText}. They are bizarrely ${quirkText}, wearing ${accent}. Highly saturated colors, rich indigo blues against city grit, noticeable Kodak film grain, authentic unposed candid moment, unpolished street reality. Format aspect ratio ${format.ar} (${format.desc}).`;
+      }
+
+      positivePromptOutput.value = finalPositive;
+      negativePromptOutput.value = negativePromptText;
+    }
+
+    // Event Listeners for UI dropdowns
+    [formatSelect, shotTypeSelect, locationSelect, candidPoseSelect, quirkSelect, washSelect, hardwareSelect].forEach(el => {
+      el.addEventListener('change', generatePrompt);
+    });
+    accentPropInput.addEventListener('input', generatePrompt);
+
+    // Denim Garment Selector Buttons
+    document.querySelectorAll('.denim-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.denim-btn').forEach(b => {
+          b.classList.remove('active', 'border-powderblue', 'bg-deepnavy');
+          b.classList.add('border-powderblue/25', 'bg-[#07102e]');
+        });
+        btn.classList.add('active', 'border-powderblue', 'bg-deepnavy');
+        btn.classList.remove('border-powderblue/25', 'bg-[#07102e]');
+        selectedDenimGarment = btn.getAttribute('data-denim');
+        generatePrompt();
+      });
+    });
+
+    // Model Toggles (Midjourney vs Flux)
+    modelMjBtn.addEventListener('click', () => {
+      activeModel = 'mj';
+      modelMjBtn.classList.add('bg-powderblue', 'text-deepnavy', 'font-bold');
+      modelMjBtn.classList.remove('text-powderblue/80');
+      modelFluxBtn.classList.remove('bg-powderblue', 'text-deepnavy', 'font-bold');
+      modelFluxBtn.classList.add('text-powderblue/80');
+      generatePrompt();
+    });
+
+    modelFluxBtn.addEventListener('click', () => {
+      activeModel = 'flux';
+      modelFluxBtn.classList.add('bg-powderblue', 'text-deepnavy', 'font-bold');
+      modelFluxBtn.classList.remove('text-powderblue/80');
+      modelMjBtn.classList.remove('bg-powderblue', 'text-deepnavy', 'font-bold');
+      modelMjBtn.classList.add('text-powderblue/80');
+      generatePrompt();
+    });
+
+    // Random Quirk ("Surprise Me")
+    randomQuirkBtn.addEventListener('click', () => {
+      const preset = randomPresets[Math.floor(Math.random() * randomPresets.length)];
+      formatSelect.value = preset.format;
+      shotTypeSelect.value = preset.shot;
+      washSelect.value = preset.wash;
+      hardwareSelect.value = preset.hardware;
+      locationSelect.value = preset.loc;
+      candidPoseSelect.value = preset.pose;
+      quirkSelect.value = preset.quirk;
+      accentPropInput.value = preset.accent;
+
+      // Update denim button
+      selectedDenimGarment = preset.denim;
+      document.querySelectorAll('.denim-btn').forEach(b => {
+        if (b.getAttribute('data-denim') === preset.denim) {
+          b.classList.add('active', 'border-powderblue', 'bg-deepnavy');
+          b.classList.remove('border-powderblue/25', 'bg-[#07102e]');
+        } else {
+          b.classList.remove('active', 'border-powderblue', 'bg-deepnavy');
+          b.classList.add('border-powderblue/25', 'bg-[#07102e]');
+        }
+      });
+
+      generatePrompt();
+      showToast("Generated new unpredictable 90s NYC street quirk!");
+    });
+
+    // Toast Utility
+    function showToast(message) {
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2600);
+    }
+
+    // Clipboard Copy Handlers
+    function copyText(text, label) {
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(`${label} copied to clipboard!`);
+      } catch (e) {
+        showToast('Failed to copy. Please manually copy text.');
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    copyPositiveBtn.addEventListener('click', () => {
+      copyText(positivePromptOutput.value, 'Main Prompt');
+    });
+
+    copyNegativeBtn.addEventListener('click', () => {
+      copyText(negativePromptOutput.value, 'Negative Prompt');
+    });
+
+    // Prompt History Log System
+    savePromptBtn.addEventListener('click', () => {
+      const promptObj = {
+        id: Date.now(),
+        text: positivePromptOutput.value,
+        format: formatSelect.value,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      promptHistory.unshift(promptObj);
+      renderHistory();
+      showToast('Prompt saved to campaign log!');
+    });
+
+    function renderHistory() {
+      historyCount.textContent = promptHistory.length;
+      if (promptHistory.length === 0) {
+        historyList.innerHTML = `<div class="text-[11px] font-mono text-powderblue/50 text-center py-4">No saved prompts yet. Click bookmark above to save iterations.</div>`;
+        return;
+      }
+
+      historyList.innerHTML = promptHistory.map((item, index) => `
+        <div class="p-2.5 rounded-xl bg-deepnavy/60 border border-powderblue/20 flex flex-col gap-1.5 hover:border-powderblue/50 transition">
+          <div class="flex items-center justify-between text-[10px] font-mono text-powderblue/70">
+            <span class="text-stitchgold font-bold">#${promptHistory.length - index} · ${item.format.toUpperCase()}</span>
+            <span>${item.timestamp}</span>
+          </div>
+          <p class="text-[11px] font-mono text-whitesmoke/90 line-clamp-2">${item.text}</p>
+          <div class="flex items-center justify-end gap-2 mt-1">
+            <button onclick="loadFromHistory(${item.id})" class="text-[10px] font-mono text-powderblue hover:text-white uppercase">Recall</button>
+            <button onclick="copyHistoryItem(${item.id})" class="text-[10px] font-mono text-stitchgold hover:text-white uppercase">Copy</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.copyHistoryItem = function(id) {
+      const item = promptHistory.find(p => p.id === id);
+      if (item) copyText(item.text, 'Saved Prompt');
+    };
+
+    window.loadFromHistory = function(id) {
+      const item = promptHistory.find(p => p.id === id);
+      if (item) {
+        positivePromptOutput.value = item.text;
+        showToast('Recalled prompt to editor window.');
+      }
+    };
+
+    exportHistoryBtn.addEventListener('click', () => {
+      if (promptHistory.length === 0) {
+        showToast('History is empty. Save prompts first.');
+        return;
+      }
+      const dataStr = promptHistory.map((p, idx) => `[PROMPT ${idx + 1}] (${p.format} - ${p.timestamp})\n${p.text}\n\n`).join('--- \n');
+      const blob = new Blob([dataStr], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `diesel-campaign-prompts-${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Exported campaign prompts (.txt)');
+    });
+
+    // Brand Skills Modal Handlers
+    openBrandSkillsBtn.addEventListener('click', () => {
+      brandSkillsModal.classList.remove('hidden');
+      brandSkillsModal.classList.add('flex');
+    });
+
+    const closeModal = () => {
+      brandSkillsModal.classList.add('hidden');
+      brandSkillsModal.classList.remove('flex');
+    };
+
+    closeBrandSkillsBtn.addEventListener('click', closeModal);
+    closeBrandSkillsFooterBtn.addEventListener('click', closeModal);
+    brandSkillsModal.addEventListener('click', (e) => {
+      if (e.target === brandSkillsModal) closeModal();
+    });
+
+    // Initial Trigger on Load
+    generatePrompt();
+  </script>
+</body>
+</html>
