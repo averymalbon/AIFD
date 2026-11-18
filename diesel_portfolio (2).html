@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — Digital Ads Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Emilys Candy + Yuyu fallback stack -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Design Tokens & Color System */
+        :root {
+            --bg-primary: #8AD4CE;
+            --text-primary: #030001;
+            --accent: #F7608F;
+        }
+
+        /* Typography System */
+        .font-heading {
+            font-family: 'Emilys Candy', cursive, serif;
+            letter-spacing: 0.02em;
+        }
+
+        .font-body {
+            font-family: 'Yuyu', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .h1-spec {
+            font-family: 'Emilys Candy', cursive, serif;
+            font-size: 2rem;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+
+        .h2-spec {
+            font-family: 'Emilys Candy', cursive, serif;
+            font-size: 1.25rem;
+            line-height: 1.3;
+            letter-spacing: 0.02em;
+        }
+
+        .label-spec {
+            font-family: 'Yuyu', 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Base Page Styling */
+        html, body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Spacing Rules:
+           Mobile (0-767px): 20px page padding, 40px section spacing, 16px grid gap
+           Tablet (768-1023px) & Desktop (1024px+): 32px page padding, 64px section spacing, 24px grid gap */
+        .page-container {
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        .section-gap {
+            margin-bottom: 40px;
+        }
+
+        .grid-spec {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .page-container {
+                padding: 32px;
+            }
+            .section-gap {
+                margin-bottom: 64px;
+            }
+            .grid-spec {
+                gap: 24px;
+            }
+        }
+
+        /* Drifting Star Background Animation */
+        .star-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .drifting-star {
+            position: absolute;
+            color: #030001;
+            opacity: 0.16;
+            user-select: none;
+            animation: slowStarDrift linear infinite;
+        }
+
+        @keyframes slowStarDrift {
+            0% {
+                transform: translate3d(0, -10vh, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate3d(24px, 50vh, 0) rotate(180deg);
+            }
+            100% {
+                transform: translate3d(-18px, 110vh, 0) rotate(360deg);
+            }
+        }
+
+        /* &WALSH-Inspired Spinning Bottom-Right Loading Indicator */
+        .walsh-loader {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 52px;
+            height: 52px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            transition: opacity 500ms ease, transform 500ms ease, visibility 500ms ease;
+        }
+
+        .walsh-loader.is-ready {
+            opacity: 0;
+            transform: scale(0.85);
+            visibility: hidden;
+        }
+
+        .walsh-spinner-svg {
+            width: 100%;
+            height: 100%;
+            color: var(--accent);
+            animation: walshRotate 2.8s linear infinite;
+        }
+
+        @keyframes walshRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hero Frame (>= 60vh dominant visual element) */
+        .hero-frame {
+            min-height: 62vh;
+            border: 1.5px solid var(--accent);
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.14);
+            transition: transform 250ms ease, box-shadow 250ms ease;
+        }
+
+        .hero-frame:hover {
+            box-shadow: 0 18px 36px -12px rgba(3, 0, 1, 0.16);
+        }
+
+        /* Dior-Inspired Focus Behavior on Assignment Grid */
+        .assignment-grid:hover .assignment-card:not(:hover) {
+            opacity: 0.35;
+        }
+
+        .assignment-card {
+            opacity: 1;
+            transition: opacity 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+            border: 1.5px solid rgba(247, 96, 143, 0.55);
+            border-radius: 18px;
+            background-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .assignment-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 14px 28px -10px rgba(3, 0, 1, 0.14);
+        }
+
+        /* &WALSH-Inspired Understated Artwork-Title Hover Reveal */
+        .artwork-reveal-badge {
+            color: var(--accent);
+            background-color: #030001;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 250ms ease, transform 250ms ease;
+        }
+
+        .group:hover .artwork-reveal-badge,
+        .group:focus-within .artwork-reveal-badge {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Outlined Assignment Buttons:
+           - Border radius: 16px
+           - Transparent background by default
+           - Accent-colored border (#F7608F)
+           - Text color matching main text (#030001)
+           - Hover: translate vertically upward -4px, slight shadow increase, 250ms transition */
+        .assignment-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-radius: 16px;
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            color: var(--text-primary);
+            padding: 12px 18px;
+            font-family: 'Yuyu', 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 250ms ease, box-shadow 250ms ease, background-color 250ms ease;
+        }
+
+        .assignment-btn:hover,
+        .assignment-btn:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px -6px rgba(247, 96, 143, 0.45);
+            background-color: rgba(247, 96, 143, 0.12);
+            outline: none;
+        }
+
+        /* Lightbox Overlay */
+        .lightbox-backdrop {
+            background-color: rgba(3, 0, 1, 0.88);
+            backdrop-filter: blur(8px);
+            transition: opacity 250ms ease;
+        }
+    </style>
+</head>
+<body class="font-body antialiased selection:bg-[#F7608F] selection:text-[#030001]">
+
+    <!-- Subtle Drifting Star Background -->
+    <div id="starCanvas" class="star-canvas" aria-hidden="true"></div>
+
+    <!-- &WALSH-Inspired Bottom-Right Spinning Loader -->
+    <div id="walshLoader" class="walsh-loader" aria-label="Loading page">
+        <svg class="walsh-spinner-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 2L37.8 22.2L58 16L43.5 32L58 48L37.8 41.8L32 62L26.2 41.8L6 48L20.5 32L6 16L26.2 22.2L32 2Z" fill="currentColor"/>
+            <circle cx="32" cy="32" r="6" fill="#8AD4CE"/>
+        </svg>
+    </div>
+
+    <!-- Main Single-Page Container (Max 1400px, centered) -->
+    <main class="page-container relative z-10">
+
+        <!-- Top Header: Name & Minimal Navigation Anchor -->
+        <header class="section-gap flex flex-col sm:flex-row sm:items-end justify-between pb-6 border-b border-[#F7608F]">
+            <div>
+                <p class="label-spec font-semibold text-[#F7608F] mb-1">Creative Direction &amp; Digital Campaigns</p>
+                <h1 class="h1-spec text-[#030001]">Your Name</h1>
+            </div>
+            <nav aria-label="Primary Page Navigation" class="mt-4 sm:mt-0 flex items-center gap-4">
+                <a href="#hero-work" class="label-spec font-medium text-[#030001] hover:text-[#F7608F] transition-colors duration-250 underline decoration-[#F7608F] underline-offset-4">Featured</a>
+                <a href="#assignments" class="label-spec font-medium text-[#030001] hover:text-[#F7608F] transition-colors duration-250 underline decoration-[#F7608F] underline-offset-4">Assignments (05)</a>
+            </nav>
+        </header>
+
+        <!-- Dominant Hero Section (>= 60% first viewport height, single hero image + assignment links) -->
+        <section id="hero-work" class="section-gap">
+            <div class="grid-spec items-stretch">
+                <!-- Left Column: Dominant Single Hero Image (Clickable to enlarge) -->
+                <div class="col-span-2 lg:col-span-1">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Hero Image: Diesel — The Essence of Denim"
+                        onclick="handleCardClick(0)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(0);}"
+                        class="hero-frame group relative w-full h-full flex items-center justify-center p-4 sm:p-6 cursor-zoom-in overflow-hidden"
+                    >
+                        <img
+                            id="img-slot-0"
+                            src="Screenshot 2026-11-18 at 3.18.38 PM.jpg"
+                            data-alt-src="Screenshot 2026-11-18 at 3.18.38&#8239;PM.jpg"
+                            onerror="resolveLocalImage(this, 0)"
+                            alt="Diesel — The Essence of Denim street scene with llama"
+                            class="w-full h-[60vh] lg:h-[68vh] object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.015]"
+                        />
+                        <!-- Unresolved File Notice (only appears if sandbox blocks local disk paths) -->
+                        <div id="missing-slot-0" class="hidden flex-col items-center justify-center text-center p-6 max-w-sm">
+                            <span class="label-spec font-semibold text-[#F7608F] mb-2">01 · Screenshot 2026-11-18 at 3.18.38 PM.jpg</span>
+                            <p class="font-body text-sm text-[#030001]/80 mb-4">Preview sandbox isolated local disk files. Click to attach your 5 screenshots directly.</p>
+                            <span class="assignment-btn text-xs py-2 px-4">Select Your 5 Files</span>
+                        </div>
+                        <!-- &WALSH-Inspired Understated Artwork-Title Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-5 left-5 right-5 sm:right-auto px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg">
+                            <span class="label-spec font-semibold">01 — The Essence of Denim (Click to Enlarge)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Editorial Context & Outlined Assignment Links -->
+                <div class="col-span-2 lg:col-span-1 flex flex-col justify-between p-2 sm:p-4">
+                    <div>
+                        <span class="label-spec inline-block font-semibold text-[#F7608F] mb-2">Hero Feature · 01</span>
+                        <h2 class="h2-spec text-[#030001] mb-3">Diesel — The Essence of Denim</h2>
+                        <p class="font-body text-base leading-relaxed text-[#030001]/90 max-w-prose">
+                            A curated digital campaign series exploring unexpected urban encounters and editorial denim styling. Select any assignment below or click any image to inspect full-resolution artwork.
+                        </p>
+                    </div>
+
+                    <!-- Outlined Assignment Links List -->
+                    <div class="mt-8 pt-6 border-t border-[#F7608F]/50">
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <p class="label-spec font-semibold text-[#030001]">Assignment Index</p>
+                            <button type="button" onclick="triggerFilePicker()" id="attachFilesTrigger" class="hidden label-spec text-xs font-semibold text-[#F7608F] underline underline-offset-4 cursor-pointer">
+                                Link 5 Local Files
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button type="button" onclick="openLightbox(0)" class="assignment-btn w-full">
+                                <span>01. Essence of Denim (Hero)</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(1)" class="assignment-btn w-full">
+                                <span>02. Street Stroller Editorial</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(2)" class="assignment-btn w-full">
+                                <span>03. Washington Sq. Bench</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(3)" class="assignment-btn w-full">
+                                <span>04. Fall 2026 Sidewalk</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(4)" class="assignment-btn w-full sm:col-span-2">
+                                <span>05. Skatepark &amp; Denim Pack</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Remaining 4 Images in a Responsive 2-Column Grid (Mobile 2-col & Desktop 2-col) -->
+        <section id="assignments" class="section-gap">
+            <div class="flex items-baseline justify-between mb-6 pb-3 border-b border-[#F7608F]/60">
+                <div>
+                    <span class="label-spec font-semibold text-[#F7608F] block">Selected Works</span>
+                    <h2 class="h2-spec text-[#030001] mt-1">Campaign Assignments</h2>
+                </div>
+                <span class="label-spec text-[#030001]/80">Click image to enlarge</span>
+            </div>
+
+            <!-- 2-Column Grid on BOTH Mobile and Desktop with Dior-Inspired Focus Behavior -->
+            <div class="assignment-grid grid-spec">
+
+                <!-- Item 2: Screenshot 2026-11-18 at 3.18.46 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 02: Street Stroller Editorial"
+                        onclick="handleCardClick(1)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(1);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10 min-h-[12rem] sm:min-h-[20rem] flex items-center justify-center"
+                    >
+                        <img
+                            id="img-slot-1"
+                            src="Screenshot 2026-11-18 at 3.18.46 PM.jpg"
+                            data-alt-src="Screenshot 2026-11-18 at 3.18.46&#8239;PM.jpg"
+                            onerror="resolveLocalImage(this, 1)"
+                            alt="Diesel — The Essence of Denim two models with stroller"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <div id="missing-slot-1" class="hidden flex-col items-center justify-center text-center p-4">
+                            <span class="label-spec text-xs font-semibold text-[#F7608F] mb-1">02 · 3.18.46 PM.jpg</span>
+                            <span class="font-body text-xs text-[#030001]/75">Click to link your 5 files</span>
+                        </div>
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">02 · Street Stroller</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 02</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Street Stroller</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(1)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 3: Screenshot 2026-11-18 at 3.18.51 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 03: Washington Sq. Bench"
+                        onclick="handleCardClick(2)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(2);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10 min-h-[12rem] sm:min-h-[20rem] flex items-center justify-center"
+                    >
+                        <img
+                            id="img-slot-2"
+                            src="Screenshot 2026-11-18 at 3.18.51 PM.jpg"
+                            data-alt-src="Screenshot 2026-11-18 at 3.18.51&#8239;PM.jpg"
+                            onerror="resolveLocalImage(this, 2)"
+                            alt="Diesel — The Essence of Denim park bench portrait"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <div id="missing-slot-2" class="hidden flex-col items-center justify-center text-center p-4">
+                            <span class="label-spec text-xs font-semibold text-[#F7608F] mb-1">03 · 3.18.51 PM.jpg</span>
+                            <span class="font-body text-xs text-[#030001]/75">Click to link your 5 files</span>
+                        </div>
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">03 · Park Bench Study</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 03</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Park Bench Study</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(2)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 4: Screenshot 2026-11-18 at 3.18.57 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 04: Fall 2026 Sidewalk"
+                        onclick="handleCardClick(3)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(3);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10 min-h-[12rem] sm:min-h-[20rem] flex items-center justify-center"
+                    >
+                        <img
+                            id="img-slot-3"
+                            src="Screenshot 2026-11-18 at 3.18.57 PM.jpg"
+                            data-alt-src="Screenshot 2026-11-18 at 3.18.57&#8239;PM.jpg"
+                            onerror="resolveLocalImage(this, 3)"
+                            alt="Diesel — The Essence of Denim Fall 2026 sidewalk bear campaign"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <div id="missing-slot-3" class="hidden flex-col items-center justify-center text-center p-4">
+                            <span class="label-spec text-xs font-semibold text-[#F7608F] mb-1">04 · 3.18.57 PM.jpg</span>
+                            <span class="font-body text-xs text-[#030001]/75">Click to link your 5 files</span>
+                        </div>
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">04 · Fall 2026 Sidewalk</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 04</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Fall 2026 Sidewalk</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(3)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 5: Screenshot 2026-11-18 at 3.19.03 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 05: Skatepark & Denim Pack"
+                        onclick="handleCardClick(4)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleCardClick(4);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10 min-h-[12rem] sm:min-h-[20rem] flex items-center justify-center"
+                    >
+                        <img
+                            id="img-slot-4"
+                            src="Screenshot 2026-11-18 at 3.19.03 PM.jpg"
+                            data-alt-src="Screenshot 2026-11-18 at 3.19.03&#8239;PM.jpg"
+                            onerror="resolveLocalImage(this, 4)"
+                            alt="Diesel — The Essence of Denim skatepark campaign"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <div id="missing-slot-4" class="hidden flex-col items-center justify-center text-center p-4">
+                            <span class="label-spec text-xs font-semibold text-[#F7608F] mb-1">05 · 3.19.03 PM.jpg</span>
+                            <span class="font-body text-xs text-[#030001]/75">Click to link your 5 files</span>
+                        </div>
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">05 · Skatepark Series</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 05</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Skatepark Series</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(4)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Hidden multi-file picker strictly for binding the user's 5 local files if preview sandbox isolates relative paths -->
+        <input
+            type="file"
+            id="localFivePicker"
+            accept="image/*"
+            multiple
+            class="hidden"
+            onchange="bindUploadedFiveFiles(this.files)"
+        />
+                        <!-- &WALSH-Inspired Understated Artwork-Title Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-5 left-5 right-5 sm:right-auto px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg">
+                            <span class="label-spec font-semibold">01 — The Essence of Denim (Click to Enlarge)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Editorial Context & Outlined Assignment Links -->
+                <div class="col-span-2 lg:col-span-1 flex flex-col justify-between p-2 sm:p-4">
+                    <div>
+                        <span class="label-spec inline-block font-semibold text-[#F7608F] mb-2">Hero Feature · 01</span>
+                        <h2 class="h2-spec text-[#030001] mb-3">Diesel — The Essence of Denim</h2>
+                        <p class="font-body text-base leading-relaxed text-[#030001]/90 max-w-prose">
+                            A curated digital campaign series exploring unexpected urban encounters and editorial denim styling. Select any assignment below or click any image to inspect full-resolution artwork.
+                        </p>
+                    </div>
+
+                    <!-- Outlined Assignment Links List -->
+                    <div class="mt-8 pt-6 border-t border-[#F7608F]/50">
+                        <p class="label-spec font-semibold text-[#030001] mb-4">Assignment Index</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button type="button" onclick="openLightbox(0)" class="assignment-btn w-full">
+                                <span>01. Essence of Denim (Hero)</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(1)" class="assignment-btn w-full">
+                                <span>02. Street Stroller Editorial</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(2)" class="assignment-btn w-full">
+                                <span>03. Washington Sq. Bench</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(3)" class="assignment-btn w-full">
+                                <span>04. Fall 2026 Sidewalk</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                            <button type="button" onclick="openLightbox(4)" class="assignment-btn w-full sm:col-span-2">
+                                <span>05. Skatepark &amp; Denim Pack</span>
+                                <span class="text-[#F7608F]" aria-hidden="true">&#8599;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Remaining 4 Images in a Responsive 2-Column Grid (Mobile 2-col & Desktop 2-col) -->
+        <section id="assignments" class="section-gap">
+            <div class="flex items-baseline justify-between mb-6 pb-3 border-b border-[#F7608F]/60">
+                <div>
+                    <span class="label-spec font-semibold text-[#F7608F] block">Selected Works</span>
+                    <h2 class="h2-spec text-[#030001] mt-1">Campaign Assignments</h2>
+                </div>
+                <span class="label-spec text-[#030001]/80">Click image to enlarge</span>
+            </div>
+
+            <!-- 2-Column Grid on BOTH Mobile and Desktop with Dior-Inspired Focus Behavior -->
+            <div class="assignment-grid grid-spec">
+
+                <!-- Item 2: Screenshot 2026-11-18 at 3.18.46 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 02: Street Stroller Editorial"
+                        onclick="openLightbox(1)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(1);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10"
+                    >
+                        <img
+                            src="Screenshot 2026-11-18 at 3.18.46 PM.jpg"
+                            alt="Diesel — The Essence of Denim two models with stroller"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">02 · Street Stroller</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 02</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Street Stroller</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(1)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 3: Screenshot 2026-11-18 at 3.18.51 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 03: Washington Sq. Bench"
+                        onclick="openLightbox(2)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(2);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10"
+                    >
+                        <img
+                            src="Screenshot 2026-11-18 at 3.18.51 PM.jpg"
+                            alt="Diesel — The Essence of Denim park bench portrait"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">03 · Park Bench Study</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 03</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Park Bench Study</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(2)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 4: Screenshot 2026-11-18 at 3.18.57 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 04: Fall 2026 Sidewalk"
+                        onclick="openLightbox(3)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(3);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10"
+                    >
+                        <img
+                            src="Screenshot 2026-11-18 at 3.18.57 PM.jpg"
+                            alt="Diesel — The Essence of Denim Fall 2026 sidewalk bear campaign"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">04 · Fall 2026 Sidewalk</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 04</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Fall 2026 Sidewalk</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(3)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Item 5: Screenshot 2026-11-18 at 3.19.03 PM.jpg -->
+                <article class="assignment-card group p-3 sm:p-5 flex flex-col justify-between">
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label="Enlarge Assignment 05: Skatepark & Denim Pack"
+                        onclick="openLightbox(4)"
+                        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(4);}"
+                        class="relative overflow-hidden rounded-xl cursor-zoom-in mb-3 sm:mb-4 bg-white/10"
+                    >
+                        <img
+                            src="Screenshot 2026-11-18 at 3.19.03 PM.jpg"
+                            alt="Diesel — The Essence of Denim skatepark campaign"
+                            class="w-full h-48 sm:h-80 md:h-[440px] object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                        />
+                        <!-- &WALSH Artwork-Title Hover Reveal -->
+                        <div class="artwork-reveal-badge absolute bottom-3 left-3 px-3 py-1 rounded-lg">
+                            <span class="label-spec text-xs sm:text-sm font-semibold">05 · Skatepark Series</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                        <div>
+                            <span class="label-spec text-xs sm:text-sm text-[#F7608F] font-semibold">Assignment 05</span>
+                            <h3 class="h2-spec text-[#030001] text-base sm:text-[1.25rem]">Skatepark Series</h3>
+                        </div>
+                        <button type="button" onclick="openLightbox(4)" class="assignment-btn py-2 px-3 sm:px-4 text-xs sm:text-sm">
+                            <span>Enlarge</span>
+                            <span class="text-[#F7608F]" aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Minimal Restrained Footer -->
+        <footer class="pt-6 border-t border-[#F7608F] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <span class="h2-spec text-[#030001]">Your Name</span>
+            <span class="label-spec text-[#030001]/80">Selected Digital Ads Portfolio &copy; 2026</span>
+        </footer>
+
+    </main>
+
+    <!-- Click-to-Enlarge Lightbox Modal -->
+    <div
+        id="lightbox"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lightboxTitle"
+        class="lightbox-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-8"
+        onclick="if(event.target === this) closeLightbox()"
+    >
+        <div class="relative w-full max-w-4xl bg-[#8AD4CE] border-2 border-[#F7608F] rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-[#F7608F]">
+                <div>
+                    <span id="lightboxIndex" class="label-spec font-semibold text-[#F7608F] block">Assignment 01 / 05</span>
+                    <h2 id="lightboxTitle" class="h2-spec text-[#030001]">The Essence of Denim</h2>
+                </div>
+                <button
+                    type="button"
+                    onclick="closeLightbox()"
+                    aria-label="Close enlarged image"
+                    class="assignment-btn px-3.5 py-2 text-sm"
+                >
+                    <span>Close</span>
+                    <span class="text-[#F7608F]" aria-hidden="true">&#10005;</span>
+                </button>
+            </div>
+
+            <!-- Enlarged Image Stage -->
+            <div class="flex-1 overflow-auto p-4 sm:p-6 flex items-center justify-center bg-white/15">
+                <img
+                    id="lightboxImage"
+                    src=""
+                    alt=""
+                    class="max-h-[68vh] w-auto max-w-full object-contain rounded-xl shadow-md"
+                />
+            </div>
+
+            <!-- Modal Footer Navigation (Prev / Next) -->
+            <div class="flex items-center justify-between px-5 py-3.5 border-t border-[#F7608F]">
+                <button type="button" onclick="stepLightbox(-1)" class="assignment-btn py-2 px-4 text-sm">
+                    <span class="text-[#F7608F]" aria-hidden="true">&#8592;</span>
+                    <span>Previous</span>
+                </button>
+                <span id="lightboxCaption" class="label-spec text-xs sm:text-sm text-[#030001]/85 hidden sm:inline">Use arrow keys to navigate</span>
+                <button type="button" onclick="stepLightbox(1)" class="assignment-btn py-2 px-4 text-sm">
+                    <span>Next</span>
+                    <span class="text-[#F7608F]" aria-hidden="true">&#8594;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Exact 5 uploaded user images — no external or generated images
+        const GALLERY_ITEMS = [
+            {
+                src: 'Screenshot 2026-11-18 at 3.18.38 PM.jpg',
+                key: '3.18.38',
+                title: '01. The Essence of Denim (Hero)',
+                caption: 'Diesel — The Essence of Denim · Street Campaign',
+                unresolved: false
+            },
+            {
+                src: 'Screenshot 2026-11-18 at 3.18.46 PM.jpg',
+                key: '3.18.46',
+                title: '02. Street Stroller Editorial',
+                caption: 'Diesel — The Essence of Denim · Duo Editorial',
+                unresolved: false
+            },
+            {
+                src: 'Screenshot 2026-11-18 at 3.18.51 PM.jpg',
+                key: '3.18.51',
+                title: '03. Park Bench Study',
+                caption: 'Diesel — The Essence of Denim · Washington Square',
+                unresolved: false
+            },
+            {
+                src: 'Screenshot 2026-11-18 at 3.18.57 PM.jpg',
+                key: '3.18.57',
+                title: '04. Fall 2026 Sidewalk',
+                caption: 'Diesel — The Essence of Denim · Fall 2026',
+                unresolved: false
+            },
+            {
+                src: 'Screenshot 2026-11-18 at 3.19.03 PM.jpg',
+                key: '3.19.03',
+                title: '05. Skatepark Series',
+                caption: 'Diesel — The Essence of Denim · Skatepark Edition',
+                unresolved: false
+            }
+        ];
+
+        let currentLightboxIndex = 0;
+
+        // First try macOS narrow no-break space (\u202F) variant before PM.jpg, then mark slot if sandbox blocks local files
+        function resolveLocalImage(imgEl, slotIndex) {
+            if (!imgEl.dataset.triedAlt && imgEl.dataset.altSrc) {
+                imgEl.dataset.triedAlt = 'true';
+                imgEl.src = imgEl.dataset.altSrc;
+                GALLERY_ITEMS[slotIndex].src = imgEl.dataset.altSrc;
+                return;
+            }
+            GALLERY_ITEMS[slotIndex].unresolved = true;
+            imgEl.classList.add('hidden');
+            const missingNotice = document.getElementById(`missing-slot-${slotIndex}`);
+            if (missingNotice) {
+                missingNotice.classList.remove('hidden');
+                missingNotice.classList.add('flex');
+            }
+            const attachBtn = document.getElementById('attachFilesTrigger');
+            if (attachBtn) {
+                attachBtn.classList.remove('hidden');
+            }
+        }
+
+        function triggerFilePicker() {
+            const picker = document.getElementById('localFivePicker');
+            if (picker) picker.click();
+        }
+
+        function handleCardClick(index) {
+            if (GALLERY_ITEMS[index] && GALLERY_ITEMS[index].unresolved) {
+                triggerFilePicker();
+            } else {
+                openLightbox(index);
+            }
+        }
+
+        // Binds the exact 5 user-selected files into their matching slots by timestamp/order
+        function bindUploadedFiveFiles(fileList) {
+            if (!fileList || !fileList.length) return;
+            const files = Array.from(fileList).slice(0, 5);
+
+            files.forEach((file, fallbackIdx) => {
+                const matchedIdx = GALLERY_ITEMS.findIndex(item => file.name.includes(item.key));
+                const targetIdx = matchedIdx !== -1 ? matchedIdx : fallbackIdx;
+                if (targetIdx >= GALLERY_ITEMS.length) return;
+
+                const objectUrl = URL.createObjectURL(file);
+                GALLERY_ITEMS[targetIdx].src = objectUrl;
+                GALLERY_ITEMS[targetIdx].unresolved = false;
+
+                const imgEl = document.getElementById(`img-slot-${targetIdx}`);
+                const missingNotice = document.getElementById(`missing-slot-${targetIdx}`);
+                if (imgEl) {
+                    imgEl.src = objectUrl;
+                    imgEl.classList.remove('hidden');
+                }
+                if (missingNotice) {
+                    missingNotice.classList.add('hidden');
+                    missingNotice.classList.remove('flex');
+                }
+            });
+        }
+        ];
+
+        let currentLightboxIndex = 0;
+
+        // Populate slow, subtle drifting stars across viewport
+        (function initDriftingStars() {
+            const canvas = document.getElementById('starCanvas');
+            if (!canvas) return;
+            const totalStars = 28;
+            const starGlyphs = ['✦', '✧', '★', '✶'];
+
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement('span');
+                star.className = 'drifting-star';
+                star.textContent = starGlyphs[i % starGlyphs.length];
+                star.style.left = `${(i * 3.7) % 98}vw`;
+                star.style.top = `${-10 - (i * 4.5) % 90}vh`;
+                star.style.fontSize = `${10 + (i % 3) * 4}px`;
+                star.style.animationDuration = `${26 + (i % 5) * 6}s`;
+                star.style.animationDelay = `${-(i * 1.9)}s`;
+                canvas.appendChild(star);
+            }
+        })();
+
+        // &WALSH-inspired spinning loader fade out once ready (400-600ms)
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('walshLoader');
+            if (loader) {
+                setTimeout(() => {
+                    loader.classList.add('is-ready');
+                }, 450);
+            }
+        });
+
+        // Lightbox Controls
+        function openLightbox(index) {
+            currentLightboxIndex = (index + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+            const item = GALLERY_ITEMS[currentLightboxIndex];
+            const modal = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImage');
+            const title = document.getElementById('lightboxTitle');
+            const idxLabel = document.getElementById('lightboxIndex');
+            const caption = document.getElementById('lightboxCaption');
+
+            img.src = item.src;
+            img.alt = item.title;
+            title.textContent = item.title;
+            idxLabel.textContent = `Assignment 0${currentLightboxIndex + 1} / 0${GALLERY_ITEMS.length}`;
+            caption.textContent = item.caption;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function stepLightbox(delta) {
+            openLightbox(currentLightboxIndex + delta);
+        }
+
+        // Keyboard accessibility for Lightbox
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('lightbox');
+            if (modal.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') stepLightbox(1);
+            if (e.key === 'ArrowLeft') stepLightbox(-1);
+        });
+    </script>
+</body>
+</html>
