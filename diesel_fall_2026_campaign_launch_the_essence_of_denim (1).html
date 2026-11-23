@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIESEL — THE ESSENCE OF DENIM | FALL 2026 CAMPAIGN LAUNCH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #080808;
+      --bg-panel: #0d0d0d;
+      --paper-offwhite: #f2f1ed;
+      --indigo-raw: #121926;
+      --hairline: #242424;
+      --hairline-light: #363636;
+      --diesel-red: #e60000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--paper-offwhite);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-grotesk {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: -0.01em;
+    }
+
+    .font-heavy {
+      font-family: 'Archivo Black', sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    .font-mono-spec {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .border-hairline {
+      border-color: var(--hairline);
+    }
+
+    .border-hairline-strong {
+      border-color: var(--hairline-light);
+    }
+
+    /* Brutalist Range Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1a1a1a;
+      height: 2px;
+      width: 100%;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 10px;
+      height: 16px;
+      background: #f2f1ed;
+      border: 1px solid #080808;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #e60000;
+    }
+
+    /* Swiss Brutalist Buttons */
+    .swiss-btn {
+      border: 1px solid #262626;
+      background-color: #0d0d0d;
+      color: #a3a3a3;
+      transition: all 0.12s linear;
+    }
+
+    .swiss-btn:hover {
+      border-color: #525252;
+      color: #f2f1ed;
+    }
+
+    .swiss-btn.active {
+      background-color: #f2f1ed;
+      color: #080808;
+      border-color: #f2f1ed;
+      font-weight: 700;
+    }
+
+    .swiss-btn.lock-active {
+      background-color: #121926;
+      color: #f2f1ed;
+      border-color: #e60000;
+    }
+
+    /* Dropzone highlight */
+    .drop-active {
+      outline: 2px solid #e60000 !important;
+      outline-offset: -2px;
+    }
+
+    /* Kinetic Marquee */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080808;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2a2a;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e60000;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#e60000] selection:text-white">
+
+  <!-- SYSTEM TOAST NOTIFICATION -->
+  <div id="status-toast" class="fixed bottom-5 right-5 z-[70] transform translate-y-24 opacity-0 transition-all duration-200 pointer-events-none">
+    <div class="bg-[#0d0d0d] border border-[#f2f1ed] px-4 py-2.5 flex items-center gap-3 shadow-2xl">
+      <span class="w-2 h-2 bg-[#e60000] inline-block"></span>
+      <span id="status-toast-text" class="font-mono-spec text-[11px] uppercase tracking-widest text-[#f2f1ed]">CAMPAIGN READY</span>
+    </div>
+  </div>
+
+  <!-- STICKY SWISS CAMPAIGN MASTHEAD -->
+  <header class="sticky top-0 z-50 bg-[#080808]/95 backdrop-blur-md border-b border-hairline">
+    <div class="max-w-[1680px] mx-auto grid grid-cols-12 items-stretch min-h-[58px]">
+      
+      <!-- Brand Identity Cell -->
+      <div class="col-span-6 sm:col-span-4 lg:col-span-3 border-r border-hairline px-4 sm:px-6 flex items-center gap-3">
+        <a href="#hero-film" class="bg-[#e60000] text-white font-grotesk text-2xl sm:text-[26px] leading-none px-2.5 py-1 tracking-tight uppercase hover:bg-red-700 transition-colors">
+          DIESEL
+        </a>
+        <div class="flex flex-col">
+          <span class="font-mono-spec text-[10px] font-bold tracking-[0.16em] text-[#f2f1ed] uppercase">FOR SUCCESSFUL LIVING</span>
+          <span class="font-mono-spec text-[9px] tracking-[0.12em] text-neutral-500 uppercase">FALL 2026 // MILAN — NYC</span>
+        </div>
+      </div>
+
+      <!-- Campaign Section Navigation -->
+      <nav class="hidden lg:flex lg:col-span-6 border-r border-hairline px-4 items-center justify-between gap-2 font-mono-spec text-[10px] tracking-widest uppercase">
+        <a href="#hero-film" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">01 HERO FILM</a>
+        <span class="text-neutral-700">/</span>
+        <a href="#campaign-manifesto" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">02 MANIFESTO</a>
+        <span class="text-neutral-700">/</span>
+        <a href="#print-ooh-section" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">03 PRINT &amp; OOH (05)</a>
+        <span class="text-neutral-700">/</span>
+        <a href="#digital-ads-section" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">04 DIGITAL ADS (05)</a>
+        <span class="text-neutral-700">/</span>
+        <a href="#studio-workspace" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">05 EDITORIAL ENGINE</a>
+        <span class="text-neutral-700">/</span>
+        <a href="#capsule-shop" class="text-neutral-300 hover:text-[#e60000] transition-colors py-1">06 DROP</a>
+      </nav>
+
+      <!-- Bag / Lookbook Drawer Trigger -->
+      <div class="col-span-6 sm:col-span-8 lg:col-span-3 px-4 sm:px-6 flex items-center justify-end gap-3">
+        <a href="#digital-ads-section" class="hidden sm:inline-flex swiss-btn font-mono-spec text-[10px] uppercase tracking-wider px-3 py-1.5 cursor-pointer">
+          DIGITAL SUITE
+        </a>
+        <button id="btn-open-bag" class="bg-[#121926] hover:bg-[#e60000] text-[#f2f1ed] border border-hairline-strong px-3.5 py-1.5 font-mono-spec text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2 cursor-pointer">
+          <span>FW26 BAG</span>
+          <span id="bag-count-badge" class="bg-[#f2f1ed] text-[#080808] font-bold px-1.5 py-0.2 text-[10px]">02</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="flex-grow">
+
+    <!-- ======================================================================= -->
+    <!-- SECTION 01: DYNAMIC HERO VIDEO SHOWCASE                                 -->
+    <!-- ======================================================================= -->
+    <section id="hero-film" class="relative border-b border-hairline bg-[#050505] overflow-hidden">
+      <div class="max-w-[1680px] mx-auto relative min-h-[82vh] lg:min-h-[88vh] flex flex-col justify-between">
+        
+        <!-- Full-Bleed Dynamic Hero Video -->
+        <div class="absolute inset-0 z-0 bg-black">
+          <video
+            id="hero-video-player"
+            src="gemini_generated_video_c3a2440d (1).mp4"
+            poster="3ee619e3-70a4-462d-992f-0721c6fab432.webp"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            class="w-full h-full object-cover object-center opacity-95 contrast-110"
+          >
+            <source src="gemini_generated_video_c3a2440d (1).mp4" type="video/mp4" />
+            <source src="gemini_generated_video_c3a2440d%20(1).mp4" type="video/mp4" />
+          </video>
+          <!-- Editorial Scrim Overlays for Crisp Swiss Typography -->
+          <div class="absolute inset-0 bg-gradient-to-b from-[#080808]/75 via-[#080808]/15 to-[#080808]/95 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#080808]/80 via-transparent to-[#080808]/55 pointer-events-none"></div>
+        </div>
+
+        <!-- Top Hero Telemetry & Interactive Video Controls -->
+        <div class="relative z-10 px-4 sm:px-8 pt-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3 bg-[#080808]/85 backdrop-blur-sm border border-hairline-strong px-3.5 py-2">
+            <span class="w-2 h-2 bg-[#e60000] animate-pulse"></span>
+            <span class="font-mono-spec text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[#f2f1ed]">
+              CAMPAIGN FILM 01 // CANAL ST &amp; MERCER — FALL 2026 LAUNCH
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-hero-play-toggle" class="bg-[#080808]/85 hover:bg-[#f2f1ed] hover:text-[#080808] text-[#f2f1ed] border border-hairline-strong font-mono-spec text-[10px] uppercase tracking-widest px-3 py-2 transition-colors cursor-pointer">
+              ❚❚ PAUSE FILM
+            </button>
+            <button id="btn-hero-mute-toggle" class="bg-[#080808]/85 hover:bg-[#f2f1ed] hover:text-[#080808] text-[#f2f1ed] border border-hairline-strong font-mono-spec text-[10px] uppercase tracking-widest px-3 py-2 transition-colors cursor-pointer">
+              🔇 UNMUTE AUDIO
+            </button>
+            <button id="btn-hero-theater" class="bg-[#e60000] hover:bg-red-700 text-white font-mono-spec text-[10px] font-bold uppercase tracking-widest px-3.5 py-2 transition-colors cursor-pointer">
+              ⛶ THEATER MODE
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Monumental Launch Headline & CTAs -->
+        <div class="relative z-10 px-4 sm:px-8 pb-10 sm:pb-14 pt-32 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-8 space-y-4">
+            <div class="inline-flex items-center gap-2 bg-[#e60000] text-white font-mono-spec text-[10px] font-bold uppercase tracking-[0.2em] px-2.5 py-1">
+              <span>GLOBAL CAMPAIGN LAUNCH</span>
+              <span>//</span>
+              <span>14.5 OZ RAW SELVEDGE</span>
+            </div>
+            <h1 class="font-grotesk text-5xl sm:text-7xl lg:text-[104px] leading-[0.88] uppercase tracking-tight text-[#f2f1ed]">
+              UNTAMED INDIGO.<br />
+              <span class="text-[#e60000]">THE ESSENCE</span> OF DENIM.
+            </h1>
+            <p class="max-w-2xl text-sm sm:text-base text-neutral-200 leading-relaxed font-normal">
+              Born on the raw concrete of Lower Manhattan. DIESEL Fall 2026 strips denim back to its primal architecture—heavyweight unwashed selvedge, hand-abraded whiskers, and unapologetic street silhouettes engineered to outlive every trend.
+            </p>
+          </div>
+
+          <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-stretch gap-3">
+            <a href="#capsule-shop" class="bg-[#f2f1ed] hover:bg-white text-[#080808] font-grotesk text-2xl tracking-wider uppercase px-6 py-4 text-center transition-colors">
+              SHOP THE FALL 2026 DROP →
+            </a>
+            <a href="#studio-workspace" class="bg-[#080808]/90 hover:bg-[#121926] text-[#f2f1ed] border border-[#f2f1ed] font-mono-spec text-xs font-bold uppercase tracking-widest px-6 py-4 text-center transition-colors">
+              LAUNCH EXPERIMENTAL EDITORIAL ENGINE
+            </a>
+            <div class="grid grid-cols-3 gap-px bg-[#242424] border border-hairline mt-1">
+              <a href="#print-ooh-section" class="bg-[#080808]/90 hover:bg-[#141414] p-2.5 text-center font-mono-spec text-[10px] text-neutral-300">
+                <div class="text-[#e60000] font-bold">05 PLATES</div>
+                <div>PRINT / OOH</div>
+              </a>
+              <a href="#digital-ads-section" class="bg-[#080808]/90 hover:bg-[#141414] p-2.5 text-center font-mono-spec text-[10px] text-neutral-300">
+                <div class="text-[#e60000] font-bold">05 UNITS</div>
+                <div>DIGITAL SUITE</div>
+              </a>
+              <button id="btn-hero-quickshop-zebra" class="bg-[#080808]/90 hover:bg-[#141414] p-2.5 text-center font-mono-spec text-[10px] text-neutral-300 cursor-pointer">
+                <div class="text-[#f2f1ed] font-bold">HERO LOOK</div>
+                <div>SHOP DENIM</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- KINETIC CAMPAIGN TICKER -->
+    <div class="border-b border-hairline bg-[#e60000] text-white py-2.5 overflow-hidden select-none">
+      <div class="marquee-track font-mono-spec text-xs font-bold uppercase tracking-[0.22em]">
+        <span class="mx-6">DIESEL — FOR SUCCESSFUL LIVING</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">THE ESSENCE OF DENIM — FALL 2026</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">2019 D-STRUKT • 1996 D-SIRE-01 • 1981 D-WENT • D-RISE</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">NYC STREET TAKEOVER: SOHO • CHINATOWN • TIMES SQUARE • BOWERY</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">DIESEL — FOR SUCCESSFUL LIVING</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">THE ESSENCE OF DENIM — FALL 2026</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">2019 D-STRUKT • 1996 D-SIRE-01 • 1981 D-WENT • D-RISE</span>
+        <span class="mx-6">//</span>
+        <span class="mx-6">NYC STREET TAKEOVER: SOHO • CHINATOWN • TIMES SQUARE • BOWERY</span>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- SECTION 04: DIGITAL ADS & SOCIAL CAMPAIGN SUITE (ZERO WHITE BACKGROUND) -->
+    <!-- ======================================================================= -->
+    <section id="digital-ads-section" class="max-w-[1680px] mx-auto px-4 sm:px-8 py-14 sm:py-20 border-b border-hairline">
+      
+      <!-- Section Header -->
+      <div class="border-b border-hairline pb-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div class="font-mono-spec text-[10px] tracking-[0.2em] text-[#e60000] uppercase mb-2">
+            04 // DIGITAL PERFORMANCE &amp; SOCIAL MEDIA SUITE (05 PLACEMENTS)
+          </div>
+          <h2 class="font-grotesk text-4xl sm:text-6xl uppercase tracking-tight text-[#f2f1ed]">
+            DIGITAL CAMPAIGN ROLLOUT
+          </h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="btn-digital-mode-bleed" class="swiss-btn active font-mono-spec text-[10px] uppercase tracking-wider px-4 py-2.5 cursor-pointer">
+            FULL-BLEED AD CREATIVE
+          </button>
+          <button id="btn-digital-mode-bezel" class="swiss-btn font-mono-spec text-[10px] uppercase tracking-wider px-4 py-2.5 cursor-pointer">
+            DARK TABLET BEZEL VIEW
+          </button>
+        </div>
+      </div>
+
+      <!-- 5 Interactive Digital Ad Placement Cards (White Borders Automatically Stripped) -->
+      <div id="digital-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-px bg-[#242424] border border-hairline">
+        
+        <!-- Digital Ad 01: Soho Street Llama -->
+        <article class="bg-[#0a0a0a] p-4 sm:p-5 flex flex-col justify-between gap-4 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono-spec text-[10px] border-b border-hairline pb-2">
+              <span class="text-[#e60000] font-bold">DIGITAL 01 // FEED CTA</span>
+              <span class="text-neutral-500">IG / META</span>
+            </div>
+            <div data-digital-idx="0" class="open-digital-lightbox relative aspect-[4/5] w-full bg-[#080808] border border-hairline overflow-hidden cursor-pointer">
+              <img
+                data-raw-src="Screenshot 2026-11-23 at 3.46.22 PM.jpg"
+                src="Screenshot 2026-11-23 at 3.46.22 PM.jpg"
+                alt="DIESEL Digital Ad 01 — Soho Street Llama"
+                class="digital-ad-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <span class="absolute top-2.5 right-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5 uppercase">
+                [INSPECT]
+              </span>
+            </div>
+            <div>
+              <h3 class="font-grotesk text-2xl uppercase leading-tight text-[#f2f1ed]">
+                SOHO STREET LLAMA
+              </h3>
+              <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Distressed leather bomber &amp; double-indigo ensemble walking a woolly llama on a cobalt lead down Mercer Street.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-hairline">
+            <button data-product-id="0" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-[10px] font-bold uppercase py-2.5 transition-colors cursor-pointer">
+              SHOP NOW — 2019 D-STRUKT →
+            </button>
+            <button data-send-digital-engine="0" class="send-digital-engine-btn w-full swiss-btn font-mono-spec text-[10px] uppercase py-2 cursor-pointer">
+              → REMIX IN ENGINE
+            </button>
+          </div>
+        </article>
+
+        <!-- Digital Ad 02: East Village Stroller & Capuchin Monkey -->
+        <article class="bg-[#0a0a0a] p-4 sm:p-5 flex flex-col justify-between gap-4 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono-spec text-[10px] border-b border-hairline pb-2">
+              <span class="text-[#e60000] font-bold">DIGITAL 02 // STORY 9:16</span>
+              <span class="text-neutral-500">MOBILE FULL</span>
+            </div>
+            <div data-digital-idx="1" class="open-digital-lightbox relative aspect-[4/5] w-full bg-[#080808] border border-hairline overflow-hidden cursor-pointer">
+              <img
+                data-raw-src="Screenshot 2026-11-23 at 3.46.32 PM.jpg"
+                src="Screenshot 2026-11-23 at 3.46.32 PM.jpg"
+                alt="DIESEL Digital Ad 02 — Double Denim & Stroller Monkey"
+                class="digital-ad-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <span class="absolute top-2.5 right-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5 uppercase">
+                [INSPECT]
+              </span>
+            </div>
+            <div>
+              <h3 class="font-grotesk text-2xl uppercase leading-tight text-[#f2f1ed]">
+                DOUBLE DENIM &amp; CAPUCHIN
+              </h3>
+              <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Cropped trucker &amp; sleeveless denim vest paired with low-slung relaxed jeans and a stroller-riding capuchin monkey.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-hairline">
+            <button data-product-id="2" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-[10px] font-bold uppercase py-2.5 transition-colors cursor-pointer">
+              SHOP TRUCKER JACKET →
+            </button>
+            <button data-send-digital-engine="1" class="send-digital-engine-btn w-full swiss-btn font-mono-spec text-[10px] uppercase py-2 cursor-pointer">
+              → REMIX IN ENGINE
+            </button>
+          </div>
+        </article>
+
+        <!-- Digital Ad 03: Washington Square Park & Skunk -->
+        <article class="bg-[#0a0a0a] p-4 sm:p-5 flex flex-col justify-between gap-4 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono-spec text-[10px] border-b border-hairline pb-2">
+              <span class="text-[#e60000] font-bold">DIGITAL 03 // EDITORIAL</span>
+              <span class="text-neutral-500">WASH. SQ.</span>
+            </div>
+            <div data-digital-idx="2" class="open-digital-lightbox relative aspect-[4/5] w-full bg-[#080808] border border-hairline overflow-hidden cursor-pointer">
+              <img
+                data-raw-src="Screenshot 2026-11-23 at 3.46.39 PM.jpg"
+                src="Screenshot 2026-11-23 at 3.46.39 PM.jpg"
+                alt="DIESEL Digital Ad 03 — Washington Square Bench & Skunk"
+                class="digital-ad-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <span class="absolute top-2.5 right-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5 uppercase">
+                [INSPECT]
+              </span>
+            </div>
+            <div>
+              <h3 class="font-grotesk text-2xl uppercase leading-tight text-[#f2f1ed]">
+                WASHINGTON SQ. SKUNK
+              </h3>
+              <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Unfiltered park-bench portrait spotlighting hand-abraded elbow tears, faded seams, and tactile 14.5oz cotton grain.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-hairline">
+            <button data-product-id="1" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-[10px] font-bold uppercase py-2.5 transition-colors cursor-pointer">
+              SHOP DISTRESSED DENIM →
+            </button>
+            <button data-send-digital-engine="2" class="send-digital-engine-btn w-full swiss-btn font-mono-spec text-[10px] uppercase py-2 cursor-pointer">
+              → REMIX IN ENGINE
+            </button>
+          </div>
+        </article>
+
+        <!-- Digital Ad 04: East Village Grizzly Bear -->
+        <article class="bg-[#0a0a0a] p-4 sm:p-5 flex flex-col justify-between gap-4 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono-spec text-[10px] border-b border-hairline pb-2">
+              <span class="text-[#e60000] font-bold">DIGITAL 04 // DISPLAY</span>
+              <span class="text-neutral-500">FALL 2026</span>
+            </div>
+            <div data-digital-idx="3" class="open-digital-lightbox relative aspect-[4/5] w-full bg-[#080808] border border-hairline overflow-hidden cursor-pointer">
+              <img
+                data-raw-src="Screenshot 2026-11-23 at 3.46.46 PM.jpg"
+                src="Screenshot 2026-11-23 at 3.46.46 PM.jpg"
+                alt="DIESEL Digital Ad 04 — East Village Grizzly Bear"
+                class="digital-ad-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <span class="absolute top-2.5 right-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5 uppercase">
+                [INSPECT]
+              </span>
+            </div>
+            <div>
+              <h3 class="font-grotesk text-2xl uppercase leading-tight text-[#f2f1ed]">
+                LOWER EAST SIDE GRIZZLY
+              </h3>
+              <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Oversized knee-length distressed denim jorts and ribbed tank beside a grizzly wearing a custom DIESEL selvedge collar.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-hairline">
+            <button data-product-id="3" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-[10px] font-bold uppercase py-2.5 transition-colors cursor-pointer">
+              SHOP SELVEDGE JORTS →
+            </button>
+            <button data-send-digital-engine="3" class="send-digital-engine-btn w-full swiss-btn font-mono-spec text-[10px] uppercase py-2 cursor-pointer">
+              → REMIX IN ENGINE
+            </button>
+          </div>
+        </article>
+
+        <!-- Digital Ad 05: Skatepark Coyotes -->
+        <article class="bg-[#0a0a0a] p-4 sm:p-5 flex flex-col justify-between gap-4 group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between font-mono-spec text-[10px] border-b border-hairline pb-2">
+              <span class="text-[#e60000] font-bold">DIGITAL 05 // CAROUSEL</span>
+              <span class="text-neutral-500">SKATEPARK</span>
+            </div>
+            <div data-digital-idx="4" class="open-digital-lightbox relative aspect-[4/5] w-full bg-[#080808] border border-hairline overflow-hidden cursor-pointer">
+              <img
+                data-raw-src="Screenshot 2026-11-23 at 3.46.53 PM.jpg"
+                src="Screenshot 2026-11-23 at 3.46.53 PM.jpg"
+                alt="DIESEL Digital Ad 05 — Skatepark Coyotes in Denim"
+                class="digital-ad-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <span class="absolute top-2.5 right-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5 uppercase">
+                [INSPECT]
+              </span>
+            </div>
+            <div>
+              <h3 class="font-grotesk text-2xl uppercase leading-tight text-[#f2f1ed]">
+                SKATEPARK COYOTE PACK
+              </h3>
+              <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Downtown skate crew in baggy stone-washed jeans joined by four coyotes wearing tailored DIESEL denim jackets and jeans.
+              </p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-2 border-t border-hairline">
+            <button data-product-id="1" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-[10px] font-bold uppercase py-2.5 transition-colors cursor-pointer">
+              SHOP BAGGY FIT DENIM →
+            </button>
+            <button data-send-digital-engine="4" class="send-digital-engine-btn w-full swiss-btn font-mono-spec text-[10px] uppercase py-2 cursor-pointer">
+              → REMIX IN ENGINE
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- SECTION 05: EXPERIMENTAL PIECE — SWISS EDITORIAL ENGINE (PHOTO WEBSITE) -->
+    <!-- ======================================================================= -->
+    <section id="studio-workspace" class="max-w-[1680px] mx-auto border-b border-hairline">
+      
+      <!-- Experimental Piece Intro Banner -->
+      <div class="px-4 sm:px-8 py-8 border-b border-hairline bg-[#0b0b0b] flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="font-mono-spec text-[10px] tracking-[0.2em] text-[#e60000] uppercase mb-1.5">
+            05 // EXPERIMENTAL INTERACTIVE PIECE — GENERATIVE CAMPAIGN POSTER &amp; CONTACT SHEET ENGINE
+          </div>
+          <h2 class="font-grotesk text-3xl sm:text-5xl uppercase tracking-tight text-[#f2f1ed]">
+            DIESEL FALL 2026 SWISS EDITORIAL ENGINE
+          </h2>
+        </div>
+        <div class="font-mono-spec text-[10px] text-neutral-400 uppercase max-w-md leading-relaxed">
+          PRE-LOADED WITH YOUR FALL 2026 CAMPAIGN PLATES. PRESS <span class="text-[#f2f1ed] font-bold">[SPACEBAR]</span> OR CLICK <span class="text-[#e60000] font-bold">MUTATE LAYOUT</span> TO GENERATE NEW SWISS GRID POSTERS, APPLY 35MM FILM WASHES, OR EXPORT 300DPI ARTWORK.
+        </div>
+      </div>
+
+      <!-- SPLIT-SCREEN BRUTALIST STUDIO (From PHOTO WEBSITE.html) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+
+        <!-- LEFT / CENTER: HIGH-RESOLUTION EDITORIAL CANVAS STAGE (7/8 Cols) -->
+        <div class="lg:col-span-7 xl:col-span-8 border-b lg:border-b-0 lg:border-r border-hairline flex flex-col bg-[#080808]">
+          
+          <!-- Stage Top Sub-Header Telemetry -->
+          <div class="border-b border-hairline px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 bg-[#0b0b0b]">
+            <div class="flex items-center gap-3 font-mono-spec text-[11px]">
+              <span class="text-[#e60000] font-bold">ACTIVE ARCHETYPE:</span>
+              <span id="active-archetype-label" class="text-[#f2f1ed] uppercase">01 // SWISS ASYMMETRIC SPLIT</span>
+            </div>
+            <div class="flex items-center gap-4 font-mono-spec text-[10px] text-neutral-400">
+              <span id="telemetry-seed">SEED // 84920-FW26</span>
+              <span id="canvas-dimensions-label">2400 × 3000 PX (300 DPI)</span>
+            </div>
+          </div>
+
+          <!-- Canvas Viewport Area -->
+          <div id="canvas-dropzone" class="flex-grow flex items-center justify-center p-4 sm:p-8 lg:p-10 min-h-[520px] sm:min-h-[680px] relative bg-[#060606]">
+            
+            <!-- Subtle Background Architectural Crosshairs -->
+            <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(#333 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+            <!-- Live Webcam Overlay -->
+            <div id="webcam-modal" class="hidden absolute inset-4 sm:inset-8 z-30 bg-[#080808] border border-[#f2f1ed] flex flex-col justify-between p-4">
+              <div class="flex items-center justify-between border-b border-hairline pb-2">
+                <span class="font-mono-spec text-xs uppercase tracking-widest text-[#e60000] flex items-center gap-2">
+                  <span class="w-2 h-2 bg-[#e60000] animate-pulse"></span> LIVE OPTICAL VIEWFINDER // 4:5 CENTER CROP
+                </span>
+                <div class="flex items-center gap-3">
+                  <span id="webcam-target-slot-label" class="font-mono-spec text-[10px] text-[#f2f1ed] bg-[#121926] border border-hairline px-2 py-0.5">TARGET: PLATE 01</span>
+                  <button id="btn-close-webcam" class="font-mono-spec text-xs text-neutral-400 hover:text-white px-2 py-1 border border-hairline cursor-pointer">
+                    [ESC / CLOSE]
+                  </button>
+                </div>
+              </div>
+              <div class="relative flex-grow my-3 overflow-hidden bg-black flex items-center justify-center">
+                <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover grayscale contrast-125"></video>
+
+                <!-- Precision Swiss Optical Framing & Centering Reticle Overlay -->
+                <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <div class="relative h-[88%] aspect-[4/5] border border-[#f2f1ed]/90 shadow-[0_0_0_9999px_rgba(0,0,0,0.62)]">
+                    <span class="absolute -top-0.5 -left-0.5 w-4 h-4 border-t-2 border-l-2 border-[#e60000]"></span>
+                    <span class="absolute -top-0.5 -right-0.5 w-4 h-4 border-t-2 border-r-2 border-[#e60000]"></span>
+                    <span class="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-b-2 border-l-2 border-[#e60000]"></span>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-2 border-r-2 border-[#e60000]"></span>
+                    <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1px] bg-[#f2f1ed]/35"></div>
+                    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-[#f2f1ed]/35"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-28 border border-dashed border-[#e60000]/90 flex items-center justify-center">
+                      <div class="w-4 h-[1.5px] bg-[#e60000]"></div>
+                      <div class="h-4 w-[1.5px] bg-[#e60000] absolute"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-3 pt-2 border-t border-hairline">
+                <span class="font-mono-spec text-[10px] text-neutral-400 uppercase">CAPTURES CENTERED 4:5 FRAME DIRECTLY INTO ACTIVE PLATE SLOT</span>
+                <button id="btn-snap-webcam" class="bg-[#e60000] hover:bg-red-700 text-white font-mono-spec text-xs font-bold uppercase tracking-widest px-6 py-3 cursor-pointer">
+                  CAPTURE PLATE TO LAYOUT
+                </button>
+              </div>
+            </div>
+
+            <!-- Responsive Canvas Frame Wrapper -->
+            <div id="canvas-frame-box" class="relative shadow-[0_25px_70px_rgba(0,0,0,0.95)] border border-[#2a2a2a] transition-all duration-200 max-w-full">
+              <canvas id="editorial-canvas" class="block max-h-[68vh] w-auto h-auto max-w-full"></canvas>
+            </div>
+
+          </div>
+
+          <!-- Stage Bottom Primary Action Bar -->
+          <div class="border-t border-hairline bg-[#0b0b0b] p-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <button id="btn-mutate-main" class="bg-[#e60000] hover:bg-[#cc0000] active:translate-y-[1px] text-white font-grotesk text-xl sm:text-2xl tracking-wider uppercase px-6 py-3 flex items-center justify-center gap-3 transition-colors cursor-pointer">
+              <span>MUTATE LAYOUT</span>
+              <span class="font-mono-spec text-[10px] bg-black/30 px-2 py-0.5 tracking-widest">[SPACEBAR]</span>
+            </button>
+
+            <div class="flex items-center gap-2.5">
+              <button id="btn-archive-plate" class="flex-1 sm:flex-initial swiss-btn font-mono-spec text-xs uppercase tracking-wider px-4 py-3.5 cursor-pointer">
+                + ARCHIVE TO SHEET
+              </button>
+              <button id="btn-export-300dpi" class="flex-1 sm:flex-initial bg-[#f2f1ed] hover:bg-white text-[#080808] font-mono-spec text-xs font-bold uppercase tracking-wider px-5 py-3.5 transition-colors cursor-pointer">
+                EXPORT 300DPI PNG
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT CONTROL RAIL: SWISS GRID, PHOTO POOL, GRADE & GARMENT SPECS (5/4 Cols) -->
+        <div class="lg:col-span-5 xl:col-span-4 bg-[#0a0a0a] divide-y divide-[#242424] flex flex-col justify-between">
+
+          <!-- MODULE 01: PERSISTENT 4-SLOT CAMPAIGN IMAGE POOL & CAPTURE -->
+          <div class="p-4 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-spec text-[11px] font-bold uppercase tracking-widest text-[#f2f1ed]">01 // CAMPAIGN PLATE POOL (1–4)</span>
+              <span id="photo-source-status" class="font-mono-spec text-[10px] text-[#e60000] font-bold uppercase">ACTIVE: PLATE 01</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <label class="swiss-btn font-mono-spec text-[10px] uppercase tracking-wider py-2 px-2.5 text-center cursor-pointer flex items-center justify-center gap-1.5">
+                <span id="upload-slot-label">↑ REPLACE PLATE 01</span>
+                <input type="file" id="input-photo-upload" accept="image/*" class="hidden" />
+              </label>
+              <button id="btn-open-webcam" class="swiss-btn font-mono-spec text-[10px] uppercase tracking-wider py-2 px-2.5 text-center cursor-pointer">
+                ◉ WEBCAM → PLATE
+              </button>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 pt-1" id="plate-pool-grid">
+              <div data-plate="0" class="plate-slot-card group relative border-2 border-[#e60000] bg-[#121926] cursor-pointer overflow-hidden transition-all">
+                <div class="aspect-[4/5] w-full bg-black overflow-hidden">
+                  <img id="thumb-plate-0" src="3ee619e3-70a4-462d-992f-0721c6fab432.webp" alt="Plate 01" class="w-full h-full object-cover" />
+                </div>
+                <div class="px-1.5 py-1 flex items-center justify-between bg-[#080808] border-t border-hairline">
+                  <span class="font-mono-spec text-[9px] font-bold text-[#f2f1ed]">PL.01</span>
+                  <label title="Upload image to Plate 01" class="font-mono-spec text-[9px] text-neutral-400 hover:text-[#e60000] cursor-pointer" onclick="event.stopPropagation()">
+                    [↑]
+                    <input type="file" data-slot-upload="0" accept="image/*" class="hidden slot-file-input" />
+                  </label>
+                </div>
+              </div>
+
+              <div data-plate="1" class="plate-slot-card group relative border border-hairline bg-[#0d0d0d] cursor-pointer overflow-hidden transition-all">
+                <div class="aspect-[4/5] w-full bg-black overflow-hidden">
+                  <img id="thumb-plate-1" src="Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg" alt="Plate 02" class="w-full h-full object-cover" />
+                </div>
+                <div class="px-1.5 py-1 flex items-center justify-between bg-[#080808] border-t border-hairline">
+                  <span class="font-mono-spec text-[9px] font-bold text-neutral-400">PL.02</span>
+                  <label title="Upload image to Plate 02" class="font-mono-spec text-[9px] text-neutral-400 hover:text-[#e60000] cursor-pointer" onclick="event.stopPropagation()">
+                    [↑]
+                    <input type="file" data-slot-upload="1" accept="image/*" class="hidden slot-file-input" />
+                  </label>
+                </div>
+              </div>
+
+              <div data-plate="2" class="plate-slot-card group relative border border-hairline bg-[#0d0d0d] cursor-pointer overflow-hidden transition-all">
+                <div class="aspect-[4/5] w-full bg-black overflow-hidden">
+                  <img id="thumb-plate-2" src="Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg" alt="Plate 03" class="w-full h-full object-cover" />
+                </div>
+                <div class="px-1.5 py-1 flex items-center justify-between bg-[#080808] border-t border-hairline">
+                  <span class="font-mono-spec text-[9px] font-bold text-neutral-400">PL.03</span>
+                  <label title="Upload image to Plate 03" class="font-mono-spec text-[9px] text-neutral-400 hover:text-[#e60000] cursor-pointer" onclick="event.stopPropagation()">
+                    [↑]
+                    <input type="file" data-slot-upload="2" accept="image/*" class="hidden slot-file-input" />
+                  </label>
+                </div>
+              </div>
+
+              <div data-plate="3" class="plate-slot-card group relative border border-hairline bg-[#0d0d0d] cursor-pointer overflow-hidden transition-all">
+                <div class="aspect-[4/5] w-full bg-black overflow-hidden">
+                  <img id="thumb-plate-3" src="watermarked_img_1370470885196410425.webp" alt="Plate 04" class="w-full h-full object-cover" />
+                </div>
+                <div class="px-1.5 py-1 flex items-center justify-between bg-[#080808] border-t border-hairline">
+                  <span class="font-mono-spec text-[9px] font-bold text-neutral-400">PL.04</span>
+                  <label title="Upload image to Plate 04" class="font-mono-spec text-[9px] text-neutral-400 hover:text-[#e60000] cursor-pointer" onclick="event.stopPropagation()">
+                    [↑]
+                    <input type="file" data-slot-upload="3" accept="image/*" class="hidden slot-file-input" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODULE 02: GRID ARCHITECTURE (9 SYSTEMS) -->
+          <div class="p-4 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-spec text-[11px] font-bold uppercase tracking-widest text-[#f2f1ed]">02 // GRID ARCHITECTURE</span>
+              <span class="font-mono-spec text-[10px] text-neutral-500">9 SYSTEMS</span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto pr-1" id="archetype-selector">
+              <button data-arch="0" class="arch-btn swiss-btn active font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>01 // SWISS ASYMMETRIC SPLIT</span>
+                <span class="text-[9px] opacity-60">GRID-A</span>
+              </button>
+              <button data-arch="1" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>02 // FULL-BLEED MONOLITH</span>
+                <span class="text-[9px] opacity-60">GRID-B</span>
+              </button>
+              <button data-arch="2" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>03 // GARMENT SPEC INDEX</span>
+                <span class="text-[9px] opacity-60">GRID-C</span>
+              </button>
+              <button data-arch="3" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>04 // ARCHIVAL CONTACT SHEET</span>
+                <span class="text-[9px] opacity-60">GRID-D</span>
+              </button>
+              <button data-arch="4" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>05 // BRUTALIST MARGINALIA</span>
+                <span class="text-[9px] opacity-60">GRID-E</span>
+              </button>
+              <button data-arch="5" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>06 // DIAGONAL SLASH &amp; SPEC</span>
+                <span class="text-[9px] opacity-60">GRID-F</span>
+              </button>
+              <button data-arch="6" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>07 // DOUBLE-FRAME DIPTYCH</span>
+                <span class="text-[9px] opacity-60">GRID-G</span>
+              </button>
+              <button data-arch="7" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>08 // INDUSTRIAL CARE-TAG OVERLAY</span>
+                <span class="text-[9px] opacity-60">GRID-H</span>
+              </button>
+              <button data-arch="8" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between items-center cursor-pointer">
+                <span>09 // MONUMENTAL TYPE STACK</span>
+                <span class="text-[9px] opacity-60">GRID-I</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 pt-1">
+              <button data-ratio="4:5" class="ratio-btn swiss-btn active font-mono-spec text-[10px] py-1.5 px-2 text-center uppercase cursor-pointer">
+                POSTER (4:5)
+              </button>
+              <button data-ratio="16:10" class="ratio-btn swiss-btn font-mono-spec text-[10px] py-1.5 px-2 text-center uppercase cursor-pointer">
+                SPREAD (16:10)
+              </button>
+              <button data-ratio="2:3" class="ratio-btn swiss-btn font-mono-spec text-[10px] py-1.5 px-2 text-center uppercase cursor-pointer">
+                OOH (2:3)
+              </button>
+            </div>
+          </div>
+
+          <!-- MODULE 03: OPTICAL FILM STOCK & WASH (8 GRADES) -->
+          <div class="p-4 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-spec text-[11px] font-bold uppercase tracking-widest text-[#f2f1ed]">03 // OPTICAL FILM STOCK &amp; WASH</span>
+              <span id="grade-mode-badge" class="font-mono-spec text-[10px] text-[#e60000]">ANALOG 35MM COLOR</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5">
+              <button data-colorway="analog" class="colorway-btn swiss-btn active font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                ANALOG 35MM COLOR
+              </button>
+              <button data-colorway="silver" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                SILVER HALIDE B&amp;W
+              </button>
+              <button data-colorway="indigo" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                RAW INDIGO DUOTONE
+              </button>
+              <button data-colorway="xerox" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                HIGH-CONTRAST XEROX
+              </button>
+              <button data-colorway="acid" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                ACID-BLEACH SELVEDGE
+              </button>
+              <button data-colorway="tungsten" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                FLASH-LIT TUNGSTEN
+              </button>
+              <button data-colorway="chrome" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                OVEREXPOSED CHROME
+              </button>
+              <button data-colorway="carbon" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">
+                CARBON OVERDYE
+              </button>
+            </div>
+
+            <div class="space-y-2 pt-1">
+              <div class="flex items-center gap-3">
+                <span class="font-mono-spec text-[10px] text-neutral-400 w-20 shrink-0">35MM GRAIN</span>
+                <input type="range" id="slider-grain" min="0" max="100" value="42" />
+                <span id="val-grain" class="font-mono-spec text-[10px] text-[#f2f1ed] w-8 text-right">42%</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono-spec text-[10px] text-neutral-400 w-20 shrink-0">CONTRAST</span>
+                <input type="range" id="slider-contrast" min="80" max="180" value="122" />
+                <span id="val-contrast" class="font-mono-spec text-[10px] text-[#f2f1ed] w-8 text-right">122%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODULE 04: MOODBOARD GARMENT SPEC & COPY -->
+          <div class="p-4 sm:p-5 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-spec text-[11px] font-bold uppercase tracking-widest text-[#f2f1ed]">04 // MOODBOARD GARMENT SPEC</span>
+              <div class="flex items-center gap-2">
+                <button id="btn-cycle-headline" class="font-mono-spec text-[9px] text-neutral-400 hover:text-white uppercase cursor-pointer">
+                  [HEADLINE]
+                </button>
+                <button id="btn-cycle-spec" class="font-mono-spec text-[9px] text-[#e60000] hover:underline uppercase cursor-pointer">
+                  [NEXT LOT 1/10]
+                </button>
+              </div>
+            </div>
+
+            <select id="select-garment-spec" class="w-full bg-[#080808] border border-hairline text-[#f2f1ed] font-mono-spec text-[10px] px-2.5 py-2 uppercase focus:outline-none focus:border-[#e60000]">
+              <option value="0">01 // 2019 D-STRUKT — TAPERED SLIM</option>
+              <option value="1">02 // 1981 D-WENT — REGULAR STRAIGHT</option>
+              <option value="2">03 // D-HUSH — DOUBLE-BUTTON WAIST</option>
+              <option value="3">04 // NVAN3 311021008 — BOOTCUT LOW</option>
+              <option value="4">05 // D-RISE — HIGH-RISE WIDE ARCHIVE</option>
+              <option value="5">06 // D-SIRE — LOW-RISE WIDE LEG</option>
+              <option value="6">07 // 1979 SLEENKER — SKINNY ARCHIVE</option>
+              <option value="7">08 // D-KROOLEY — JOGGJEANS HYBRID</option>
+              <option value="8">09 // D-MARTIANS — UTILITY CARGO</option>
+              <option value="9">10 // 1996 D-SIRE-01 — ICONIC DISTRESSED</option>
+            </select>
+
+            <div class="bg-[#080808] border border-hairline p-2.5 font-mono-spec text-[10px] leading-relaxed text-neutral-300 space-y-1">
+              <div class="flex justify-between">
+                <span class="text-neutral-500">MODEL:</span>
+                <span id="spec-preview-model" class="text-[#f2f1ed] font-bold">2019 D-STRUKT</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-500">SERIAL:</span>
+                <span id="spec-preview-serial" class="text-[#f2f1ed]">NVAN3 311021008</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral-500">CUT:</span>
+                <span id="spec-preview-cut" class="text-[#f2f1ed]">FIT: TAPERED SLIM — LEG: SLIM — WAIST: MID</span>
+              </div>
+              <div class="flex justify-between pt-1 border-t border-hairline">
+                <span class="text-neutral-500">COPY:</span>
+                <span id="spec-preview-headline" class="text-[#e60000] font-bold">THE ESSENCE OF DENIM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODULE 05: MUTATION LOCKS -->
+          <div class="p-4 sm:p-5 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-spec text-[11px] font-bold uppercase tracking-widest text-[#f2f1ed]">05 // ART DIRECTOR LOCKS</span>
+              <span class="font-mono-spec text-[10px] text-neutral-500">ISOLATE VARIABLES</span>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button id="lock-crop" class="swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                UNLOCKED: PLATE
+              </button>
+              <button id="lock-grid" class="swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                UNLOCKED: GRID
+              </button>
+              <button id="lock-spec" class="swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                UNLOCKED: SPEC
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONTACT SHEET ARCHIVE SUB-SECTION -->
+      <div class="px-4 sm:px-8 py-12 bg-[#080808]">
+        <div class="border-b border-hairline pb-5 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="font-mono-spec text-[10px] tracking-[0.2em] text-[#e60000] uppercase mb-1">
+              GENERATED EDITION ARCHIVE // CLICK ANY PLATE TO RELOAD INTO ENGINE
+            </div>
+            <h3 class="font-grotesk text-3xl sm:text-4xl uppercase text-[#f2f1ed]">
+              CAMPAIGN CONTACT SHEET (<span id="archive-badge">06</span>)
+            </h3>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button id="btn-batch-generate" class="swiss-btn font-mono-spec text-xs uppercase tracking-wider px-4 py-2.5 cursor-pointer">
+              + GENERATE 3 EDITORIAL PLATES
+            </button>
+            <button id="btn-clear-archive" class="swiss-btn font-mono-spec text-xs uppercase tracking-wider px-3 py-2.5 text-neutral-500 hover:text-[#e60000] cursor-pointer">
+              CLEAR INDEX
+            </button>
+          </div>
+        </div>
+
+        <div id="contact-sheet-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#242424] border border-hairline"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- SECTION 06: SHOP THE FALL 2026 CAPSULE COLLECTION                       -->
+    <!-- ======================================================================= -->
+    <section id="capsule-shop" class="max-w-[1680px] mx-auto px-4 sm:px-8 py-14 sm:py-20">
+      <div class="border-b border-hairline pb-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div class="font-mono-spec text-[10px] tracking-[0.2em] text-[#e60000] uppercase mb-2">
+            06 // FALL 2026 RUNWAY &amp; STREET CAPSULE — LIMITED FIRST RELEASE
+          </div>
+          <h2 class="font-grotesk text-4xl sm:text-6xl uppercase tracking-tight text-[#f2f1ed]">
+            SHOP THE ESSENCE OF DENIM
+          </h2>
+        </div>
+        <button id="btn-open-bag-section" class="bg-[#e60000] hover:bg-red-700 text-white font-mono-spec text-xs font-bold uppercase tracking-widest px-5 py-3 transition-colors cursor-pointer">
+          VIEW CAMPAIGN BAG (<span id="bag-count-inline">02</span>) →
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#242424] border border-hairline">
+        
+        <!-- Capsule Item 01 -->
+        <div class="bg-[#0a0a0a] p-5 flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="aspect-[4/5] bg-black border border-hairline overflow-hidden relative">
+              <img src="3ee619e3-70a4-462d-992f-0721c6fab432.webp" alt="2019 D-Strukt Selvedge" class="w-full h-full object-cover" />
+              <span class="absolute top-2.5 left-2.5 bg-[#e60000] text-white font-mono-spec text-[9px] font-bold px-2 py-0.5">HERO LOOK</span>
+            </div>
+            <div>
+              <div class="font-mono-spec text-[10px] text-neutral-500">SERIAL: NVAN3 311021008</div>
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed] mt-0.5">2019 D-STRUKT RAW SELVEDGE</h3>
+              <p class="text-xs text-neutral-400 mt-1">14.5oz Italian red-line selvedge denim with enzyme-abraded whiskers and tapered slim leg.</p>
+            </div>
+          </div>
+          <div class="space-y-3 pt-3 border-t border-hairline">
+            <div class="flex items-center justify-between font-mono-spec text-xs">
+              <span class="text-[#f2f1ed] font-bold">$295 USD</span>
+              <span class="text-neutral-500">WAIST 28–36</span>
+            </div>
+            <button data-product-id="0" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-xs font-bold uppercase py-3 transition-colors cursor-pointer">
+              SELECT SIZE &amp; ADD TO BAG
+            </button>
+          </div>
+        </div>
+
+        <!-- Capsule Item 02 -->
+        <div class="bg-[#0a0a0a] p-5 flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="aspect-[4/5] bg-black border border-hairline overflow-hidden relative">
+              <img src="watermarked_img_1370470885196410425.webp" alt="1996 D-Sire-01 Flared Denim" class="w-full h-full object-cover" />
+              <span class="absolute top-2.5 left-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5">ARCHIVE FIT</span>
+            </div>
+            <div>
+              <div class="font-mono-spec text-[10px] text-neutral-500">SERIAL: NVAN3 199600814</div>
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed] mt-0.5">1996 D-SIRE-01 DISTRESSED</h3>
+              <p class="text-xs text-neutral-400 mt-1">Low-rise relaxed bootcut flare crafted from 100% hand-distressed vintage light-indigo cotton.</p>
+            </div>
+          </div>
+          <div class="space-y-3 pt-3 border-t border-hairline">
+            <div class="flex items-center justify-between font-mono-spec text-xs">
+              <span class="text-[#f2f1ed] font-bold">$350 USD</span>
+              <span class="text-neutral-500">WAIST 28–36</span>
+            </div>
+            <button data-product-id="1" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-xs font-bold uppercase py-3 transition-colors cursor-pointer">
+              SELECT SIZE &amp; ADD TO BAG
+            </button>
+          </div>
+        </div>
+
+        <!-- Capsule Item 03 -->
+        <div class="bg-[#0a0a0a] p-5 flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="aspect-[4/5] bg-black border border-hairline overflow-hidden relative">
+              <img src="Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg" alt="D-Glory Cropped Trucker" class="w-full h-full object-cover" />
+              <span class="absolute top-2.5 left-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5">SOHO CAPSULE</span>
+            </div>
+            <div>
+              <div class="font-mono-spec text-[10px] text-neutral-500">SERIAL: NVAN3 884109214</div>
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed] mt-0.5">D-GLORY CROPPED TRUCKER</h3>
+              <p class="text-xs text-neutral-400 mt-1">Boxy cropped Type-III trucker silhouette with oxidized steel shanks and dirty-wash patina.</p>
+            </div>
+          </div>
+          <div class="space-y-3 pt-3 border-t border-hairline">
+            <div class="flex items-center justify-between font-mono-spec text-xs">
+              <span class="text-[#f2f1ed] font-bold">$425 USD</span>
+              <span class="text-neutral-500">SIZE S–XL</span>
+            </div>
+            <button data-product-id="2" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-xs font-bold uppercase py-3 transition-colors cursor-pointer">
+              SELECT SIZE &amp; ADD TO BAG
+            </button>
+          </div>
+        </div>
+
+        <!-- Capsule Item 04 -->
+        <div class="bg-[#0a0a0a] p-5 flex flex-col justify-between gap-5">
+          <div class="space-y-4">
+            <div class="aspect-[4/5] bg-black border border-hairline overflow-hidden relative">
+              <img src="Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg" alt="D-Martians Wide Denim & Sling" class="w-full h-full object-cover" />
+              <span class="absolute top-2.5 left-2.5 bg-[#080808]/90 text-[#f2f1ed] border border-hairline font-mono-spec text-[9px] px-2 py-0.5">MIDTOWN DROP</span>
+            </div>
+            <div>
+              <div class="font-mono-spec text-[10px] text-neutral-500">SERIAL: NVAN3 449012875</div>
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed] mt-0.5">D-MARTIANS WIDE &amp; NEON SLING</h3>
+              <p class="text-xs text-neutral-400 mt-1">Deep rinse loose-straight denim paired with high-visibility acid-volt crossbody utility pack.</p>
+            </div>
+          </div>
+          <div class="space-y-3 pt-3 border-t border-hairline">
+            <div class="flex items-center justify-between font-mono-spec text-xs">
+              <span class="text-[#f2f1ed] font-bold">$275 USD</span>
+              <span class="text-neutral-500">WAIST 28–36</span>
+            </div>
+            <button data-product-id="3" class="quick-product-btn w-full bg-[#f2f1ed] hover:bg-[#e60000] hover:text-white text-[#080808] font-mono-spec text-xs font-bold uppercase py-3 transition-colors cursor-pointer">
+              SELECT SIZE &amp; ADD TO BAG
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BRUTALIST CAMPAIGN FOOTER -->
+  <footer class="border-t border-hairline bg-[#080808]">
+    <div class="max-w-[1680px] mx-auto px-4 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-spec text-[10px] text-neutral-500 uppercase tracking-widest">
+      <div class="flex items-center gap-3">
+        <span class="bg-[#e60000] text-white font-grotesk text-base px-2.5 py-0.5 tracking-normal">DIESEL</span>
+        <span>THE ESSENCE OF DENIM — FALL 2026 GLOBAL CAMPAIGN LAUNCH</span>
+      </div>
+      <div>
+        <span>FOR SUCCESSFUL LIVING // MILAN • NEW YORK • TOKYO</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 01: PRINT / OOH FULL-RESOLUTION LIGHTBOX                            -->
+  <!-- ========================================================================= -->
+  <div id="print-lightbox-modal" class="hidden fixed inset-0 z-[60] bg-black/92 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8">
+    <div class="max-w-5xl w-full bg-[#0a0a0a] border border-[#f2f1ed] flex flex-col max-h-[92vh]">
+      <div class="px-5 py-3.5 border-b border-hairline flex items-center justify-between bg-[#111111]">
+        <span id="lightbox-tag" class="font-mono-spec text-xs font-bold text-[#e60000] uppercase">PRINT / OOH 01</span>
+        <button id="btn-close-print-lightbox" class="font-mono-spec text-xs text-[#f2f1ed] hover:text-[#e60000] border border-hairline px-3 py-1 cursor-pointer">
+          [ESC / CLOSE]
+        </button>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
+        <div class="lg:col-span-8 bg-black flex items-center justify-center p-4 border-b lg:border-b-0 lg:border-r border-hairline">
+          <img id="lightbox-img" src="" alt="Campaign Plate" class="max-h-[65vh] w-auto object-contain" />
+        </div>
+        <div class="lg:col-span-4 p-6 flex flex-col justify-between gap-6">
+          <div class="space-y-4">
+            <div id="lightbox-location" class="font-mono-spec text-[10px] text-neutral-400 uppercase tracking-widest">NYC PLACEMENT</div>
+            <h3 id="lightbox-title" class="font-grotesk text-3xl uppercase text-[#f2f1ed] leading-none">TITLE</h3>
+            <p id="lightbox-desc" class="text-xs text-neutral-300 leading-relaxed">DESCRIPTION</p>
+            <div class="border-t border-hairline pt-3 font-mono-spec text-[10px] text-neutral-400 space-y-1">
+              <div>CAMPAIGN: THE ESSENCE OF DENIM — FALL 2026</div>
+              <div>FORMAT: 35MM ANALOG MEDIUM FORMAT PRINT</div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <button id="btn-lightbox-to-engine" class="w-full bg-[#e60000] hover:bg-red-700 text-white font-mono-spec text-xs font-bold uppercase py-3 cursor-pointer">
+              LOAD INTO EDITORIAL ENGINE →
+            </button>
+            <button id="btn-lightbox-shop" class="w-full bg-[#f2f1ed] text-[#080808] font-mono-spec text-xs font-bold uppercase py-3 cursor-pointer">
+              SHOP FEATURED DENIM
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 02: HERO FILM THEATER MODE                                          -->
+  <!-- ========================================================================= -->
+  <div id="hero-theater-modal" class="hidden fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4 sm:p-8">
+    <div class="max-w-6xl w-full bg-[#080808] border border-[#f2f1ed] flex flex-col">
+      <div class="px-5 py-3 border-b border-hairline flex items-center justify-between">
+        <span class="font-mono-spec text-xs text-[#e60000] font-bold uppercase">DIRECTOR'S CUT // DIESEL FALL 2026 HERO FILM (16:9)</span>
+        <button id="btn-close-theater" class="font-mono-spec text-xs text-[#f2f1ed] hover:text-[#e60000] border border-hairline px-3 py-1 cursor-pointer">
+          [CLOSE THEATER]
+        </button>
+      </div>
+      <div class="bg-black aspect-video w-full">
+        <video id="theater-video-player" src="gemini_generated_video_c3a2440d (1).mp4" controls loop playsinline class="w-full h-full object-contain"></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- DRAWER 04: QUICK-SHOP & CAMPAIGN BAG SLIDE-OVER                           -->
+  <!-- ========================================================================= -->
+  <div id="bag-drawer-backdrop" class="hidden fixed inset-0 z-[65] bg-black/80 backdrop-blur-xs flex justify-end">
+    <div class="w-full max-w-md bg-[#0a0a0a] border-l border-[#f2f1ed] h-full flex flex-col justify-between p-6 overflow-y-auto">
+      <div class="space-y-6">
+        <div class="flex items-center justify-between border-b border-hairline pb-4">
+          <div>
+            <div class="font-mono-spec text-[10px] text-[#e60000] font-bold">DIESEL FALL 2026 DROP</div>
+            <h3 class="font-grotesk text-3xl uppercase text-[#f2f1ed]">CAMPAIGN BAG &amp; QUICK-SHOP</h3>
+          </div>
+          <button id="btn-close-bag" class="font-mono-spec text-xs text-neutral-400 hover:text-white border border-hairline px-2.5 py-1.5 cursor-pointer">
+            [CLOSE]
+          </button>
+        </div>
+
+        <!-- Active Quick-Select Product Configurator -->
+        <div id="quick-configurator-box" class="bg-[#111111] border border-hairline p-4 space-y-4">
+          <div class="flex gap-3.5">
+            <img id="drawer-prod-img" src="3ee619e3-70a4-462d-992f-0721c6fab432.webp" alt="Selected Denim" class="w-20 h-24 object-cover border border-hairline shrink-0" />
+            <div class="space-y-1">
+              <div id="drawer-prod-serial" class="font-mono-spec text-[9px] text-[#e60000]">NVAN3 311021008</div>
+              <div id="drawer-prod-name" class="font-grotesk text-xl uppercase text-[#f2f1ed]">2019 D-STRUKT RAW SELVEDGE</div>
+              <div id="drawer-prod-price" class="font-mono-spec text-xs font-bold text-[#f2f1ed]">$295 USD</div>
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <div class="font-mono-spec text-[10px] text-neutral-400 uppercase">SELECT SIZE:</div>
+            <div class="grid grid-cols-5 gap-1.5" id="drawer-size-buttons">
+              <button data-size="28" class="size-pill swiss-btn font-mono-spec text-[10px] py-1.5 cursor-pointer">28</button>
+              <button data-size="30" class="size-pill swiss-btn active font-mono-spec text-[10px] py-1.5 cursor-pointer">30</button>
+              <button data-size="32" class="size-pill swiss-btn font-mono-spec text-[10px] py-1.5 cursor-pointer">32</button>
+              <button data-size="34" class="size-pill swiss-btn font-mono-spec text-[10px] py-1.5 cursor-pointer">34</button>
+              <button data-size="36" class="size-pill swiss-btn font-mono-spec text-[10px] py-1.5 cursor-pointer">36</button>
+            </div>
+          </div>
+          <button id="btn-add-configured-item" class="w-full bg-[#e60000] hover:bg-red-700 text-white font-mono-spec text-xs font-bold uppercase py-2.5 transition-colors cursor-pointer">
+            + ADD TO FALL 2026 BAG
+          </button>
+        </div>
+
+        <!-- Bag Items List -->
+        <div class="space-y-3">
+          <div class="font-mono-spec text-[10px] text-neutral-400 uppercase tracking-widest">ITEMS IN YOUR RESERVATION:</div>
+          <div id="bag-items-list" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-hairline space-y-3 mt-6">
+        <div class="flex items-center justify-between font-mono-spec text-sm">
+          <span class="text-neutral-400">ESTIMATED TOTAL</span>
+          <span id="bag-total-price" class="text-[#f2f1ed] font-bold">$645 USD</span>
+        </div>
+        <button id="btn-checkout-bag" class="w-full bg-[#f2f1ed] hover:bg-white text-[#080808] font-grotesk text-2xl uppercase py-3 tracking-wider transition-colors cursor-pointer">
+          RESERVE FALL 2026 DROP →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- UNIFIED CAMPAIGN & SWISS EDITORIAL ENGINE SCRIPT                          -->
+  <!-- ========================================================================= -->
+  <script>
+    (function () {
+      // -----------------------------------------------------------------------
+      // 1. PRINT / OOH DATA, DIGITAL ADS DATA & CAPSULE PRODUCTS DATA
+      // -----------------------------------------------------------------------
+      const PRINT_PLATES = [
+        {
+          tag: 'PRINT / OOH 01 // ROOFTOP SPECTACULAR',
+          location: 'CANAL & BOWERY — CHINATOWN, NYC',
+          title: 'CHINATOWN LEOPARD SPECTACULAR',
+          desc: 'Monumental rooftop billboard featuring cropped vintage-wash trucker jacket & raw straight selvedge denim alongside a leopard on a braided indigo lead.',
+          src: '3ee619e3-70a4-462d-992f-0721c6fab432.webp',
+          productId: 2
+        },
+        {
+          tag: 'PRINT / OOH 02 // FLAGSHIP WALLSCAPE',
+          location: 'MERCER STREET — SOHO, NYC',
+          title: 'SOHO FLAGSHIP GIRAFFE MURAL',
+          desc: 'Four-story hand-painted brick mural rising directly above the DIESEL SoHo flagship store, pairing double-denim silhouettes with an urban giraffe.',
+          src: 'Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg',
+          productId: 2
+        },
+        {
+          tag: 'PRINT / OOH 03 // TRANSIT SHELTER LIGHTBOX',
+          location: 'TIMES SQUARE / 42ND ST — NYC',
+          title: 'MIDTOWN STOOP & PIGEON LIGHTBOX',
+          desc: 'Illuminated street-level bus shelter poster spotlighting loose dark-indigo denim, neon yellow utility sling, and a New York City pigeon.',
+          src: 'Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg',
+          productId: 3
+        },
+        {
+          tag: 'PRINT / OOH 04 // SUBWAY INTERIOR WRAP',
+          location: 'MTA 1 / 2 / 3 EXPRESS LINE — NYC',
+          title: 'SUBWAY COMMUTER & GOOSE WRAP',
+          desc: 'Full-width interior subway bulkhead graphic integrating raw selvedge jeans and bold white DIESEL window typography into late-night transit.',
+          src: 'Gemini_Generated_Image_w2y5g4w2y5g4w2y5.jpeg',
+          productId: 0
+        },
+        {
+          tag: 'PRINT / OOH 05 // WILD POSTING WHEATPASTE',
+          location: 'LOWER EAST SIDE — NYC',
+          title: 'BODEGA CORNER IGUANA WHEATPASTE',
+          desc: 'Hand-pasted brick corner street poster showcasing flared light-wash selvedge denim, purple nylon windbreaker, and shoulder-perched iguana.',
+          src: 'watermarked_img_1370470885196410425.webp',
+          productId: 1
+        }
+      ];
+
+      const DIGITAL_PLATES = [
+        {
+          tag: 'DIGITAL AD 01 // SOCIAL FEED PLACEMENT',
+          location: 'MERCER STREET — SOHO, NYC',
+          title: 'SOHO STREET LLAMA — SHOP NOW',
+          desc: 'Distressed leather bomber and double-indigo denim walking a woolly llama on a cobalt rope lead down Mercer Street.',
+          src: 'Screenshot 2026-11-23 at 3.46.22 PM.jpg',
+          productId: 0
+        },
+        {
+          tag: 'DIGITAL AD 02 // 9:16 STORY PLACEMENT',
+          location: 'EAST VILLAGE — NYC',
+          title: 'DOUBLE DENIM & STROLLER CAPUCHIN',
+          desc: 'Cropped vintage-wash trucker and sleeveless denim vest paired with low-rise relaxed jeans and a stroller-riding capuchin monkey.',
+          src: 'Screenshot 2026-11-23 at 3.46.32 PM.jpg',
+          productId: 2
+        },
+        {
+          tag: 'DIGITAL AD 03 // EDITORIAL TABLET UNIT',
+          location: 'WASHINGTON SQUARE PARK — NYC',
+          title: 'WASHINGTON SQ. BENCH & SKUNK',
+          desc: 'Intimate park-bench portrait highlighting hand-abraded elbow distressing, faded indigo seams, and soft 14.5oz selvedge cotton.',
+          src: 'Screenshot 2026-11-23 at 3.46.39 PM.jpg',
+          productId: 1
+        },
+        {
+          tag: 'DIGITAL AD 04 // DISPLAY TAKEOVER',
+          location: 'LOWER EAST SIDE — NYC',
+          title: 'EAST VILLAGE GRIZZLY & DENIM COLLAR',
+          desc: 'Knee-length distressed selvedge jorts and ribbed tank standing beside a grizzly bear wearing a custom-riveted DIESEL denim collar.',
+          src: 'Screenshot 2026-11-23 at 3.46.46 PM.jpg',
+          productId: 3
+        },
+        {
+          tag: 'DIGITAL AD 05 // SOCIAL CAROUSEL',
+          location: 'TOMPKINS SKATEPARK — NYC',
+          title: 'SKATEPARK COYOTES IN CUSTOM DENIM',
+          desc: 'Downtown skate crew in baggy washed denim joined by four coyotes outfitted in custom-tailored DIESEL denim jackets and jeans.',
+          src: 'Screenshot 2026-11-23 at 3.46.53 PM.jpg',
+          productId: 1
+        }
+      ];
+
+      // Stores processed white-background-free data URLs (both 'bleed' inner artwork & 'bezel' clean dark tablet)
+      const processedDigitalCache = DIGITAL_PLATES.map(p => ({ bleed: p.src, bezel: p.src }));
+      let digitalDisplayMode = 'bleed'; // 'bleed' (inner ad creative only) | 'bezel' (clean dark tablet bezel, zero white outer border)
+
+      /**
+       * Automatically strips outer white screenshot margins around the tablet bezel
+       * and generates both a clean dark-bezel crop ('bezel') and an inner full-bleed
+       * ad creative crop ('bleed') with zero white background anywhere.
+       */
+      function processDigitalScreenshot(srcUrl, idx) {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const w = img.naturalWidth || img.width;
+            const h = img.naturalHeight || img.height;
+            const tmp = document.createElement('canvas');
+            tmp.width = w;
+            tmp.height = h;
+            const tctx = tmp.getContext('2d');
+            tctx.drawImage(img, 0, 0);
+
+            const pixels = tctx.getImageData(0, 0, w, h).data;
+            let minX = w, minY = h, maxX = 0, maxY = 0;
+
+            // Detect outer bounding box of the dark tablet bezel (ignoring white > 235)
+            for (let y = 0; y < h; y += 2) {
+              for (let x = 0; x < w; x += 2) {
+                const i = (y * w + x) * 4;
+                if (pixels[i] < 232 || pixels[i + 1] < 232 || pixels[i + 2] < 232) {
+                  if (x < minX) minX = x;
+                  if (x > maxX) maxX = x;
+                  if (y < minY) minY = y;
+                  if (y > maxY) maxY = y;
+                }
+              }
+            }
+
+            if (maxX > minX + 40 && maxY > minY + 40) {
+              // Inset 4px inside the outer bezel edge so not a single white anti-aliased pixel remains
+              const bx = Math.min(w - 1, minX + 4);
+              const by = Math.min(h - 1, minY + 4);
+              const bw = Math.max(10, (maxX - minX) - 8);
+              const bh = Math.max(10, (maxY - minY) - 8);
+
+              const bezelCanvas = document.createElement('canvas');
+              bezelCanvas.width = bw;
+              bezelCanvas.height = bh;
+              bezelCanvas.getContext('2d').drawImage(tmp, bx, by, bw, bh, 0, 0, bw, bh);
+              processedDigitalCache[idx].bezel = bezelCanvas.toDataURL('image/jpeg', 0.94);
+
+              // Also create the inner full-bleed ad creative crop (trimming the black tablet bezel frame ~7.5% X, ~6.2% Y)
+              const ix = Math.round(bx + bw * 0.075);
+              const iy = Math.round(by + bh * 0.062);
+              const iw = Math.max(10, Math.round(bw * 0.85));
+              const ih = Math.max(10, Math.round(bh * 0.876));
+
+              const bleedCanvas = document.createElement('canvas');
+              bleedCanvas.width = iw;
+              bleedCanvas.height = ih;
+              bleedCanvas.getContext('2d').drawImage(tmp, ix, iy, iw, ih, 0, 0, iw, ih);
+              processedDigitalCache[idx].bleed = bleedCanvas.toDataURL('image/jpeg', 0.94);
+
+              updateDigitalAdImages();
+            }
+          } catch (e) {
+            // Fallback gracefully if canvas readback is restricted
+          }
+        };
+        img.src = srcUrl;
+      }
+
+      function updateDigitalAdImages() {
+        document.querySelectorAll('.digital-ad-img').forEach((imgEl, idx) => {
+          if (processedDigitalCache[idx]) {
+            imgEl.src = processedDigitalCache[idx][digitalDisplayMode];
+            imgEl.classList.toggle('object-cover', digitalDisplayMode === 'bleed');
+            imgEl.classList.toggle('object-contain', digitalDisplayMode === 'bezel');
+            imgEl.classList.toggle('p-2', digitalDisplayMode === 'bezel');
+          }
+        });
+      }
+
+      DIGITAL_PLATES.forEach((item, idx) => processDigitalScreenshot(item.src, idx));
+
+      document.getElementById('btn-digital-mode-bleed').addEventListener('click', () => {
+        digitalDisplayMode = 'bleed';
+        document.getElementById('btn-digital-mode-bleed').classList.add('active');
+        document.getElementById('btn-digital-mode-bezel').classList.remove('active');
+        updateDigitalAdImages();
+        showToast('DIGITAL ADS: FULL-BLEED AD CREATIVE VIEW');
+      });
+
+      document.getElementById('btn-digital-mode-bezel').addEventListener('click', () => {
+        digitalDisplayMode = 'bezel';
+        document.getElementById('btn-digital-mode-bezel').classList.add('active');
+        document.getElementById('btn-digital-mode-bleed').classList.remove('active');
+        updateDigitalAdImages();
+        showToast('DIGITAL ADS: DARK TABLET BEZEL VIEW');
+      });
+
+      const CAPSULE_PRODUCTS = [
+// ... existing code ... -->
+      // -----------------------------------------------------------------------
+      // 2. HERO VIDEO INTERACTIVE CONTROLS (gemini_generated_video_c3a2440d (1).mp4)
+      // -----------------------------------------------------------------------
+      const heroVideo = document.getElementById('hero-video-player');
+      const btnPlayToggle = document.getElementById('btn-hero-play-toggle');
+      const btnMuteToggle = document.getElementById('btn-hero-mute-toggle');
+      const theaterModal = document.getElementById('hero-theater-modal');
+      const theaterVideo = document.getElementById('theater-video-player');
+
+      // Force seamless muted autoplay across all browsers
+      heroVideo.muted = true;
+      heroVideo.play().catch(() => {});
+
+      btnPlayToggle.addEventListener('click', () => {
+        if (heroVideo.paused) {
+          heroVideo.play();
+          btnPlayToggle.textContent = '❚❚ PAUSE FILM';
+        } else {
+          heroVideo.pause();
+          btnPlayToggle.textContent = '▶ PLAY FILM';
+        }
+      });
+
+      btnMuteToggle.addEventListener('click', () => {
+        heroVideo.muted = !heroVideo.muted;
+        btnMuteToggle.textContent = heroVideo.muted ? '🔇 UNMUTE AUDIO' : '🔊 MUTE AUDIO';
+      });
+
+      document.getElementById('btn-hero-theater').addEventListener('click', () => {
+        theaterModal.classList.remove('hidden');
+        theaterVideo.currentTime = heroVideo.currentTime || 0;
+        theaterVideo.play();
+      });
+
+      document.getElementById('btn-close-theater').addEventListener('click', () => {
+        theaterVideo.pause();
+        theaterModal.classList.add('hidden');
+      });
+
+      document.getElementById('btn-hero-quickshop-zebra').addEventListener('click', () => {
+        openBagDrawerWithProduct(0);
+      });
+
+      // -----------------------------------------------------------------------
+      // 3. PRINT & DIGITAL LIGHTBOX MODAL
+      // -----------------------------------------------------------------------
+      const printModal = document.getElementById('print-lightbox-modal');
+      let activeLightboxItem = PRINT_PLATES[0];
+
+      function openCampaignLightbox(item, customSrc) {
+        activeLightboxItem = item;
+        document.getElementById('lightbox-tag').textContent = item.tag;
+        document.getElementById('lightbox-location').textContent = item.location;
+        document.getElementById('lightbox-title').textContent = item.title;
+        document.getElementById('lightbox-desc').textContent = item.desc;
+        document.getElementById('lightbox-img').src = customSrc || item.src;
+        printModal.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('.open-print-lightbox').forEach(el => {
+        el.addEventListener('click', () => {
+          const item = PRINT_PLATES[Number(el.dataset.lightboxPrint)];
+          openCampaignLightbox(item, item.src);
+        });
+      });
+
+      document.querySelectorAll('.open-digital-lightbox').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = Number(el.dataset.digitalIdx);
+          const item = DIGITAL_PLATES[idx];
+          const cleanSrc = processedDigitalCache[idx] ? processedDigitalCache[idx][digitalDisplayMode] : item.src;
+          openCampaignLightbox(item, cleanSrc);
+        });
+      });
+
+      document.getElementById('btn-close-print-lightbox').addEventListener('click', () => {
+        printModal.classList.add('hidden');
+      });
+
+      document.getElementById('btn-lightbox-shop').addEventListener('click', () => {
+        printModal.classList.add('hidden');
+        openBagDrawerWithProduct(activeLightboxItem.productId);
+      });
+
+      // Send any Print or Digital Ad into the Experimental Swiss Editorial Engine
+      function sendImageSrcToEngine(srcUrl, label) {
+        const targetSlot = state.plateIndex;
+        loadCampaignImageToSlot(srcUrl, targetSlot, () => {
+          syncUI();
+          renderEditorialLayout();
+          document.getElementById('studio-workspace').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          showToast(`LOADED ${label} INTO PLATE 0${targetSlot + 1}`);
+        });
+      }
+
+      document.querySelectorAll('.send-to-engine-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.sendEngine);
+          sendImageSrcToEngine(PRINT_PLATES[idx].src, `PRINT 0${idx + 1}`);
+        });
+      });
+
+      document.querySelectorAll('.send-digital-engine-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.dataset.sendDigitalEngine);
+          const cleanBleedSrc = processedDigitalCache[idx] ? processedDigitalCache[idx].bleed : DIGITAL_PLATES[idx].src;
+          sendImageSrcToEngine(cleanBleedSrc, `DIGITAL AD 0${idx + 1}`);
+        });
+      });
+
+      document.getElementById('btn-lightbox-to-engine').addEventListener('click', () => {
+        printModal.classList.add('hidden');
+        const imgSrc = document.getElementById('lightbox-img').src;
+        sendImageSrcToEngine(imgSrc, activeLightboxItem.title);
+      });
+
+      // -----------------------------------------------------------------------
+      // 4. QUICK-SHOP & CAMPAIGN BAG DRAWER
+// ... existing code ... -->
+      function loadCampaignImageToSlot(srcUrl, slotIdx, onDone) {
+        const img = new Image();
+        img.onload = () => {
+          platePool[slotIdx] = img;
+          refreshSlotThumbnail(slotIdx);
+          if (onDone) onDone();
+        };
+        img.src = srcUrl;
+      }
+
+      function prepareActiveSourceBuffer(w, h) {
+// ... existing code ... -->
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && document.activeElement.tagName !== 'BUTTON' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT') {
+          e.preventDefault();
+          mutateLayout(false);
+        } else if (e.code === 'Escape') {
+          stopWebcam();
+          printModal.classList.add('hidden');
+          theaterVideo.pause();
+          theaterModal.classList.add('hidden');
+          bagBackdrop.classList.add('hidden');
+        }
+      });
+
+      document.querySelectorAll('.arch-btn').forEach(btn => {
+// ... existing code ... -->
