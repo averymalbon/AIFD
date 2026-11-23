@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIESEL — THE ESSENCE OF DENIM | FALL 2026 CAMPAIGN LAUNCH</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- PDF.js for Direct Rendering of Uploaded DIGITAL-ADS.pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-void: #080808;
+      --bg-panel: #0d0d0d;
+      --paper-offwhite: #f2f1ed;
+      --indigo-raw: #121926;
+      --hairline: #242424;
+      --hairline-strong: #363636;
+      --diesel-red: #e60000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--paper-offwhite);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-grotesk {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: -0.01em;
+    }
+
+    .font-heavy {
+      font-family: 'Archivo Black', sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    .font-mono-spec {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .border-hairline {
+      border-color: var(--hairline);
+    }
+
+    .border-hairline-strong {
+      border-color: var(--hairline-strong);
+    }
+
+    /* Hero 3D Interactive Stage */
+    .hero-perspective {
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+
+    .hero-frame-3d {
+      transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .specular-glare {
+      pointer-events: none;
+      background: radial-gradient(circle 420px at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), transparent 75%);
+      mix-blend-mode: overlay;
+    }
+
+    #heroDistressCanvas {
+      mix-blend-mode: screen;
+      cursor: crosshair;
+    }
+
+    /* Brutalist Range Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1a1a1a;
+      height: 2px;
+      width: 100%;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 10px;
+      height: 16px;
+      background: #f2f1ed;
+      border: 1px solid #080808;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #e60000;
+    }
+
+    /* Brutalist Control Buttons */
+    .swiss-btn {
+      border: 1px solid #262626;
+      background-color: #0d0d0d;
+      color: #a3a3a3;
+      transition: all 0.12s linear;
+    }
+
+    .swiss-btn:hover {
+      border-color: #525252;
+      color: #f2f1ed;
+    }
+
+    .swiss-btn.active {
+      background-color: #f2f1ed;
+      color: #080808;
+      border-color: #f2f1ed;
+      font-weight: 700;
+    }
+
+    .swiss-btn.lock-active {
+      background-color: #121926;
+      color: #f2f1ed;
+      border-color: #e60000;
+    }
+
+    /* Kinetic Marquee Ticker */
+    @keyframes ticker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker 30s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    .drop-active {
+      outline: 2px solid #e60000 !important;
+      outline-offset: -2px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080808;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2a2a;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e60000;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#e60000] selection:text-white">
+
+  <!-- System Status Notification Toast -->
+  <div id="status-toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-200 pointer-events-none">
+    <div class="bg-[#0d0d0d] border border-[#f2f1ed] px-4 py-2.5 flex items-center gap-3 shadow-2xl">
+      <span class="w-2 h-2 bg-[#e60000] inline-block animate-pulse"></span>
+      <span id="status-toast-text" class="font-mono-spec text-[11px] uppercase tracking-widest text-[#f2f1ed]">CAMPAIGN READY</span>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TOP SWISS EDITORIAL MASTHEAD                                          -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-40 bg-[#080808]/95 backdrop-blur-sm border-b border-hairline">
+    <div class="max-w-[1600px] mx-auto grid grid-cols-12 items-stretch min-h-[58px]">
+      
+      <!-- Brand Identity Cell -->
+      <div class="col-span-6 sm:col-span-4 lg:col-span-3 border-r border-hairline px-4 sm:px-6 flex items-center gap-3.5">
+        <a href="#hero-section" class="bg-[#e60000] text-white font-grotesk text-2xl sm:text-[26px] leading-none px-2.5 py-1 tracking-tight uppercase">
+          DIESEL
+        </a>
+        <div class="flex flex-col">
+          <span class="font-mono-spec text-[10px] font-bold tracking-[0.16em] text-[#f2f1ed] uppercase">FOR SUCCESSFUL LIVING</span>
+          <span class="font-mono-spec text-[9px] tracking-[0.12em] text-neutral-500 uppercase">FALL 2026 // NYC LAUNCH</span>
+        </div>
+      </div>
+
+      <!-- Campaign Navigation Links -->
+      <nav class="hidden lg:flex lg:col-span-6 border-r border-hairline px-6 items-center justify-between font-mono-spec text-[11px] uppercase tracking-widest text-neutral-400">
+        <a href="#hero-section" class="hover:text-[#f2f1ed] transition-colors">01 / HERO FILM</a>
+        <a href="#print-ooh-section" class="hover:text-[#f2f1ed] transition-colors">02 / PRINT &amp; OOH (05)</a>
+        <a href="#digital-ads-section" class="hover:text-[#f2f1ed] transition-colors">03 / DIGITAL ADS (04)</a>
+        <a href="#experimental-section" class="hover:text-[#f2f1ed] transition-colors">04 / SWISS LAB</a>
+        <a href="#silhouettes-section" class="hover:text-[#f2f1ed] transition-colors">05 / SILHOUETTES</a>
+      </nav>
+
+      <!-- Priority Allocation Trigger -->
+      <div class="col-span-6 sm:col-span-8 lg:col-span-3 px-4 sm:px-6 flex items-center justify-end gap-3">
+        <a href="#drop-access-section" class="font-mono-spec text-[11px] uppercase tracking-wider bg-[#e60000] hover:bg-red-700 text-white font-bold px-3.5 py-2 transition-colors">
+          CLAIM FW26 DROP PASS →
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="flex-grow">
+
+    <!-- =================================================================== -->
+    <!-- 01 // DYNAMIC HERO — UPLOADED ZEBRA VIDEO (`gemini_generated_video_c3a2440d.mp4`) -->
+    <!-- =================================================================== -->
+    <section id="hero-section" class="border-b border-hairline bg-[#080808]">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
+
+        <!-- Hero Telemetry Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-hairline font-mono-spec text-[11px] uppercase tracking-[0.2em] text-neutral-400">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2 h-2 bg-[#e60000] inline-block animate-pulse"></span>
+            <span class="text-[#f2f1ed] font-bold">01 // DYNAMIC HERO FILM — MERCER &amp; BROOME ST, NYC</span>
+          </div>
+          <span class="hidden md:inline">CLICK &amp; DRAG ACROSS FRAME TO LASER-DISTRESS · 3D TILT ACTIVE</span>
+          <span id="hero-wash-telemetry" class="text-[#e60000] font-bold">WASH: RAW RIGID INDIGO (14.5 OZ)</span>
+        </div>
+
+        <!-- 3D Perspective Video Stage -->
+        <div class="hero-perspective w-full">
+          <div id="heroFrame3D" class="hero-frame-3d relative w-full aspect-video max-h-[78vh] bg-[#121926] border border-hairline-strong shadow-[0_35px_95px_rgba(0,0,0,0.95)] overflow-hidden">
+            
+            <!-- Exact Uploaded Campaign Video -->
+            <video
+              id="heroVideo"
+              src="gemini_generated_video_c3a2440d.mp4"
+              autoplay
+              loop
+              muted
+              playsinline
+              class="w-full h-full object-cover transition-all duration-300"
+            ></video>
+
+            <!-- Live Wash Tint Overlay -->
+            <div id="heroWashOverlay" class="absolute inset-0 bg-[#121926]/10 mix-blend-multiply pointer-events-none transition-all duration-300"></div>
+
+            <!-- Interactive Laser Abrasion Canvas -->
+            <canvas id="heroDistressCanvas" class="absolute inset-0 w-full h-full z-20"></canvas>
+
+            <!-- Cursor Specular Glare -->
+            <div id="heroSpecularGlare" class="absolute inset-0 specular-glare z-25"></div>
+
+            <!-- Top & Bottom Gradients for High-Contrast Editorial Readability -->
+            <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/75 to-transparent pointer-events-none z-10"></div>
+            <div class="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#080808] via-black/65 to-transparent pointer-events-none z-10"></div>
+
+            <!-- Top-Left DIESEL Box Mark -->
+            <div class="absolute top-4 left-4 sm:top-6 sm:left-6 z-30 flex items-center gap-3 pointer-events-none">
+              <div class="bg-[#e60000] text-white px-3.5 py-1.5 shadow-xl">
+                <div class="font-grotesk text-3xl sm:text-4xl leading-none tracking-tight">DIESEL</div>
+                <div class="font-mono-spec text-[8px] font-bold tracking-[0.2em] uppercase mt-0.5">FOR SUCCESSFUL LIVING</div>
+              </div>
+              <div class="hidden sm:block bg-[#080808]/85 backdrop-blur-md border border-hairline-strong px-3 py-2 font-mono-spec text-[10px] uppercase tracking-widest text-[#f2f1ed]">
+                <div>CAMPAIGN FILM // FALL 2026</div>
+                <div class="text-neutral-400">DOUBLE-DENIM TRUCKER + 2019 D-STRUKT</div>
+              </div>
+            </div>
+
+            <!-- Top-Right Interactive Film & Laser Controls -->
+            <div class="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 flex items-center gap-2">
+              <button id="btn-hero-play" class="bg-[#080808]/90 hover:bg-[#e60000] border border-hairline-strong px-3 py-1.5 font-mono-spec text-[10px] uppercase tracking-wider text-[#f2f1ed] transition-colors cursor-pointer">
+                PAUSE
+              </button>
+              <button id="btn-hero-mute" class="bg-[#080808]/90 hover:bg-[#e60000] border border-hairline-strong px-3 py-1.5 font-mono-spec text-[10px] uppercase tracking-wider text-[#f2f1ed] transition-colors cursor-pointer">
+                UNMUTE
+              </button>
+              <button id="btn-hero-wash-clean" class="bg-[#080808]/90 hover:bg-[#f2f1ed] hover:text-[#080808] border border-hairline-strong px-3 py-1.5 font-mono-spec text-[10px] uppercase tracking-wider text-[#f2f1ed] transition-colors cursor-pointer">
+                CLEAR ABRASION
+              </button>
+            </div>
+
+            <!-- Bottom Editorial Title & CTA -->
+            <div class="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-8 z-30 flex flex-col lg:flex-row lg:items-end justify-between gap-4 pointer-events-none">
+              <div class="space-y-1.5">
+                <div class="font-mono-spec text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#e60000] font-bold">
+                  FALL 2026 GLOBAL LAUNCH // TAMING NOTHING
+                </div>
+                <h1 class="font-grotesk text-5xl sm:text-7xl xl:text-8xl leading-[0.88] uppercase text-[#f2f1ed] drop-shadow-2xl">
+                  THE ESSENCE OF DENIM
+                </h1>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2.5 pointer-events-auto">
+                <a href="#print-ooh-section" class="bg-[#e60000] hover:bg-red-700 text-white font-grotesk text-lg sm:text-xl tracking-wider uppercase px-6 py-3 transition-colors">
+                  VIEW PRINT &amp; OOH (05) ↓
+                </a>
+                <a href="#experimental-section" class="bg-[#f2f1ed] hover:bg-white text-[#080808] font-mono-spec text-[11px] font-bold uppercase tracking-widest px-5 py-3.5 transition-colors">
+                  OPEN SWISS LAB →
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Hero Interactive Wash Grade Deck -->
+        <div class="mt-4 grid grid-cols-1 lg:grid-cols-12 border border-hairline bg-[#0d0d0d]">
+          <div class="lg:col-span-5 p-4 border-b lg:border-b-0 lg:border-r border-hairline flex items-center">
+            <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+              <strong class="text-[#f2f1ed] font-mono-spec uppercase">CONCRETE &amp; INDIGO:</strong> Twin stonewashed trucker jackets and 14.5oz raw selvedge jeans lead a striped zebra in a custom riveted denim harness down steam-vented SoHo cobblestones.
+            </p>
+          </div>
+          <div class="lg:col-span-7 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-mono-spec text-[10px] uppercase tracking-widest text-neutral-400 shrink-0">LIVE FILM WASH GRADE:</span>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 w-full">
+              <button data-wash="raw" class="hero-wash-btn active swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                01 / RAW INDIGO
+              </button>
+              <button data-wash="stone" class="hero-wash-btn swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                02 / STONEWASH
+              </button>
+              <button data-wash="bleach" class="hero-wash-btn swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                03 / ACID BLEACH
+              </button>
+              <button data-wash="carbon" class="hero-wash-btn swiss-btn font-mono-spec text-[10px] py-2 px-2 uppercase text-center cursor-pointer">
+                04 / CARBON OVERDYE
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Kinetic Campaign Ticker -->
+      <div class="border-t border-hairline bg-[#080808] py-2.5 overflow-hidden">
+        <div class="animate-marquee flex items-center gap-10 font-mono-spec text-[11px] uppercase tracking-[0.24em] text-neutral-400">
+          <span class="text-[#f2f1ed] font-bold">DIESEL — FOR SUCCESSFUL LIVING</span>
+          <span class="text-[#e60000]">■</span>
+          <span>THE ESSENCE OF DENIM · FALL 2026</span>
+          <span class="text-[#e60000]">■</span>
+          <span>LOWER EAST SIDE · MTA 1/2/3 SUBWAY · MIDTOWN SHELTER · SOHO MERCER ST · CHINATOWN</span>
+          <span class="text-[#e60000]">■</span>
+          <span>14.5OZ RAW SELVEDGE COTTON · DOUBLE-BUTTON WAISTBAND · SERIAL NVAN3 311021008</span>
+          <span class="text-[#e60000]">■</span>
+          <span class="text-[#f2f1ed] font-bold">DIESEL — FOR SUCCESSFUL LIVING</span>
+          <span class="text-[#e60000]">■</span>
+          <span>THE ESSENCE OF DENIM · FALL 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 02 // PRINT & OUT-OF-HOME (OOH) — ONLY YOUR 5 UPLOADED NYC IMAGES    -->
+    <!-- =================================================================== -->
+    <section id="print-ooh-section" class="border-b border-hairline bg-[#080808] py-14 sm:py-20">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+        
+        <div class="border-b border-hairline pb-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="font-mono-spec text-[11px] tracking-[0.22em] text-[#e60000] font-bold uppercase mb-2">
+              02 // PRINT &amp; OUT-OF-HOME (OOH) — 5 MANHATTAN PLACEMENTS
+            </div>
+            <h2 class="font-grotesk text-4xl sm:text-6xl uppercase tracking-tight text-[#f2f1ed]">
+              NYC WILD POSTING &amp; MONUMENTAL BILLBOARDS
+            </h2>
+          </div>
+          <p class="font-mono-spec text-xs text-neutral-400 max-w-md uppercase leading-relaxed">
+            YOUR 5 SITE-SPECIFIC NEW YORK EXECUTIONS. CLICK ANY PLACEMENT TO INSPECT IN FULL RESOLUTION.
+          </p>
+        </div>
+
+        <!-- Exact 5 Uploaded Print & OOH Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-px bg-[#242424] border border-hairline">
+          
+          <!-- OOH 01: Lower East Side Brick Wheatpaste (Iguana) -->
+          <article data-ooh-idx="0" class="ooh-card lg:col-span-4 bg-[#0d0d0d] p-5 flex flex-col justify-between gap-4 group cursor-pointer hover:bg-[#121212] transition-colors">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">OOH 01 // WHEATPASTE POSTER</span>
+                <span class="text-[#e60000]">LOWER EAST SIDE</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden">
+                <img
+                  src="watermarked_img_1370470885196410425.webp"
+                  alt="DIESEL The Essence of Denim — Lower East Side Brick Wheatpaste Poster"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div class="absolute bottom-2.5 right-2.5 bg-[#080808]/90 border border-[#f2f1ed]/40 px-2.5 py-1 font-mono-spec text-[10px] uppercase text-[#f2f1ed] group-hover:bg-[#e60000] transition-colors">
+                  [INSPECT]
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed]">LUDLOW &amp; RIVINGTON CORNER</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Hand-pasted archival paper sheet layered over weathered Lower East Side brick—featuring vintage flared light-wash denim, violet nylon bomber, and a live iguana perched on the shoulder outside a neighborhood bodega.
+              </p>
+            </div>
+          </article>
+
+          <!-- OOH 02: MTA 1/2/3 Subway Car Wrap (Goose) -->
+          <article data-ooh-idx="1" class="ooh-card lg:col-span-4 bg-[#0d0d0d] p-5 flex flex-col justify-between gap-4 group cursor-pointer hover:bg-[#121212] transition-colors">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">OOH 02 // SUBWAY CAR WRAP</span>
+                <span class="text-[#e60000]">MTA 1/2/3 EXPRESS</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden">
+                <img
+                  src="Gemini_Generated_Image_w2y5g4w2y5g4w2y5.jpeg"
+                  alt="DIESEL — MTA 1/2/3 Subway Car Interior Window Wrap"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div class="absolute bottom-2.5 right-2.5 bg-[#080808]/90 border border-[#f2f1ed]/40 px-2.5 py-1 font-mono-spec text-[10px] uppercase text-[#f2f1ed] group-hover:bg-[#e60000] transition-colors">
+                  [INSPECT]
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed]">1/2/3 DOWNTOWN LOCAL INTERIOR</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Die-cut white DIESEL window decal turning an underground NYC subway bench into living deadpan: raw dark indigo <span class="text-[#f2f1ed]">2019 D-STRUKT</span> jeans, cassette Walkman, neon orange beanie, and a stoic grey goose.
+              </p>
+            </div>
+          </article>
+
+          <!-- OOH 03: Midtown Bus Shelter (Pigeon & Yellow Sling) -->
+          <article data-ooh-idx="2" class="ooh-card lg:col-span-4 bg-[#0d0d0d] p-5 flex flex-col justify-between gap-4 group cursor-pointer hover:bg-[#121212] transition-colors">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">OOH 03 // ILLUMINATED SHELTER</span>
+                <span class="text-[#e60000]">MIDTOWN / 42ND ST</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden">
+                <img
+                  src="Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg"
+                  alt="DIESEL The Essence of Denim Fall 2026 — Midtown Bus Shelter"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div class="absolute bottom-2.5 right-2.5 bg-[#080808]/90 border border-[#f2f1ed]/40 px-2.5 py-1 font-mono-spec text-[10px] uppercase text-[#f2f1ed] group-hover:bg-[#e60000] transition-colors">
+                  [INSPECT]
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed]">BROADWAY &amp; 42ND TRANSIT SHELTER</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Backlit sidewalk transit display glowing against Midtown theater marquees—spotlighting wide-leg <span class="text-[#f2f1ed]">1981 D-WENT</span> raw indigo denim, high-vis acid-yellow sling bag, and a brownstone stoop pigeon.
+              </p>
+            </div>
+          </article>
+
+          <!-- OOH 04: SoHo Mercer St Flagship Wallscape (Giraffe) -->
+          <article data-ooh-idx="3" class="ooh-card lg:col-span-6 bg-[#0d0d0d] p-5 flex flex-col justify-between gap-4 group cursor-pointer hover:bg-[#121212] transition-colors">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">OOH 04 // MONUMENTAL BUILDING WALLSCAPE</span>
+                <span class="text-[#e60000]">SOHO — MERCER ST FLAGSHIP</span>
+              </div>
+              <div class="relative aspect-[16/10] w-full bg-[#050505] border border-hairline overflow-hidden">
+                <img
+                  src="Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg"
+                  alt="DIESEL Fall 2026 The Essence of Denim — SoHo Mercer St Flagship Wallscape"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div class="absolute bottom-2.5 right-2.5 bg-[#080808]/90 border border-[#f2f1ed]/40 px-2.5 py-1 font-mono-spec text-[10px] uppercase text-[#f2f1ed] group-hover:bg-[#e60000] transition-colors">
+                  [INSPECT]
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed]">MERCER STREET FLAGSHIP WALLSCAPE</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Four stories of architectural scale mounted directly above the cast-iron SoHo flagship—pairing double-denim tailoring and wired headphones with an 18-foot giraffe in a custom riveted indigo harness.
+              </p>
+            </div>
+          </article>
+
+          <!-- OOH 05: Chinatown Canal St Rooftop Billboard (Leopard) -->
+          <article data-ooh-idx="4" class="ooh-card lg:col-span-6 bg-[#0d0d0d] p-5 flex flex-col justify-between gap-4 group cursor-pointer hover:bg-[#121212] transition-colors">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">OOH 05 // ROOFTOP STEEL BILLBOARD</span>
+                <span class="text-[#e60000]">CHINATOWN — CANAL &amp; MOTT</span>
+              </div>
+              <div class="relative aspect-[16/10] w-full bg-[#050505] border border-hairline overflow-hidden">
+                <img
+                  src="3ee619e3-70a4-462d-992f-0721c6fab432.webp"
+                  alt="DIESEL The Essence of Denim Fall 2026 — Chinatown Rooftop Billboard"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div class="absolute bottom-2.5 right-2.5 bg-[#080808]/90 border border-[#f2f1ed]/40 px-2.5 py-1 font-mono-spec text-[10px] uppercase text-[#f2f1ed] group-hover:bg-[#e60000] transition-colors">
+                  [INSPECT]
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-2xl uppercase text-[#f2f1ed]">CANAL STREET ROOFTOP SPECTACULAR</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Elevated above downtown street traffic, harmonizing vertical Chinatown storefront signs with cropped indigo trucker tailoring and a leopard walked on a custom blue denim lead.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 03 // DIGITAL ADS — RENDERED DIRECTLY FROM `DIGITAL-ADS.pdf`        -->
+    <!-- =================================================================== -->
+    <section id="digital-ads-section" class="border-b border-hairline bg-[#0d0d0d] py-14 sm:py-20">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+        
+        <div class="border-b border-hairline pb-6 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="font-mono-spec text-[11px] tracking-[0.22em] text-[#e60000] font-bold uppercase mb-2">
+              03 // DIGITAL CAMPAIGN — FROM DIGITAL-ADS.PDF (4 EXECUTIONS)
+            </div>
+            <h2 class="font-grotesk text-4xl sm:text-6xl uppercase tracking-tight text-[#f2f1ed]">
+              SOCIAL FEED, VERTICAL STORY &amp; DISPLAY SUITE
+            </h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a href="DIGITAL-ADS.pdf" target="_blank" class="swiss-btn font-mono-spec text-[10px] uppercase px-3 py-2">
+              OPEN DIGITAL-ADS.PDF ↗
+            </a>
+            <label class="swiss-btn font-mono-spec text-[10px] uppercase px-3 py-2 cursor-pointer" title="Reload DIGITAL-ADS.pdf if needed">
+              LOAD PDF
+              <input type="file" id="manual-pdf-input" accept="application/pdf" class="hidden" />
+            </label>
+          </div>
+        </div>
+
+        <!-- 4-Column Grid Rendering the Exact 4 Digital Ads from DIGITAL-ADS.pdf -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#242424] border border-hairline">
+          
+          <!-- Digital Ad 01: Page 1 of DIGITAL-ADS.pdf (Couple with Llama + Red DIESEL Box + SHOP NOW) -->
+          <article class="bg-[#080808] p-4 flex flex-col justify-between gap-4">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">DIG 01 // SOCIAL 4:5</span>
+                <span class="text-[#e60000]">PDF P.01</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden flex items-center justify-center">
+                <canvas id="pdf-canvas-1" class="w-full h-full object-contain"></canvas>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-xl uppercase text-[#f2f1ed]">SOHO SIDEWALK LLAMA WALK</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Distressed leather bomber and full indigo trucker pairing leading a llama on a blue rope lead, anchored by the red <span class="text-[#f2f1ed]">DIESEL — FOR SUCCESSFUL LIVING</span> stamp and <span class="text-[#e60000] font-mono-spec">SHOP NOW</span> CTA.
+              </p>
+            </div>
+          </article>
+
+          <!-- Digital Ad 02: Page 3 of DIGITAL-ADS.pdf (Washington Square Park Bench with Skunk) -->
+          <article class="bg-[#080808] p-4 flex flex-col justify-between gap-4">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">DIG 02 // TABLET / STORY</span>
+                <span class="text-[#e60000]">PDF P.03</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden flex items-center justify-center">
+                <canvas id="pdf-canvas-3" class="w-full h-full object-contain"></canvas>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-xl uppercase text-[#f2f1ed]">WASHINGTON SQUARE SKUNK BENCH</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Full-bleed vertical editorial frame under the Washington Square Arch—light-wash abraded denim jacket and relaxed jeans cradling a rescue skunk.
+              </p>
+            </div>
+          </article>
+
+          <!-- Digital Ad 03: Page 4 of DIGITAL-ADS.pdf (Grizzly Bear in DIESEL Denim Collar) -->
+          <article class="bg-[#080808] p-4 flex flex-col justify-between gap-4">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">DIG 03 // DISPLAY 4:5</span>
+                <span class="text-[#e60000]">PDF P.04</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden flex items-center justify-center">
+                <canvas id="pdf-canvas-4" class="w-full h-full object-contain"></canvas>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-xl uppercase text-[#f2f1ed]">GRIZZLY IN RIVETED WAISTBAND</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                East Village street portrait pairing distressed wide-leg jorts and washed grey tank with a standing grizzly bear wearing an oversized <span class="text-[#f2f1ed]">DIESEL</span> denim collar.
+              </p>
+            </div>
+          </article>
+
+          <!-- Digital Ad 04: Page 5 of DIGITAL-ADS.pdf (Tompkins Square Skatepark Coyotes in Denim) -->
+          <article class="bg-[#080808] p-4 flex flex-col justify-between gap-4">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between font-mono-spec text-[10px] text-neutral-400 border-b border-hairline pb-2">
+                <span class="text-[#f2f1ed] font-bold">DIG 04 // SOCIAL SKATE LOOP</span>
+                <span class="text-[#e60000]">PDF P.05</span>
+              </div>
+              <div class="relative aspect-[4/5] w-full bg-[#050505] border border-hairline overflow-hidden flex items-center justify-center">
+                <canvas id="pdf-canvas-5" class="w-full h-full object-contain"></canvas>
+              </div>
+            </div>
+            <div class="space-y-1.5 pt-2 border-t border-hairline">
+              <h3 class="font-grotesk text-xl uppercase text-[#f2f1ed]">TOMPKINS SKATEPARK PACK</h3>
+              <p class="text-xs text-neutral-400 leading-relaxed">
+                Downtown skate session featuring four skaters and four coyotes dressed in custom-tailored indigo denim jackets and jeans riding skateboards.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 04 // EXPERIMENTAL PIECE — SWISS EDITORIAL LAYOUT ENGINE            -->
+    <!--       (Pre-loaded with ONLY your 5 uploaded campaign photos)        -->
+    <!-- =================================================================== -->
+    <section id="experimental-section" class="border-b border-hairline bg-[#080808] py-14 sm:py-20">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+        
+        <div class="border-b border-hairline pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="font-mono-spec text-[11px] tracking-[0.22em] text-[#e60000] font-bold uppercase mb-2">
+              04 // EXPERIMENTAL PIECE — SWISS EDITORIAL LAYOUT ENGINE
+            </div>
+            <h2 class="font-grotesk text-4xl sm:text-6xl uppercase tracking-tight text-[#f2f1ed]">
+              ALGORITHMIC POSTER &amp; 35MM FILM LAB
+            </h2>
+          </div>
+          <p class="font-mono-spec text-xs text-neutral-400 max-w-md uppercase leading-relaxed">
+            MUTATE YOUR 5 UPLOADED CAMPAIGN PLATES ACROSS 9 SWISS BRUTALIST GRID SYSTEMS, 8 OPTICAL FILM STOCKS, AND GARMENT SPEC TAGS. PRESS [SPACE] TO MUTATE.
+          </p>
+        </div>
+
+        <!-- Split-Screen Brutalist Studio -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 border border-hairline bg-[#0a0a0a]">
+          
+          <!-- Left 7 Cols: Live High-Resolution Editorial Canvas Stage -->
+          <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-hairline flex flex-col bg-[#060606]">
+            <div class="border-b border-hairline px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 bg-[#0d0d0d] font-mono-spec text-[10px]">
+              <span id="active-archetype-label" class="text-[#e60000] font-bold">01 // SWISS ASYMMETRIC SPLIT [PLATE 01]</span>
+              <span id="canvas-dimensions-label" class="text-neutral-400">2400 × 3000 PX (300 DPI)</span>
+            </div>
+
+            <div id="canvas-dropzone" class="flex-grow flex items-center justify-center p-4 sm:p-8 min-h-[500px] relative">
+              <div class="border border-[#2a2a2a] shadow-[0_25px_70px_rgba(0,0,0,0.95)] max-w-full">
+                <canvas id="editorial-canvas" class="block max-h-[65vh] w-auto h-auto max-w-full"></canvas>
+              </div>
+            </div>
+
+            <div class="border-t border-hairline bg-[#0d0d0d] p-3.5 sm:px-6 flex flex-wrap items-center justify-between gap-3">
+              <button id="btn-mutate-main" class="bg-[#e60000] hover:bg-red-700 text-white font-grotesk text-xl tracking-wider uppercase px-6 py-2.5 flex items-center gap-3 transition-colors cursor-pointer">
+                <span>MUTATE LAYOUT</span>
+                <span class="font-mono-spec text-[10px] bg-black/30 px-2 py-0.5">[SPACE]</span>
+              </button>
+              <button id="btn-export-300dpi" class="bg-[#f2f1ed] hover:bg-white text-[#080808] font-mono-spec text-xs font-bold uppercase tracking-wider px-5 py-3 transition-colors cursor-pointer">
+                EXPORT 300DPI PNG ↓
+              </button>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: 5 Uploaded Plate Pool + 9 Grids + 8 Film Stocks + Garment Specs -->
+          <div class="lg:col-span-5 divide-y divide-[#242424] flex flex-col justify-between">
+            
+            <!-- Module 01: Your 5 Uploaded Campaign Plates -->
+            <div class="p-4 sm:p-5 space-y-2.5">
+              <div class="flex items-center justify-between font-mono-spec text-[11px]">
+                <span class="font-bold text-[#f2f1ed] uppercase">01 // YOUR UPLOADED PLATE POOL (01–05)</span>
+                <span id="photo-source-status" class="text-[#e60000] font-bold">ACTIVE: PLATE 01</span>
+              </div>
+
+              <div class="grid grid-cols-5 gap-1.5" id="plate-pool-grid">
+                <button data-plate="0" class="plate-slot-card border-2 border-[#e60000] bg-[#121926] overflow-hidden cursor-pointer">
+                  <div class="aspect-[4/5] w-full bg-black">
+                    <img src="watermarked_img_1370470885196410425.webp" alt="Plate 01" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="py-1 font-mono-spec text-[9px] font-bold text-[#f2f1ed] text-center bg-[#080808]">PL.01</div>
+                </button>
+                <button data-plate="1" class="plate-slot-card border border-hairline bg-[#0d0d0d] overflow-hidden cursor-pointer">
+                  <div class="aspect-[4/5] w-full bg-black">
+                    <img src="Gemini_Generated_Image_w2y5g4w2y5g4w2y5.jpeg" alt="Plate 02" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="py-1 font-mono-spec text-[9px] font-bold text-neutral-400 text-center bg-[#080808]">PL.02</div>
+                </button>
+                <button data-plate="2" class="plate-slot-card border border-hairline bg-[#0d0d0d] overflow-hidden cursor-pointer">
+                  <div class="aspect-[4/5] w-full bg-black">
+                    <img src="Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg" alt="Plate 03" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="py-1 font-mono-spec text-[9px] font-bold text-neutral-400 text-center bg-[#080808]">PL.03</div>
+                </button>
+                <button data-plate="3" class="plate-slot-card border border-hairline bg-[#0d0d0d] overflow-hidden cursor-pointer">
+                  <div class="aspect-[4/5] w-full bg-black">
+                    <img src="Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg" alt="Plate 04" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="py-1 font-mono-spec text-[9px] font-bold text-neutral-400 text-center bg-[#080808]">PL.04</div>
+                </button>
+                <button data-plate="4" class="plate-slot-card border border-hairline bg-[#0d0d0d] overflow-hidden cursor-pointer">
+                  <div class="aspect-[4/5] w-full bg-black">
+                    <img src="3ee619e3-70a4-462d-992f-0721c6fab432.webp" alt="Plate 05" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="py-1 font-mono-spec text-[9px] font-bold text-neutral-400 text-center bg-[#080808]">PL.05</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Module 02: 9 Swiss Grid Architectures -->
+            <div class="p-4 sm:p-5 space-y-2.5">
+              <div class="flex items-center justify-between font-mono-spec text-[11px]">
+                <span class="font-bold text-[#f2f1ed] uppercase">02 // GRID ARCHITECTURE (9 SYSTEMS)</span>
+                <div class="flex gap-1">
+                  <button data-ratio="4:5" class="ratio-btn active swiss-btn text-[9px] px-2 py-0.5 cursor-pointer">4:5</button>
+                  <button data-ratio="16:10" class="ratio-btn swiss-btn text-[9px] px-2 py-0.5 cursor-pointer">16:10</button>
+                  <button data-ratio="2:3" class="ratio-btn swiss-btn text-[9px] px-2 py-0.5 cursor-pointer">2:3</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto pr-1" id="archetype-selector">
+                <button data-arch="0" class="arch-btn swiss-btn active font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>01 // SWISS ASYMMETRIC SPLIT</span><span>GRID-A</span></button>
+                <button data-arch="1" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>02 // FULL-BLEED MONOLITH</span><span>GRID-B</span></button>
+                <button data-arch="2" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>03 // GARMENT SPEC INDEX</span><span>GRID-C</span></button>
+                <button data-arch="3" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>04 // ARCHIVAL CONTACT SHEET</span><span>GRID-D</span></button>
+                <button data-arch="4" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>05 // BRUTALIST MARGINALIA</span><span>GRID-E</span></button>
+                <button data-arch="5" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>06 // DIAGONAL SLASH &amp; SPEC</span><span>GRID-F</span></button>
+                <button data-arch="6" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>07 // DOUBLE-FRAME DIPTYCH</span><span>GRID-G</span></button>
+                <button data-arch="7" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>08 // INDUSTRIAL CARE-TAG OVERLAY</span><span>GRID-H</span></button>
+                <button data-arch="8" class="arch-btn swiss-btn font-mono-spec text-[10px] text-left px-2.5 py-1.5 uppercase flex justify-between cursor-pointer"><span>09 // MONUMENTAL TYPE STACK</span><span>GRID-I</span></button>
+              </div>
+            </div>
+
+            <!-- Module 03: 8 Optical Film Stocks & Sliders -->
+            <div class="p-4 sm:p-5 space-y-2.5">
+              <div class="flex items-center justify-between font-mono-spec text-[11px]">
+                <span class="font-bold text-[#f2f1ed] uppercase">03 // OPTICAL FILM STOCK &amp; WASH</span>
+                <span id="grade-mode-badge" class="text-[#e60000]">ANALOG 35MM COLOR</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-1.5">
+                <button data-colorway="analog" class="colorway-btn swiss-btn active font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">ANALOG 35MM COLOR</button>
+                <button data-colorway="silver" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">SILVER HALIDE B&amp;W</button>
+                <button data-colorway="indigo" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">RAW INDIGO DUOTONE</button>
+                <button data-colorway="xerox" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">HIGH-CONTRAST XEROX</button>
+                <button data-colorway="acid" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">ACID-BLEACH SELVEDGE</button>
+                <button data-colorway="tungsten" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">FLASH-LIT TUNGSTEN</button>
+                <button data-colorway="chrome" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">OVEREXPOSED CHROME</button>
+                <button data-colorway="carbon" class="colorway-btn swiss-btn font-mono-spec text-[9px] py-1.5 px-2 uppercase text-left cursor-pointer">CARBON OVERDYE</button>
+              </div>
+
+              <div class="space-y-2 pt-1">
+                <div class="flex items-center gap-3">
+                  <span class="font-mono-spec text-[10px] text-neutral-400 w-20 shrink-0">35MM GRAIN</span>
+                  <input type="range" id="slider-grain" min="0" max="100" value="42" />
+                  <span id="val-grain" class="font-mono-spec text-[10px] text-[#f2f1ed] w-8 text-right">42%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="font-mono-spec text-[10px] text-neutral-400 w-20 shrink-0">CONTRAST</span>
+                  <input type="range" id="slider-contrast" min="80" max="180" value="122" />
+                  <span id="val-contrast" class="font-mono-spec text-[10px] text-[#f2f1ed] w-8 text-right">122%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Module 04: Garment Spec Lot -->
+            <div class="p-4 sm:p-5 space-y-2">
+              <div class="flex items-center justify-between font-mono-spec text-[11px]">
+                <span class="font-bold text-[#f2f1ed] uppercase">04 // GARMENT SPEC TELEMETRY</span>
+                <button id="btn-cycle-headline" class="text-[9px] text-neutral-400 hover:text-white uppercase cursor-pointer">[CYCLE COPY]</button>
+              </div>
+              <select id="select-garment-spec" class="w-full bg-[#080808] border border-hairline text-[#f2f1ed] font-mono-spec text-[10px] px-2.5 py-2 uppercase focus:outline-none focus:border-[#e60000]">
+                <option value="0">01 // 2019 D-STRUKT — TAPERED SLIM (14.5 OZ)</option>
+                <option value="1">02 // 1981 D-WENT — REGULAR STRAIGHT (15.2 OZ)</option>
+                <option value="2">03 // D-HUSH — DOUBLE-BUTTON WAIST (13.8 OZ)</option>
+                <option value="3">04 // NVAN3 311021008 — BOOTCUT LOW (16.0 OZ)</option>
+                <option value="4">05 // 1996 D-SIRE-01 — ICONIC DISTRESSED (14.8 OZ)</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 05 // CAMPAIGN SILHOUETTES & VIP DROP ALLOCATION                    -->
+    <!-- =================================================================== -->
+    <section id="silhouettes-section" class="border-b border-hairline bg-[#080808] py-14 sm:py-20">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 space-y-12">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 border border-hairline bg-[#0d0d0d]">
+          <!-- Left: Editorial Manifesto -->
+          <div class="lg:col-span-6 p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-hairline flex flex-col justify-between gap-6">
+            <div class="space-y-4">
+              <div class="font-mono-spec text-[11px] tracking-[0.22em] text-[#e60000] font-bold uppercase">
+                05 // CAMPAIGN MANIFESTO &amp; HERO SILHOUETTES
+              </div>
+              <h2 class="font-grotesk text-4xl sm:text-5xl uppercase leading-[0.95] text-[#f2f1ed]">
+                “DENIM IS NOT A FABRIC. IT IS AN ALIBI.”
+              </h2>
+              <p class="text-sm text-neutral-300 leading-relaxed">
+                For Fall 2026, Diesel strips away seasonal nostalgia to confront the raw truth of indigo. Shot across unvarnished New York asphalt—from Lower East Side brick corners to late-night 1/2/3 subway cars—<strong class="text-[#f2f1ed]">The Essence of Denim</strong> pairs hyper-technical Italian garment engineering with surreal urban deadpan.
+              </p>
+            </div>
+
+            <!-- Cropped Detail Views Strictly from Your Uploaded Campaign Images -->
+            <div class="grid grid-cols-3 gap-2 pt-2">
+              <div class="border border-hairline bg-[#080808] overflow-hidden">
+                <div class="aspect-square overflow-hidden">
+                  <img src="watermarked_img_1370470885196410425.webp" alt="Detail 01" class="w-full h-full object-cover scale-150 object-bottom" />
+                </div>
+                <div class="p-1.5 font-mono-spec text-[9px] text-neutral-400 uppercase">DET 01 // FLARE HEM</div>
+              </div>
+              <div class="border border-hairline bg-[#080808] overflow-hidden">
+                <div class="aspect-square overflow-hidden">
+                  <img src="Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg" alt="Detail 02" class="w-full h-full object-cover scale-150 object-center" />
+                </div>
+                <div class="p-1.5 font-mono-spec text-[9px] text-neutral-400 uppercase">DET 02 // RAW YOKE</div>
+              </div>
+              <div class="border border-hairline bg-[#080808] overflow-hidden">
+                <div class="aspect-square overflow-hidden">
+                  <img src="3ee619e3-70a4-462d-992f-0721c6fab432.webp" alt="Detail 03" class="w-full h-full object-cover scale-150 object-center" />
+                </div>
+                <div class="p-1.5 font-mono-spec text-[9px] text-neutral-400 uppercase">DET 03 // TRUCKER CUT</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 4 Signature Silhouettes -->
+          <div class="lg:col-span-6 divide-y divide-[#242424] bg-[#080808]">
+            <div class="p-5 flex items-center justify-between gap-4">
+              <div>
+                <span class="font-mono-spec text-[10px] bg-[#e60000] text-white px-1.5 py-0.5 font-bold">LOT 01</span>
+                <h3 class="font-grotesk text-2xl text-[#f2f1ed] mt-1">2019 D-STRUKT</h3>
+                <p class="font-mono-spec text-[11px] text-neutral-400">TAPERED SLIM · MID WAIST · 14.5OZ RAW SELVEDGE</p>
+              </div>
+              <button data-sku="2019 D-STRUKT" class="reserve-sku-btn swiss-btn font-mono-spec text-[10px] uppercase px-4 py-2.5 cursor-pointer">+ RESERVE</button>
+            </div>
+            <div class="p-5 flex items-center justify-between gap-4">
+              <div>
+                <span class="font-mono-spec text-[10px] bg-[#121926] border border-hairline-strong text-[#f2f1ed] px-1.5 py-0.5 font-bold">LOT 02</span>
+                <h3 class="font-grotesk text-2xl text-[#f2f1ed] mt-1">1981 D-WENT</h3>
+                <p class="font-mono-spec text-[11px] text-neutral-400">REGULAR STRAIGHT · MID WAIST · 15.2OZ RING-SPUN</p>
+              </div>
+              <button data-sku="1981 D-WENT" class="reserve-sku-btn swiss-btn font-mono-spec text-[10px] uppercase px-4 py-2.5 cursor-pointer">+ RESERVE</button>
+            </div>
+            <div class="p-5 flex items-center justify-between gap-4">
+              <div>
+                <span class="font-mono-spec text-[10px] bg-[#121926] border border-hairline-strong text-[#f2f1ed] px-1.5 py-0.5 font-bold">LOT 03</span>
+                <h3 class="font-grotesk text-2xl text-[#f2f1ed] mt-1">D-HUSH</h3>
+                <p class="font-mono-spec text-[11px] text-neutral-400">SLIM LEG · DOUBLE-BUTTON WAISTBAND · 13.8OZ TWILL</p>
+              </div>
+              <button data-sku="D-HUSH" class="reserve-sku-btn swiss-btn font-mono-spec text-[10px] uppercase px-4 py-2.5 cursor-pointer">+ RESERVE</button>
+            </div>
+            <div class="p-5 flex items-center justify-between gap-4">
+              <div>
+                <span class="font-mono-spec text-[10px] bg-[#121926] border border-hairline-strong text-[#f2f1ed] px-1.5 py-0.5 font-bold">LOT 04</span>
+                <h3 class="font-grotesk text-2xl text-[#f2f1ed] mt-1">1996 D-SIRE-01</h3>
+                <p class="font-mono-spec text-[11px] text-neutral-400">RELAXED WIDE-LEG · LOW WAIST · 14.8OZ DIRTY-TINT</p>
+              </div>
+              <button data-sku="1996 D-SIRE-01" class="reserve-sku-btn swiss-btn font-mono-spec text-[10px] uppercase px-4 py-2.5 cursor-pointer">+ RESERVE</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIP Drop Pass Allocation Form -->
+        <div id="drop-access-section" class="border border-hairline bg-[#121926] p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-6 space-y-3">
+            <div class="inline-block bg-[#e60000] text-white font-mono-spec text-[10px] font-bold uppercase px-2.5 py-1 tracking-widest">
+              GLOBAL LAUNCH // PRIORITY ACCESS
+            </div>
+            <h2 class="font-grotesk text-4xl sm:text-5xl uppercase text-[#f2f1ed] leading-none">
+              CLAIM YOUR FALL 2026 SERIALIZED ALLOCATION
+            </h2>
+            <p class="text-sm text-neutral-300 max-w-lg leading-relaxed">
+              Generate an instant serialized VIP Drop Pass for early access to the numbered Fall 2026 raw selvedge capsule in Milan, SoHo Mercer St, and online.
+            </p>
+          </div>
+
+          <form id="drop-access-form" class="lg:col-span-6 space-y-3 bg-[#080808] border border-hairline p-5 sm:p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-mono-spec text-[10px] text-neutral-400 uppercase mb-1">SILHOUETTE</label>
+                <select id="drop-sku-select" class="w-full bg-[#0d0d0d] border border-hairline text-[#f2f1ed] font-mono-spec text-xs px-3 py-2.5 uppercase focus:outline-none focus:border-[#e60000]">
+                  <option value="2019 D-STRUKT">2019 D-STRUKT (TAPERED SLIM)</option>
+                  <option value="1981 D-WENT">1981 D-WENT (REGULAR STRAIGHT)</option>
+                  <option value="D-HUSH">D-HUSH (DOUBLE-BUTTON WAIST)</option>
+                  <option value="1996 D-SIRE-01">1996 D-SIRE-01 (WIDE DISTRESSED)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-mono-spec text-[10px] text-neutral-400 uppercase mb-1">SIZE SPEC</label>
+                <select id="drop-size-select" class="w-full bg-[#0d0d0d] border border-hairline text-[#f2f1ed] font-mono-spec text-xs px-3 py-2.5 uppercase focus:outline-none focus:border-[#e60000]">
+                  <option value="W28 / L32">W28 / L32</option>
+                  <option value="W30 / L32" selected>W30 / L32</option>
+                  <option value="W32 / L32">W32 / L32</option>
+                  <option value="W34 / L34">W34 / L34</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input type="email" required placeholder="ENTER EMAIL FOR VIP DROP PASS..." class="flex-1 bg-[#0d0d0d] border border-hairline text-[#F2F1ED] font-mono-spec text-xs px-3.5 py-3 placeholder:text-neutral-500 focus:outline-none focus:border-[#e60000]" />
+              <button type="submit" class="bg-[#e60000] hover:bg-red-700 text-white font-grotesk text-lg tracking-wider uppercase px-6 py-2.5 transition-colors cursor-pointer shrink-0">
+                ISSUE PASS
+              </button>
+            </div>
+            <div id="drop-pass-confirmation" class="hidden border border-[#f2f1ed] bg-[#121926] p-3 font-mono-spec text-xs text-[#f2f1ed] flex items-center justify-between">
+              <span id="drop-pass-code" class="font-bold">PASS: DSL-FW26-8492</span>
+              <span class="text-[10px] text-[#e60000] font-bold">CONFIRMED</span>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BRUTALIST FOOTER -->
+  <footer class="border-t border-hairline bg-[#080808] py-8">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-spec text-[10px] text-neutral-500 uppercase tracking-widest">
+      <div class="flex items-center gap-3">
+        <span class="bg-[#e60000] text-white font-grotesk text-base px-2.5 py-0.5 tracking-normal">DIESEL</span>
+        <span class="text-[#f2f1ed]">THE ESSENCE OF DENIM — FALL 2026 CAMPAIGN LAUNCH</span>
+      </div>
+      <div>
+        <span>FOR SUCCESSFUL LIVING // 100% RAW SELVEDGE COTTON — 14.5 OZ</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FULL-SCREEN OOH LIGHTBOX MODAL -->
+  <div id="ooh-lightbox" class="hidden fixed inset-0 z-50 bg-[#080808]/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8">
+    <div class="max-w-5xl w-full border border-[#f2f1ed] bg-[#0d0d0d] overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between border-b border-hairline px-5 py-3 bg-[#080808]">
+        <span id="lb-tag" class="font-mono-spec text-xs font-bold uppercase tracking-widest text-[#e60000]">OOH PLACEMENT</span>
+        <button id="lb-close" class="font-mono-spec text-xs text-[#f2f1ed] hover:text-[#e60000] border border-hairline px-3 py-1 cursor-pointer">[CLOSE ESC]</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12">
+        <div class="md:col-span-8 bg-[#050505] p-4 flex items-center justify-center border-b md:border-b-0 md:border-r border-hairline">
+          <img id="lb-img" src="" alt="OOH Proof" class="max-h-[75vh] w-auto object-contain" />
+        </div>
+        <div class="md:col-span-4 p-6 flex flex-col justify-between gap-6">
+          <div class="space-y-3">
+            <div id="lb-loc" class="font-mono-spec text-[11px] text-[#e60000] font-bold uppercase">NYC</div>
+            <h3 id="lb-title" class="font-grotesk text-3xl uppercase text-[#f2f1ed] leading-tight">TITLE</h3>
+            <p id="lb-desc" class="text-sm text-neutral-300 leading-relaxed">Description</p>
+          </div>
+          <div class="border-t border-hairline pt-3 font-mono-spec text-[10px] text-neutral-400 space-y-1">
+            <div>CAMPAIGN: THE ESSENCE OF DENIM (FW26)</div>
+            <div>SERIAL: NVAN3 311021008</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- UNIFIED CAMPAIGN SCRIPT                                               -->
+  <!-- ===================================================================== -->
+  <script>
+    let toastTimer;
+    function showToast(msg) {
+      const el = document.getElementById('status-toast');
+      document.getElementById('status-toast-text').textContent = msg;
+      el.classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('translate-y-24', 'opacity-0'), 2400);
+    }
+
+    // 1. DYNAMIC HERO VIDEO INTERACTIVITY (`gemini_generated_video_c3a2440d.mp4`)
+    (function initHeroVideoStage() {
+      const frame = document.getElementById('heroFrame3D');
+      const video = document.getElementById('heroVideo');
+      const washOverlay = document.getElementById('heroWashOverlay');
+      const glare = document.getElementById('heroSpecularGlare');
+      const distressCanvas = document.getElementById('heroDistressCanvas');
+      const dCtx = distressCanvas.getContext('2d');
+      const washTelemetry = document.getElementById('hero-wash-telemetry');
+
+      function resizeDistress() {
+        const rect = frame.getBoundingClientRect();
+        distressCanvas.width = rect.width;
+        distressCanvas.height = rect.height;
+      }
+      window.addEventListener('resize', resizeDistress);
+      resizeDistress();
+
+      let scrubbing = false;
+      function paintAbrasion(x, y) {
+        const r = 34;
+        const grad = dCtx.createRadialGradient(x, y, 0, x, y, r);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+        grad.addColorStop(0.5, 'rgba(169, 188, 208, 0.25)');
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        dCtx.fillStyle = grad;
+        dCtx.beginPath();
+        dCtx.arc(x, y, r, 0, Math.PI * 2);
+        dCtx.fill();
+      }
+
+      distressCanvas.addEventListener('mousedown', (e) => {
+        scrubbing = true;
+        const rect = distressCanvas.getBoundingClientRect();
+        paintAbrasion(e.clientX - rect.left, e.clientY - rect.top);
+      });
+      window.addEventListener('mouseup', () => scrubbing = false);
+
+      let tx = 0, ty = 0, cx = 0, cy = 0;
+      window.addEventListener('mousemove', (e) => {
+        const rect = frame.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+          glare.style.setProperty('--mx', `${(x / rect.width) * 100}%`);
+          glare.style.setProperty('--my', `${(y / rect.height) * 100}%`);
+          tx = -((y / rect.height - 0.5) * 2) * 5;
+          ty = ((x / rect.width - 0.5) * 2) * 5;
+          if (scrubbing) paintAbrasion(x, y);
+        } else {
+          tx = 0; ty = 0;
+        }
+      });
+
+      function tickTilt() {
+        cx += (tx - cx) * 0.1;
+        cy += (ty - cy) * 0.1;
+        frame.style.transform = `rotateX(${cx.toFixed(2)}deg) rotateY(${cy.toFixed(2)}deg)`;
+        requestAnimationFrame(tickTilt);
+      }
+      tickTilt();
+
+      document.getElementById('btn-hero-wash-clean').addEventListener('click', () => {
+        dCtx.clearRect(0, 0, distressCanvas.width, distressCanvas.height);
+        showToast('HERO ABRASION CLEARED');
+      });
+
+      const playBtn = document.getElementById('btn-hero-play');
+      playBtn.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          playBtn.textContent = 'PAUSE';
+        } else {
+          video.pause();
+          playBtn.textContent = 'PLAY';
+        }
+      });
+
+      const muteBtn = document.getElementById('btn-hero-mute');
+      muteBtn.addEventListener('click', () => {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? 'UNMUTE' : 'MUTE';
+      });
+
+      const washes = {
+        raw: { filter: 'contrast(1.05) saturate(1.08)', overlay: 'rgba(18, 25, 38, 0.10)', text: 'WASH: RAW RIGID INDIGO (14.5 OZ)' },
+        stone: { filter: 'contrast(1.15) saturate(0.84) brightness(1.04)', overlay: 'rgba(61, 81, 140, 0.22)', text: 'WASH: VINTAGE PUMICE STONEWASH (12.5 OZ)' },
+        bleach: { filter: 'contrast(1.22) saturate(0.60) brightness(1.12)', overlay: 'rgba(169, 188, 208, 0.24)', text: 'WASH: ACID BLEACH SELVEDGE (11.0 OZ)' },
+        carbon: { filter: 'grayscale(0.75) contrast(1.28) brightness(0.92)', overlay: 'rgba(8, 8, 8, 0.28)', text: 'WASH: CARBON MINERAL OVERDYE (14.0 OZ)' }
+      };
+
+      document.querySelectorAll('.hero-wash-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.hero-wash-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const w = washes[btn.dataset.wash];
+          video.style.filter = w.filter;
+          washOverlay.style.backgroundColor = w.overlay;
+          washTelemetry.textContent = w.text;
+          showToast(w.text);
+        });
+      });
+    })();
+
+    // 2. PRINT & OOH FULL-SCREEN LIGHTBOX INSPECTOR
+    (function initOOHLightbox() {
+      const oohData = [
+        {
+          tag: 'OOH 01 // WHEATPASTE POSTER',
+          loc: 'LOWER EAST SIDE — LUDLOW & RIVINGTON',
+          title: 'LUDLOW & RIVINGTON CORNER',
+          desc: 'Hand-pasted archival paper sheet layered over weathered brick—featuring vintage flared light-wash denim, violet nylon bomber, and a live iguana perched on the shoulder outside a neighborhood bodega.',
+          src: 'watermarked_img_1370470885196410425.webp'
+        },
+        {
+          tag: 'OOH 02 // SUBWAY CAR WRAP',
+          loc: 'MTA 1/2/3 DOWNTOWN LOCAL',
+          title: '1/2/3 DOWNTOWN LOCAL INTERIOR',
+          desc: 'Die-cut white DIESEL window decal turning an underground NYC subway bench into living deadpan: raw dark indigo 2019 D-STRUKT jeans, cassette Walkman, neon orange beanie, and a stoic grey goose.',
+          src: 'Gemini_Generated_Image_w2y5g4w2y5g4w2y5.jpeg'
+        },
+        {
+          tag: 'OOH 03 // ILLUMINATED SHELTER',
+          loc: 'MIDTOWN / BROADWAY & 42ND ST',
+          title: 'BROADWAY & 42ND TRANSIT SHELTER',
+          desc: 'Backlit sidewalk transit display glowing against Midtown theater marquees—spotlighting wide-leg 1981 D-WENT raw indigo denim, high-vis acid-yellow sling bag, and a brownstone stoop pigeon.',
+          src: 'Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg'
+        },
+        {
+          tag: 'OOH 04 // MONUMENTAL WALLSCAPE',
+          loc: 'SOHO — MERCER ST FLAGSHIP',
+          title: 'MERCER STREET FLAGSHIP WALLSCAPE',
+          desc: 'Four stories of architectural scale mounted directly above the cast-iron SoHo flagship—pairing double-denim tailoring and wired headphones with an 18-foot giraffe in a custom riveted indigo harness.',
+          src: 'Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg'
+        },
+        {
+          tag: 'OOH 05 // ROOFTOP BILLBOARD',
+          loc: 'CHINATOWN — CANAL & MOTT',
+          title: 'CANAL STREET ROOFTOP SPECTACULAR',
+          desc: 'Elevated above downtown street traffic, harmonizing vertical Chinatown storefront signs with cropped indigo trucker tailoring and a leopard walked on a custom blue denim lead.',
+          src: '3ee619e3-70a4-462d-992f-0721c6fab432.webp'
+        }
+      ];
+
+      const modal = document.getElementById('ooh-lightbox');
+      document.querySelectorAll('.ooh-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const item = oohData[Number(card.dataset.oohIdx)];
+          document.getElementById('lb-tag').textContent = item.tag;
+          document.getElementById('lb-loc').textContent = item.loc;
+          document.getElementById('lb-title').textContent = item.title;
+          document.getElementById('lb-desc').textContent = item.desc;
+          document.getElementById('lb-img').src = item.src;
+          modal.classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('lb-close').addEventListener('click', () => modal.classList.add('hidden'));
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.add('hidden'); });
+    })();
+
+    // 3. RENDER YOUR EXACT 4 DIGITAL ADS DIRECTLY FROM `DIGITAL-ADS.pdf`
+    (function initDigitalAdsFromPDF() {
+      if (typeof pdfjsLib === 'undefined') return;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      const pageTargets = [
+        { pageNum: 1, canvasId: 'pdf-canvas-1' },
+        { pageNum: 3, canvasId: 'pdf-canvas-3' },
+        { pageNum: 4, canvasId: 'pdf-canvas-4' },
+        { pageNum: 5, canvasId: 'pdf-canvas-5' }
+      ];
+
+      async function renderPDFDocument(pdfSource) {
+        try {
+          const loadingTask = pdfjsLib.getDocument(pdfSource);
+          const pdf = await loadingTask.promise;
+
+          for (const target of pageTargets) {
+            if (target.pageNum > pdf.numPages) continue;
+            const page = await pdf.getPage(target.pageNum);
+            const viewport = page.getViewport({ scale: 1.6 });
+            const canvas = document.getElementById(target.canvasId);
+            if (!canvas) continue;
+            const context = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: context, viewport }).promise;
+          }
+        } catch (err) {
+          console.warn('PDF auto-load notice:', err);
+        }
+      }
+
+      // Render directly from uploaded DIGITAL-ADS.pdf
+      renderPDFDocument('DIGITAL-ADS.pdf');
+
+      // Manual PDF reloader if opened from local filesystem
+      document.getElementById('manual-pdf-input').addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          const url = URL.createObjectURL(e.target.files[0]);
+          renderPDFDocument(url);
+          showToast('RENDERED DIGITAL-ADS.PDF PAGES');
+        }
+      });
+    })();
+
+    // 4. EXPERIMENTAL SWISS EDITORIAL LAYOUT ENGINE (USING ONLY YOUR 5 UPLOADED IMAGES)
+    (function initSwissEditorialEngine() {
+      const canvas = document.getElementById('editorial-canvas');
+      const ctx = canvas.getContext('2d');
+      const sourceBuffer = document.createElement('canvas');
+      const sourceCtx = sourceBuffer.getContext('2d');
+
+      const GARMENT_SPECS = [
+        { model: '2019 D-STRUKT', serial: 'NVAN3 311021008', cut: 'FIT: TAPERED SLIM — LEG: SLIM — WAIST: MID', build: 'COMFORTABLE ESSENTIAL CUT', comp: '100% RAW SELVEDGE COTTON — 14.5 OZ', lot: 'LOT 019-NYC // MERCER ST' },
+        { model: '1981 D-WENT', serial: 'NVAN3 884109214', cut: 'FIT: REGULAR — LEG: STRAIGHT — WAIST: MID', build: 'REINFORCED COPPER RIVET YOKE', comp: '100% RING-SPUN INDIGO TWILL — 15.2 OZ', lot: 'LOT 081-MIL // BREDA LAB' },
+        { model: 'D-HUSH', serial: 'NVAN3 502918441', cut: 'FIT: SLIM — LEG: SLIM — WAIST: MID', build: 'DOUBLE-BUTTON WAISTBAND', comp: '99% ORGANIC COTTON 1% ELASTANE — 13.8 OZ', lot: 'LOT 104-NYC // BOWERY' },
+        { model: 'NVAN3 311021008', serial: 'DS-FW26-00419', cut: 'FIT: BOOTCUT — LEG: SLIM — WAIST: LOW', build: 'EXPOSED SELVEDGE OUTSEAM', comp: '100% UNWASHED RIGID DENIM — 16.0 OZ', lot: 'LOT 078-TYO // SHIBUYA' },
+        { model: '1996 D-SIRE-01', serial: 'NVAN3 199600814', cut: 'FIT: BOOTCUT — LEG: FLARE — WAIST: LOW', build: 'ESSENCE OF DENIM ARCHIVE', comp: '100% HAND-ABRADED INDIGO — 14.5 OZ', lot: 'LOT 096-NYC // BOWERY' }
+      ];
+
+      const HEADLINES = [
+        'THE ESSENCE OF DENIM',
+        'FOR SUCCESSFUL LIVING',
+        'ICONIC FITS. DISTINCTIVE ATTITUDE.',
+        'RAW SELVEDGE ARCHIVE // FALL 2026',
+        'CONCRETE & INDIGO // NYC 26'
+      ];
+
+      const ARCHETYPES = [
+        '01 // SWISS ASYMMETRIC SPLIT',
+        '02 // FULL-BLEED MONOLITH',
+        '03 // GARMENT SPEC INDEX',
+        '04 // ARCHIVAL CONTACT SHEET',
+        '05 // BRUTALIST MARGINALIA',
+        '06 // DIAGONAL SLASH & SPEC',
+        '07 // DOUBLE-FRAME DIPTYCH',
+        '08 // INDUSTRIAL CARE-TAG OVERLAY',
+        '09 // MONUMENTAL TYPE STACK'
+      ];
+
+      const UPLOADED_FILES = [
+        'watermarked_img_1370470885196410425.webp',
+        'Gemini_Generated_Image_w2y5g4w2y5g4w2y5.jpeg',
+        'Gemini_Generated_Image_riq2kbriq2kbriq2.jpeg',
+        'Gemini_Generated_Image_eyrnkveyrnkveyrn.jpeg',
+        '3ee619e3-70a4-462d-992f-0721c6fab432.webp'
+      ];
+
+      const platePool = [null, null, null, null, null];
+      const state = {
+        archetype: 0,
+        ratio: '4:5',
+        colorway: 'analog',
+        grain: 42,
+        contrast: 122,
+        plateIndex: 0,
+        specIndex: 0,
+        headlineIndex: 0,
+        typeVariant: 0,
+        seed: 84920
+      };
+
+      UPLOADED_FILES.forEach((src, idx) => {
+        const img = new Image();
+        img.onload = () => {
+          platePool[idx] = img;
+          if (state.plateIndex === idx) renderEditorialLayout();
+        };
+        img.src = src;
+      });
+
+      function getRes() {
+        if (state.ratio === '16:10') return { w: 1600, h: 1000, label: '3200 × 2000 PX (300 DPI)' };
+        if (state.ratio === '2:3') return { w: 1000, h: 1500, label: '2400 × 3600 PX (300 DPI)' };
+        return { w: 1200, h: 1500, label: '2400 × 3000 PX (300 DPI)' };
+      }
+
+      function applyOpticalFilmGrade(targetCtx, x, y, w, h) {
+        const ix = Math.max(0, Math.floor(x));
+        const iy = Math.max(0, Math.floor(y));
+        const iw = Math.min(canvas.width - ix, Math.floor(w));
+        const ih = Math.min(canvas.height - iy, Math.floor(h));
+        if (iw <= 0 || ih <= 0) return;
+
+        try {
+          const imgData = targetCtx.getImageData(ix, iy, iw, ih);
+          const data = imgData.data;
+          const contrastFactor = state.contrast / 100;
+          const grainAmount = (state.grain / 100) * 58;
+          let rng = state.seed + ix * 31 + iy * 17;
+
+          for (let i = 0; i < data.length; i += 4) {
+            rng = (rng * 1664525 + 1013904223) % 4294967296;
+            const n = ((rng / 4294967296) - 0.5) * grainAmount;
+
+            let r = Math.max(0, Math.min(255, (data[i] - 128) * contrastFactor + 128 + n));
+            let g = Math.max(0, Math.min(255, (data[i + 1] - 128) * contrastFactor + 128 + n));
+            let b = Math.max(0, Math.min(255, (data[i + 2] - 128) * contrastFactor + 128 + n));
+            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            if (state.colorway === 'analog') {
+              r = r * 0.72 + lum * 0.28 - 4;
+              g = g * 0.74 + lum * 0.26 - 2;
+              b = b * 0.78 + lum * 0.22 + 8;
+            } else if (state.colorway === 'silver') {
+              r = g = b = lum;
+            } else if (state.colorway === 'indigo') {
+              const t = lum / 255;
+              r = 18 + t * 224; g = 25 + t * 216; b = 38 + t * 199;
+            } else if (state.colorway === 'xerox') {
+              r = g = b = lum > 122 ? 242 : 10;
+            } else if (state.colorway === 'acid') {
+              const t = Math.min(1, Math.pow(lum / 255, 0.82) * 1.15);
+              r = 14 + t * 188; g = 20 + t * 224; b = 30 + t * 222;
+            } else if (state.colorway === 'tungsten') {
+              r = r * 0.62 + lum * 0.28 - 10; g = g * 0.76 + lum * 0.30 + 6; b = b * 0.74 + lum * 0.28 + 12;
+            } else if (state.colorway === 'chrome') {
+              const boosted = Math.min(255, lum * 1.24 + 14);
+              r = boosted; g = boosted * 0.96; b = boosted * 0.88;
+            } else if (state.colorway === 'carbon') {
+              const crushed = Math.pow(lum / 255, 1.45) * 255;
+              r = crushed * 0.94; g = crushed * 0.96; b = crushed * 1.02;
+            }
+            data[i] = Math.max(0, Math.min(255, r));
+            data[i + 1] = Math.max(0, Math.min(255, g));
+            data[i + 2] = Math.max(0, Math.min(255, b));
+          }
+          targetCtx.putImageData(imgData, ix, iy);
+        } catch (e) {}
+      }
+
+      function renderEditorialLayout() {
+        const res = getRes();
+        canvas.width = res.w;
+        canvas.height = res.h;
+        const W = res.w, H = res.h;
+        document.getElementById('canvas-dimensions-label').textContent = res.label;
+
+        const spec = GARMENT_SPECS[state.specIndex];
+        const headline = HEADLINES[state.headlineIndex];
+        const src = platePool[state.plateIndex];
+
+        sourceBuffer.width = W;
+        sourceBuffer.height = H;
+        if (src) {
+          const baseScale = Math.max(W / src.width, h_ratio = H / src.height);
+          const dw = src.width * baseScale;
+          const dh = src.height * baseScale;
+          sourceCtx.drawImage(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
+        } else {
+          sourceCtx.fillStyle = '#121926';
+          sourceCtx.fillRect(0, 0, W, H);
+        }
+
+        ctx.fillStyle = '#080808';
+        ctx.fillRect(0, 0, W, H);
+        const arch = state.archetype;
+
+        if (arch === 0) {
+          const splitX = state.typeVariant % 2 === 0 ? Math.round(W * 0.36) : Math.round(W * 0.64);
+          const photoOnRight = state.typeVariant % 2 === 0;
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillRect(0, 0, W, H);
+          const px = photoOnRight ? splitX : 0;
+          const pw = photoOnRight ? W - splitX : splitX;
+          ctx.drawImage(sourceBuffer, px, 0, pw, H, px, 0, pw, H);
+          applyOpticalFilmGrade(ctx, px, 0, pw, H);
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(splitX - 1, 0, 2, H);
+
+          const tx = photoOnRight ? 36 : splitX + 36;
+          const tw = (photoOnRight ? splitX : W - splitX) - 72;
+          ctx.fillStyle = '#e60000';
+          ctx.fillRect(tx, 42, 168, 62);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '46px Anton, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('DIESEL', tx + 84, 90);
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(tx, 130, tw, 2);
+
+          ctx.textAlign = 'left';
+          const headSize = Math.round(tw * 0.31);
+          ctx.font = `${headSize}px Anton, sans-serif`;
+          headline.split(' ').slice(0, 4).forEach((word, i) => ctx.fillText(word, tx, 155 + (i + 1) * (headSize * 0.94)));
+
+          const specTop = H - 310;
+          ctx.fillRect(tx, specTop, tw, 2);
+          ctx.font = '700 18px "JetBrains Mono", monospace';
+          ctx.fillText(`FALL 2026 // PL.0${state.plateIndex + 1}`, tx, specTop + 32);
+          ctx.font = '500 14px "JetBrains Mono", monospace';
+          ctx.fillText(`MODEL: ${spec.model}`, tx, specTop + 72);
+          ctx.fillText(`SERIAL: ${spec.serial}`, tx, specTop + 100);
+          ctx.fillText(spec.build, tx, specTop + 128);
+          ctx.fillText(spec.comp, tx, specTop + 156);
+          ctx.fillRect(tx, H - 96, tw, 1);
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText('FOR SUCCESSFUL LIVING', tx, H - 62);
+          ctx.fillStyle = '#e60000';
+          ctx.fillText(spec.lot, tx, H - 36);
+
+        } else if (arch === 1) {
+          ctx.drawImage(sourceBuffer, 0, 0, W, H);
+          applyOpticalFilmGrade(ctx, 0, 0, W, H);
+          ctx.fillStyle = '#f2f1ed';
+          ctx.textAlign = 'center';
+          const logoSize = Math.round(W * 0.255);
+          ctx.font = `${logoSize}px Anton, sans-serif`;
+          ctx.fillText('DIESEL', W / 2, logoSize * 0.88);
+          ctx.strokeStyle = 'rgba(242, 241, 237, 0.4)';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(36, 36, W - 72, H - 72);
+          ctx.textAlign = 'left';
+          ctx.font = `${Math.round(W * 0.058)}px Anton, sans-serif`;
+          ctx.fillText(headline, 56, H - 150);
+          ctx.fillStyle = '#e60000';
+          ctx.fillRect(56, H - 125, 290, 34);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText('FOR SUCCESSFUL LIVING', 68, H - 102);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillText(`${spec.model} // ${spec.serial}`, W - 56, H - 102);
+
+        } else if (arch === 2) {
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillRect(0, 0, W, H);
+          const pad = 44;
+          ctx.strokeStyle = '#080808';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(pad, pad, W - pad * 2, H - pad * 2);
+          ctx.fillStyle = '#080808';
+          ctx.textAlign = 'left';
+          ctx.font = '96px Anton, sans-serif';
+          ctx.fillText('DIESEL', pad + 24, pad + 106);
+          ctx.textAlign = 'right';
+          ctx.font = '700 18px "JetBrains Mono", monospace';
+          ctx.fillText(headline, W - pad - 24, pad + 56);
+          ctx.fillStyle = '#e60000';
+          ctx.fillText(`FALL 2026 // PL.0${state.plateIndex + 1}`, W - pad - 24, pad + 86);
+          const imgTop = pad + 164;
+          const imgH = H - pad - 270 - imgTop;
+          const imgW = W - (pad + 24) * 2;
+          ctx.drawImage(sourceBuffer, pad + 24, imgTop, imgW, imgH, pad + 24, imgTop, imgW, imgH);
+          applyOpticalFilmGrade(ctx, pad + 24, imgTop, imgW, imgH);
+          const gridTop = imgTop + imgH + 24;
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(pad, gridTop, W - pad * 2, 2);
+          ctx.textAlign = 'left';
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText(`MODEL // ${spec.model} (${spec.serial})`, pad + 20, gridTop + 45);
+          ctx.font = '500 14px "JetBrains Mono", monospace';
+          ctx.fillText(`${spec.cut} — ${spec.comp}`, pad + 20, gridTop + 90);
+          ctx.fillStyle = '#e60000';
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText('FOR SUCCESSFUL LIVING // FW26', pad + 20, gridTop + 140);
+
+        } else if (arch === 3) {
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(0, 0, W, H);
+          const m = 48;
+          ctx.fillStyle = '#f2f1ed';
+          ctx.textAlign = 'left';
+          ctx.font = '72px Anton, sans-serif';
+          ctx.fillText('DIESEL // CONTACT SHEET', m, 108);
+          const gridY = 140, gridH = H - 290, gap = 24;
+          const cellW = (W - m * 2 - gap) / 2, cellH = (gridH - gap) / 2;
+          [0, 1, 2, 3].forEach((idx) => {
+            const pImg = platePool[idx] || src;
+            const cx = m + (idx % 2) * (cellW + gap);
+            const cy = gridY + Math.floor(idx / 2) * (cellH + gap);
+            if (pImg) ctx.drawImage(pImg, cx, cy, cellW, cellH - 28);
+            applyOpticalFilmGrade(ctx, cx, cy, cellW, cellH - 28);
+            ctx.fillStyle = '#f2f1ed';
+            ctx.font = '700 13px "JetBrains Mono", monospace';
+            ctx.fillText(`► PL.0${idx + 1} // ${spec.model}`, cx, cy + cellH - 8);
+          });
+          ctx.fillStyle = '#e60000';
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText(`FOR SUCCESSFUL LIVING — ${spec.serial}`, m, H - 56);
+
+        } else if (arch === 4) {
+          ctx.fillStyle = '#121926';
+          ctx.fillRect(0, 0, W, H);
+          const ix = 120, iy = 120, iw = W - 240, ih = H - 240;
+          ctx.drawImage(sourceBuffer, ix, iy, iw, ih, ix, iy, iw, ih);
+          applyOpticalFilmGrade(ctx, ix, iy, iw, ih);
+          ctx.strokeStyle = '#f2f1ed';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(ix, iy, iw, ih);
+          ctx.fillStyle = '#f2f1ed';
+          ctx.textAlign = 'left';
+          ctx.font = '56px Anton, sans-serif';
+          ctx.fillText('DIESEL', ix, 82);
+          ctx.textAlign = 'right';
+          ctx.font = '700 18px "JetBrains Mono", monospace';
+          ctx.fillText(`${headline} — FW26`, W - ix, 76);
+          ctx.textAlign = 'left';
+          ctx.fillText(spec.cut, ix, H - 64);
+
+        } else if (arch === 5) {
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(0, 0, W, H);
+          const bandW = 92;
+          ctx.fillStyle = '#e60000';
+          ctx.fillRect(0, 0, bandW, H);
+          const photoH = Math.round(H * 0.68);
+          ctx.drawImage(sourceBuffer, bandW, 0, W - bandW, photoH, bandW, 0, W - bandW, photoH);
+          applyOpticalFilmGrade(ctx, bandW, 0, W - bandW, photoH);
+          ctx.fillStyle = '#f2f1ed';
+          ctx.beginPath();
+          ctx.moveTo(bandW, photoH - 65); ctx.lineTo(W, photoH + 35); ctx.lineTo(W, H); ctx.lineTo(bandW, H);
+          ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#080808';
+          ctx.textAlign = 'left';
+          ctx.font = '56px Anton, sans-serif';
+          ctx.fillText(spec.model, bandW + 40, photoH + 85);
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.fillText(`SERIAL: ${spec.serial} // PL.0${state.plateIndex + 1}`, bandW + 40, photoH + 135);
+          ctx.fillStyle = '#e60000';
+          ctx.fillText('FOR SUCCESSFUL LIVING', bandW + 40, H - 36);
+
+        } else if (arch === 6) {
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillRect(0, 0, W, H);
+          const pad = 44;
+          ctx.fillStyle = '#080808';
+          ctx.textAlign = 'left';
+          ctx.font = '82px Anton, sans-serif';
+          ctx.fillText('DIESEL', pad, pad + 68);
+          const fTop = pad + 112, fH = H - fTop - 190, gap = 24;
+          const lW = Math.round((W - pad * 2 - gap) * 0.38), rW = (W - pad * 2 - gap) - lW;
+          ctx.drawImage(sourceBuffer, W * 0.25, H * 0.2, W * 0.5, H * 0.5, pad, fTop, lW, fH);
+          applyOpticalFilmGrade(ctx, pad, fTop, lW, fH);
+          ctx.drawImage(sourceBuffer, 0, 0, W, H, pad + lW + gap, fTop, rW, fH);
+          applyOpticalFilmGrade(ctx, pad + lW + gap, fTop, rW, fH);
+          ctx.font = '700 17px "JetBrains Mono", monospace';
+          ctx.fillText(`${spec.model} // ${spec.serial} — FOR SUCCESSFUL LIVING`, pad, fTop + fH + 45);
+
+        } else if (arch === 7) {
+          ctx.drawImage(sourceBuffer, 0, 0, W, H);
+          applyOpticalFilmGrade(ctx, 0, 0, W, H);
+          const tagW = 520, tagH = 400, tx = 56, ty = H - tagH - 56;
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillRect(tx, ty, tagW, tagH);
+          ctx.strokeStyle = '#080808';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(tx + 14, ty + 14, tagW - 28, tagH - 28);
+          ctx.fillStyle = '#e60000';
+          ctx.fillRect(tx + 14, ty + 14, 175, 58);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '44px Anton, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('DIESEL', tx + 101, ty + 60);
+          ctx.fillStyle = '#080808';
+          ctx.textAlign = 'left';
+          ctx.font = '700 18px "JetBrains Mono", monospace';
+          ctx.fillText(spec.model, tx + 28, ty + 110);
+          ctx.font = '500 14px "JetBrains Mono", monospace';
+          ctx.fillText(`SERIAL: ${spec.serial}`, tx + 28, ty + 142);
+          ctx.fillText(spec.cut, tx + 28, ty + 172);
+          ctx.fillText(spec.comp, tx + 28, ty + 202);
+          ctx.fillStyle = '#e60000';
+          ctx.font = '700 15px "JetBrains Mono", monospace';
+          ctx.fillText(headline, tx + 28, ty + 240);
+          ctx.fillStyle = '#080808';
+          for (let bx = tx + 28; bx < tx + tagW - 32; bx += 7) {
+            ctx.fillRect(bx, ty + 272, (bx % 3 === 0) ? 4 : 2, 74);
+          }
+
+        } else {
+          ctx.fillStyle = '#f2f1ed';
+          ctx.fillRect(0, 0, W, H);
+          const pad = 40;
+          const stackWords = ['DIESEL', 'THE ESSENCE', 'OF DENIM', 'FALL 2026'];
+          const rowH = Math.floor((H - pad * 2 - 90) / 4);
+          stackWords.forEach((word, idx) => {
+            const ry = pad + idx * rowH;
+            if (idx === 1 || idx === 2) {
+              const winX = idx === 1 ? pad : Math.round(W * 0.32);
+              const winW = Math.round(W * 0.68) - pad;
+              ctx.drawImage(sourceBuffer, winX, ry, winW, rowH - 12, winX, ry, winW, rowH - 12);
+              applyOpticalFilmGrade(ctx, winX, ry, winW, rowH - 12);
+            }
+            ctx.font = `${Math.round(rowH * 0.84)}px Anton, sans-serif`;
+            ctx.textAlign = idx % 2 === 0 ? 'left' : 'right';
+            ctx.fillStyle = idx === 0 ? '#e60000' : '#080808';
+            ctx.fillText(word, idx % 2 === 0 ? pad : W - pad, ry + rowH * 0.8);
+          });
+          ctx.fillStyle = '#080808';
+          ctx.fillRect(pad, H - pad - 68, W - pad * 2, 3);
+          ctx.font = '700 16px "JetBrains Mono", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText(`${spec.model} // ${spec.serial}`, pad, H - pad - 34);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#e60000';
+          ctx.fillText('FOR SUCCESSFUL LIVING', W - pad, H - pad - 34);
+        }
+      }
+
+      function syncStudioUI() {
+        document.getElementById('active-archetype-label').textContent = `${ARCHETYPES[state.archetype]} [PLATE 0${state.plateIndex + 1}]`;
+        document.getElementById('photo-source-status').textContent = `ACTIVE: PLATE 0${state.plateIndex + 1}`;
+        document.querySelectorAll('.plate-slot-card').forEach(card => {
+          const isAct = Number(card.dataset.plate) === state.plateIndex;
+          card.classList.toggle('border-2', isAct);
+          card.classList.toggle('border-[#e60000]', isAct);
+          card.classList.toggle('border', !isAct);
+          card.classList.toggle('border-hairline', !isAct);
+        });
+        document.querySelectorAll('.arch-btn').forEach(b => b.classList.toggle('active', Number(b.dataset.arch) === state.archetype));
+        document.querySelectorAll('.ratio-btn').forEach(b => b.classList.toggle('active', b.dataset.ratio === state.ratio));
+        document.querySelectorAll('.colorway-btn').forEach(b => b.classList.toggle('active', b.dataset.colorway === state.colorway));
+        document.getElementById('grade-mode-badge').textContent = state.colorway.toUpperCase();
+        document.getElementById('select-garment-spec').value = String(state.specIndex);
+      }
+
+      function mutate() {
+        state.seed = Math.floor(10000 + Math.random() * 89999);
+        state.archetype = Math.floor(Math.random() * ARCHETYPES.length);
+        state.plateIndex = Math.floor(Math.random() * 5);
+        state.specIndex = Math.floor(Math.random() * GARMENT_SPECS.length);
+        state.headlineIndex = Math.floor(Math.random() * HEADLINES.length);
+        state.typeVariant = (state.typeVariant + 1) % 2;
+        syncStudioUI();
+        renderEditorialLayout();
+        showToast(`MUTATED: PLATE 0${state.plateIndex + 1} · ${ARCHETYPES[state.archetype]}`);
+      }
+
+      document.getElementById('btn-mutate-main').addEventListener('click', mutate);
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !['BUTTON', 'INPUT', 'SELECT'].includes(document.activeElement.tagName)) {
+          e.preventDefault();
+          mutate();
+        }
+      });
+
+      document.querySelectorAll('.plate-slot-card').forEach(c => c.addEventListener('click', () => {
+        state.plateIndex = Number(c.dataset.plate);
+        syncStudioUI(); renderEditorialLayout();
+      }));
+      document.querySelectorAll('.arch-btn').forEach(b => b.addEventListener('click', () => {
+        state.archetype = Number(b.dataset.arch);
+        syncStudioUI(); renderEditorialLayout();
+      }));
+      document.querySelectorAll('.ratio-btn').forEach(b => b.addEventListener('click', () => {
+        state.ratio = b.dataset.ratio;
+        syncStudioUI(); renderEditorialLayout();
+      }));
+      document.querySelectorAll('.colorway-btn').forEach(b => b.addEventListener('click', () => {
+        state.colorway = b.dataset.colorway;
+        syncStudioUI(); renderEditorialLayout();
+      }));
+      document.getElementById('slider-grain').addEventListener('input', (e) => {
+        state.grain = Number(e.target.value);
+        document.getElementById('val-grain').textContent = `${state.grain}%`;
+        renderEditorialLayout();
+      });
+      document.getElementById('slider-contrast').addEventListener('input', (e) => {
+        state.contrast = Number(e.target.value);
+        document.getElementById('val-contrast').textContent = `${state.contrast}%`;
+        renderEditorialLayout();
+      });
+      document.getElementById('select-garment-spec').addEventListener('change', (e) => {
+        state.specIndex = Number(e.target.value);
+        renderEditorialLayout();
+      });
+      document.getElementById('btn-cycle-headline').addEventListener('click', () => {
+        state.headlineIndex = (state.headlineIndex + 1) % HEADLINES.length;
+        renderEditorialLayout();
+      });
+      document.getElementById('btn-export-300dpi').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = `DIESEL-FW26-GRID${state.archetype + 1}-PL0${state.plateIndex + 1}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('EXPORTED HIGH-RES 300DPI POSTER');
+      });
+
+      syncStudioUI();
+      renderEditorialLayout();
+    })();
+
+    // 5. SILHOUETTE RESERVATIONS & VIP DROP PASS
+    document.querySelectorAll('.reserve-sku-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sku = btn.dataset.sku;
+        document.getElementById('drop-sku-select').value = sku;
+        document.getElementById('drop-access-section').scrollIntoView({ behavior: 'smooth' });
+        showToast(`SELECTED ${sku} FOR ALLOCATION`);
+      });
+    });
+
+    document.getElementById('drop-access-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const sku = document.getElementById('drop-sku-select').value;
+      const size = document.getElementById('drop-size-select').value;
+      const code = `DSL-FW26-${Math.floor(1000 + Math.random() * 9000)}`;
+      document.getElementById('drop-pass-code').textContent = `PASS: ${code} (${sku} · ${size})`;
+      document.getElementById('drop-pass-confirmation').classList.remove('hidden');
+      showToast(`VIP DROP PASS ${code} ISSUED`);
+    });
+  </script>
+</body>
+</html>
